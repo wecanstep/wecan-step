@@ -384,7 +384,7 @@ a{text-decoration:none;color:inherit}
         <span>👤</span>
         <span>الطالب</span>
       </div>
-      <a class="logout-btn" href="students.html">
+      <a class="logout-btn" href="login.html" id="logoutBtn">
         <span>🚪</span> تسجيل الخروج
       </a>
     </div>
@@ -683,6 +683,33 @@ window.addEventListener('load', function(){
     var b4 = document.getElementById('pb4'); if(b4) b4.style.width = avg + '%';
   }, 500);
 });
+</script>
+
+<script type="module">
+import { auth, signOut } from "./firebase-wecan.js";
+
+const logoutBtn = document.getElementById("logoutBtn");
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", async function(e) {
+    e.preventDefault();
+    try {
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("isSubscriber");
+      localStorage.removeItem("subscriptionExpiresAtMs");
+      localStorage.removeItem("visitorLoggedIn");
+      localStorage.removeItem("userName");
+      localStorage.removeItem("userPhone");
+      localStorage.removeItem("userEmail");
+      localStorage.removeItem("visitorName");
+      localStorage.removeItem("visitorPhone");
+      localStorage.removeItem("visitorEmail");
+      localStorage.removeItem("isAdmin");
+    } catch (_) {}
+
+    try { await signOut(auth); } catch (_) {}
+    window.location.replace("login.html?logout=1");
+  });
+}
 </script>
 
 </body>

@@ -78,7 +78,7 @@ async function cacheAndRouteStudent(email, fallbackName = "", fallbackPhone = ""
     showToastMsg("انتهى اشتراكك. تواصل معنا لتجديد الاشتراك.");
     return "free-dashboard.html?subscription=expired";
   }
-  return isSubscriber ? "students.html" : "free-dashboard.html";
+  return isSubscriber ? "dashboard.html" : "free-dashboard.html";
 }
 
 function setLoadingMessage(msg) {
