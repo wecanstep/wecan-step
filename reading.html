@@ -47,6 +47,56 @@
   .card-foot{padding:12px 14px 18px}
 }
 
+
+
+/* WE CAN STEP - Approved Reading card buttons (navy + calm teal, no bright green) */
+.model-card::before{
+  background:linear-gradient(90deg,#173244,#fbbf24) !important;
+}
+.model-badge{
+  background:rgba(23,50,68,.08) !important;
+  color:#173244 !important;
+}
+.model-title span{
+  color:#0f766e !important;
+}
+.start-btn{
+  background:linear-gradient(135deg,#0b2035,#173244) !important;
+  color:#fff !important;
+  border:1px solid rgba(251,191,36,.42) !important;
+  box-shadow:0 14px 28px rgba(11,32,53,.22) !important;
+}
+.start-btn:hover{
+  box-shadow:0 18px 34px rgba(11,32,53,.28) !important;
+  filter:brightness(1.04) !important;
+}
+.start-btn::after{
+  background:rgba(251,191,36,.08) !important;
+}
+.study-btn{
+  background:linear-gradient(135deg,#0f766e,#0e7490) !important;
+  color:#fff !important;
+  border:1px solid rgba(14,116,144,.30) !important;
+  box-shadow:0 14px 28px rgba(14,116,144,.18) !important;
+}
+.study-btn:hover{
+  box-shadow:0 18px 34px rgba(14,116,144,.24) !important;
+  filter:brightness(1.04) !important;
+}
+.btn-icon{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.05em;
+  line-height:1;
+}
+@media(max-width:600px){
+  .start-btn,.study-btn{
+    font-size:15px !important;
+    padding:14px 12px !important;
+  }
+}
+
 </style>
 <script type="module" src="./subscription-guard.js"></script>
 
@@ -503,10 +553,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-          <a class="start-btn" href="reading-model-05.html">
-            ابدأ النموذج <span class="arrow">←</span>
-          </a>
-          <a class="study-btn" href="reading-model-05-study.html">📚 ذاكر النموذج</a>
+          <a class="start-btn" href="reading-model-05.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-05-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
 
@@ -524,10 +572,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-          <a class="start-btn" href="reading-model-06.html">
-            ابدأ النموذج <span class="arrow">←</span>
-          </a>
-          <a class="study-btn" href="reading-model-06-study.html">📚 ذاكر النموذج</a>
+          <a class="start-btn" href="reading-model-06.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-06-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
       <div class="model-card" data-model="07">
@@ -544,10 +590,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-          <a class="start-btn" href="reading-model-07.html">
-            ابدأ النموذج <span class="arrow">←</span>
-          </a>
-          <a class="study-btn" href="reading-model-07-study.html">📚 ذاكر النموذج</a>
+          <a class="start-btn" href="reading-model-07.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-07-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
       <div class="model-card" data-model="08">
@@ -564,10 +608,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-          <a class="start-btn" href="reading-model-08.html">
-            ابدأ النموذج <span class="arrow">←</span>
-          </a>
-          <a class="study-btn" href="reading-model-08-study.html">📚 ذاكر النموذج</a>
+          <a class="start-btn" href="reading-model-08.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-08-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
       <div class="model-card" data-model="09">
@@ -584,10 +626,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-          <a class="start-btn" href="reading-model-09.html">
-            ابدأ النموذج <span class="arrow">←</span>
-          </a>
-          <a class="study-btn" href="reading-model-09-study.html">📚 ذاكر النموذج</a>
+          <a class="start-btn" href="reading-model-09.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-09-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
       <div class="model-card" data-model="10">
@@ -604,10 +644,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-          <a class="start-btn" href="reading-model-10.html">
-            ابدأ النموذج <span class="arrow">←</span>
-          </a>
-          <a class="study-btn" href="reading-model-10-study.html">📚 ذاكر النموذج</a>
+          <a class="start-btn" href="reading-model-10.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-10-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
       <div class="model-card" data-model="11">
@@ -624,10 +662,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-          <a class="start-btn" href="reading-model-11.html">
-            ابدأ النموذج <span class="arrow">←</span>
-          </a>
-          <a class="study-btn" href="reading-model-11-study.html">📚 ذاكر النموذج</a>
+          <a class="start-btn" href="reading-model-11.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-11-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
       <div class="model-card" data-model="12">
@@ -644,10 +680,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-          <a class="start-btn" href="reading-model-12.html">
-            ابدأ النموذج <span class="arrow">←</span>
-          </a>
-          <a class="study-btn" href="reading-model-12-study.html">📚 ذاكر النموذج</a>
+          <a class="start-btn" href="reading-model-12.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-12-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
       <div class="model-card" data-model="13">
@@ -664,10 +698,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-<a class="start-btn" href="reading-model-13.html">
-            ابدأ النموذج <span class="arrow">←</span>
-          </a>
-          <a class="study-btn" href="reading-model-13-study.html">📚 ذاكر النموذج</a>
+<a class="start-btn" href="reading-model-13.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-13-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
       <div class="model-card coming-soon" data-model="14">
@@ -701,10 +733,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-          <a class="start-btn" href="reading-model-15.html">
-            ابدأ النموذج <span class="arrow">←</span>
-          </a>
-          <a class="study-btn" href="reading-model-15-study.html">📚 ذاكر النموذج</a>
+          <a class="start-btn" href="reading-model-15.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-15-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
       <div class="model-card" data-model="16">
@@ -721,10 +751,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-          <a class="start-btn" href="reading-model-16.html">
-            ابدأ النموذج <span class="arrow">←</span>
-          </a>
-          <a class="study-btn" href="reading-model-16-study.html">📚 ذاكر النموذج</a>
+          <a class="start-btn" href="reading-model-16.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-16-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
       <div class="model-card coming-soon" data-model="17">
@@ -809,10 +837,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-<a class="start-btn" href="reading-model-21.html">
-            ابدأ النموذج <span class="arrow">←</span>
-          </a>
-          <a class="study-btn" href="reading-model-21-study.html">📚 ذاكر النموذج</a>
+<a class="start-btn" href="reading-model-21.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-21-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
       <div class="model-card" data-model="22">
@@ -829,10 +855,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-<a class="start-btn" href="reading-model-22.html">
-            ابدأ النموذج <span class="arrow">←</span>
-          </a>
-          <a class="study-btn" href="reading-model-22-study.html">📚 ذاكر النموذج</a>
+<a class="start-btn" href="reading-model-22.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-22-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
       <div class="model-card" data-model="23">
@@ -849,10 +873,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-          <a class="start-btn" href="reading-model-23.html">
-            ابدأ النموذج <span class="arrow">←</span>
-          </a>
-          <a class="study-btn" href="reading-model-23-study.html">📚 ذاكر النموذج</a>
+          <a class="start-btn" href="reading-model-23.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-23-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
       <div class="model-card" data-model="24">
@@ -869,10 +891,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-          <a class="start-btn" href="reading-model-24.html">
-            ابدأ النموذج <span class="arrow">←</span>
-          </a>
-          <a class="study-btn" href="reading-model-24-study.html">📚 ذاكر النموذج</a>
+          <a class="start-btn" href="reading-model-24.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-24-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
       <div class="model-card" data-model="25">
@@ -889,10 +909,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-          <a class="start-btn" href="reading-model-25.html">
-            ابدأ النموذج <span class="arrow">←</span>
-          </a>
-          <a class="study-btn" href="reading-model-25-study.html">📚 ذاكر النموذج</a>
+          <a class="start-btn" href="reading-model-25.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-25-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
       <div class="model-card" data-model="26">
@@ -909,10 +927,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-          <a class="start-btn" href="reading-model-26.html">
-            ابدأ النموذج <span class="arrow">←</span>
-          </a>
-          <a class="study-btn" href="reading-model-26-study.html">📚 ذاكر النموذج</a>
+          <a class="start-btn" href="reading-model-26.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-26-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
       <div class="model-card" data-model="27">
@@ -922,7 +938,7 @@ a{text-decoration:none;color:inherit}
             <span class="chip">📌 40 سؤال</span>
             <span class="chip">⏱ 60 دقيقة</span>
           </div></div>
-        <div class="card-foot"><a class="start-btn" href="reading-model-27.html">ابدأ النموذج <span class="arrow">←</span></a><a class="study-btn" href="reading-model-27-study.html">📚 ذاكر النموذج</a></div>
+        <div class="card-foot"><a class="start-btn" href="reading-model-27.html">اختبار النموذج <span class="btn-icon">📝</span></a><a class="study-btn" href="reading-model-27-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a></div>
       </div>
       <div class="model-card" data-model="28">
         <div class="card-head"><div class="model-num">#28</div><div class="model-badge">Reading</div></div>
@@ -931,7 +947,7 @@ a{text-decoration:none;color:inherit}
             <span class="chip">📌 40 سؤال</span>
             <span class="chip">⏱ 60 دقيقة</span>
           </div></div>
-        <div class="card-foot"><a class="start-btn" href="reading-model-28.html">ابدأ النموذج <span class="arrow">←</span></a><a class="study-btn" href="reading-model-28-study.html">📚 ذاكر النموذج</a></div>
+        <div class="card-foot"><a class="start-btn" href="reading-model-28.html">اختبار النموذج <span class="btn-icon">📝</span></a><a class="study-btn" href="reading-model-28-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a></div>
       </div>
       <div class="model-card" data-model="29">
         <div class="card-head">
@@ -947,8 +963,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-          <a class="start-btn" href="reading-model-29.html">ابدأ النموذج <span class="arrow">←</span></a>
-          <a class="study-btn" href="reading-model-29-study.html">📚 ذاكر النموذج</a>
+          <a class="start-btn" href="reading-model-29.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-29-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
             <div class="model-card" data-model="30">
@@ -965,8 +981,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-          <a class="start-btn" href="reading-model-30.html">ابدأ النموذج <span class="arrow">←</span></a>
-          <a class="study-btn" href="reading-model-30-study.html">📚 ذاكر النموذج</a>
+          <a class="start-btn" href="reading-model-30.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-30-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
       <div class="model-card" data-model="31">
@@ -983,8 +999,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-          <a class="start-btn" href="reading-model-31.html">ابدأ النموذج <span class="arrow">←</span></a>
-          <a class="study-btn" href="reading-model-31-study.html">📚 ذاكر النموذج</a>
+          <a class="start-btn" href="reading-model-31.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-31-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
       <div class="model-card" data-model="32">
@@ -1001,8 +1017,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-          <a class="start-btn" href="reading-model-32.html">ابدأ النموذج <span class="arrow">←</span></a>
-          <a class="study-btn" href="reading-model-32-study.html">📚 ذاكر النموذج</a>
+          <a class="start-btn" href="reading-model-32.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-32-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
       <div class="model-card coming-soon" data-model="33">
@@ -1036,8 +1052,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-          <a class="start-btn" href="reading-model-34.html">ابدأ النموذج <span class="arrow">←</span></a>
-          <a class="study-btn" href="reading-model-34-study.html">📚 ذاكر النموذج</a>
+          <a class="start-btn" href="reading-model-34.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-34-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
       
@@ -1057,8 +1073,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-          <a class="start-btn" href="reading-model-35.html">ابدأ النموذج <span class="arrow">←</span></a>
-          <a class="study-btn" href="reading-model-35-study.html">📚 ذاكر النموذج</a>
+          <a class="start-btn" href="reading-model-35.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-35-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
       <div class="model-card" data-model="36">
@@ -1075,8 +1091,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-          <a class="start-btn" href="reading-model-36.html">ابدأ النموذج <span class="arrow">←</span></a>
-          <a class="study-btn" href="reading-model-36-study.html">📚 ذاكر النموذج</a>
+          <a class="start-btn" href="reading-model-36.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-36-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
       <div class="model-card" data-model="37">
@@ -1093,8 +1109,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-          <a class="start-btn" href="reading-model-37.html">ابدأ النموذج <span class="arrow">←</span></a>
-          <a class="study-btn" href="reading-model-37-study.html">📚 ذاكر النموذج</a>
+          <a class="start-btn" href="reading-model-37.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-37-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
       <div class="model-card coming-soon" data-model="38">
@@ -1230,10 +1246,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-<a class="start-btn" href="reading-model-45.html">
-            ابدأ النموذج <span class="arrow">←</span>
-          </a>
-          <a class="study-btn" href="reading-model-45-study.html">📚 ذاكر النموذج</a>
+<a class="start-btn" href="reading-model-45.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-45-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
       <div class="model-card" data-model="46">
@@ -1250,10 +1264,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-<a class="start-btn" href="reading-model-46.html">
-            ابدأ النموذج <span class="arrow">←</span>
-          </a>
-          <a class="study-btn" href="reading-model-46-study.html">📚 ذاكر النموذج</a>
+<a class="start-btn" href="reading-model-46.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-46-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
       <div class="model-card" data-model="47">
@@ -1270,10 +1282,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-<a class="start-btn" href="reading-model-47.html">
-            ابدأ النموذج <span class="arrow">←</span>
-          </a>
-          <a class="study-btn" href="reading-model-47-study.html">📚 ذاكر النموذج</a>
+<a class="start-btn" href="reading-model-47.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-47-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
       <div class="model-card" data-model="48">
@@ -1290,10 +1300,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-<a class="start-btn" href="reading-model-48.html">
-            ابدأ النموذج <span class="arrow">←</span>
-          </a>
-          <a class="study-btn" href="reading-model-48-study.html">📚 ذاكر النموذج</a>
+<a class="start-btn" href="reading-model-48.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-48-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
       <div class="model-card" data-model="49">
@@ -1310,10 +1318,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-<a class="start-btn" href="reading-model-49.html">
-            ابدأ النموذج <span class="arrow">←</span>
-          </a>
-          <a class="study-btn" href="reading-model-49-study.html">📚 ذاكر النموذج</a>
+<a class="start-btn" href="reading-model-49.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-49-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
       <div class="model-card" data-model="50">
@@ -1330,10 +1336,8 @@ a{text-decoration:none;color:inherit}
           </div>
         </div>
         <div class="card-foot">
-<a class="start-btn" href="reading-model-50.html">
-            ابدأ النموذج <span class="arrow">←</span>
-          </a>
-          <a class="study-btn" href="reading-model-50-study.html">📚 ذاكر النموذج</a>
+<a class="start-btn" href="reading-model-50.html">اختبار النموذج <span class="btn-icon">📝</span></a>
+          <a class="study-btn" href="reading-model-50-study.html">مذاكرة النموذج <span class="btn-icon">📚</span></a>
         </div>
       </div>
     <div class="empty-state" id="emptyState">
