@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<style id="wcs-auth-hide">body{visibility:hidden!important}</style>
+<script type="module" src="./subscription-guard.js"></script>
+
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Grammar Model 07 — Admin Demo</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh}
+.top-bar{background:#1e293b;border-bottom:1px solid #334155;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.top-bar h1{font-size:16px;font-weight:900;color:#fff}
+.top-bar h1 span{color:#fbbf24}
+.demo-badge{background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);color:#fbbf24;font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px}
+.top-actions{display:flex;gap:8px}
+.btn{padding:9px 16px;border-radius:10px;font-size:13px;font-weight:900;cursor:pointer;border:none;transition:opacity .15s}
+.btn:hover{opacity:.85}
+.btn-save{background:linear-gradient(135deg,#16a34a,#15803d);color:#fff}
+.btn-reset{background:#334155;color:#94a3b8}
+.btn-preview{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff}
+.container{max-width:900px;margin:0 auto;padding:24px 16px}
+.info-card{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:20px;margin-bottom:20px}
+.info-card h2{font-size:14px;font-weight:900;color:#94a3b8;letter-spacing:.5px;margin-bottom:14px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.field-full{margin-bottom:12px}
+label{display:block;font-size:11px;font-weight:800;color:#64748b;letter-spacing:.5px;margin-bottom:5px}
+input,textarea,select{width:100%;background:#0f172a;border:1.5px solid #334155;border-radius:8px;padding:9px 12px;font-size:13px;color:#e2e8f0;font-family:Arial,sans-serif;transition:border-color .15s}
+input:focus,textarea:focus,select:focus{outline:none;border-color:#2563eb}
+textarea{resize:vertical;min-height:60px}
+.q-list{display:flex;flex-direction:column;gap:12px}
+.q-item{background:#1e293b;border:1px solid #334155;border-radius:14px;overflow:hidden}
+.q-item-head{background:#0f172a;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #334155}
+.q-num-badge{background:#2563eb;color:#fff;font-size:11px;font-weight:900;padding:3px 10px;border-radius:999px}
+.q-item-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opt-row{display:flex;align-items:center;gap:8px}
+.opt-lbl{font-size:12px;font-weight:900;color:#64748b;flex-shrink:0;width:20px}
+.correct-row{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#0f172a;border-radius:8px}
+.correct-row label{margin:0;color:#94a3b8;font-size:12px}
+select.correct-sel{width:auto;flex:1}
+.toast{position:fixed;bottom:24px;right:24px;background:#16a34a;color:#fff;font-size:14px;font-weight:800;padding:12px 20px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.3);transform:translateY(80px);opacity:0;transition:all .3s;z-index:100}
+.toast.show{transform:translateY(0);opacity:1}
+.stats-row{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.stat{background:#1e293b;border:1px solid #334155;border-radius:10px;padding:10px 16px;font-size:13px;font-weight:700;color:#94a3b8}
+.stat strong{color:#fbbf24;display:block;font-size:20px;font-weight:900}
+.modified-dot{width:8px;height:8px;background:#f59e0b;border-radius:50%;display:inline-block;margin-left:6px}
+@media(max-width:600px){.field-row,.opts-grid{grid-template-columns:1fr}.top-bar{flex-wrap:wrap;gap:8px}}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div>
+    <h1>Grammar Model 07 <span>— Admin Demo</span></h1>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="demo-badge">&#9881;&#65039; تجريبي فقط</span>
+    <div class="top-actions">
+      <button class="btn btn-reset" onclick="resetAll()">&#10227; استعادة الأصلي</button>
+      <button class="btn btn-preview" onclick="openPreview()">&#128065; معاينة الكويز</button>
+      <button class="btn btn-save" onclick="saveAll()">&#128190; حفظ التعديلات</button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="stats-row">
+    <div class="stat"><strong id="statQ">0</strong>سؤال</div>
+    <div class="stat"><strong id="statMod" style="color:#f59e0b">0</strong>معدّل</div>
+    <div class="stat"><strong id="statKey" style="color:#60a5fa;font-size:12px;font-weight:700" id="lsKey">—</strong>مفتاح localStorage</div>
+  </div>
+
+  <div class="info-card">
+    <h2>&#9997;&#65039; معلومات الكويز</h2>
+    <div class="field-row">
+      <div>
+        <label>عنوان الكويز (AR)</label>
+        <input type="text" id="metaTitle" placeholder="مثال: Grammar Model 05">
+      </div>
+      <div>
+        <label>اسم الدرس في quizResults</label>
+        <input type="text" id="metaLesson" placeholder="مثال: Grammar Model 5">
+      </div>
+    </div>
+  </div>
+
+  <div class="info-card">
+    <h2>&#128203; الأسئلة</h2>
+    <div class="q-list" id="qList"></div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var STORAGE_KEY = "wcs_quiz_gm07";
+var QUIZ_FILE   = "grammar-model-07.html";
+
+var originalData = {"title":"Grammar Model 07","lesson":"Grammar Model 7","questions":[
+  {q:"61. Mark is ……………. than Sami.",opts:["smart","smarter","smartest","smartly"],ans:1,exp:"مقارنة بين شخصين = Comparative = smarter."},
+  {q:"62. In which sentence is all PUNCTUATION correct?",opts:["All in all; this is a great achievement, indeed.","All in all, this is a great achievement: indeed.","All in all this is a great achievement; indeed.","All in all, this is a great achievement indeed."],ans:3,exp:"All in all تفصل بفاصلة ثم الجملة بدون علامة ترقيم إضافية."},
+  {q:"63. Could you please open the windows? We need …………..",opts:["fresh air","fresh airs","a fresh air","an air fresh"],ans:0,exp:"air = uncountable لا يُجمع ولا يسبق بـ a/an."},
+  {q:"64. I'm really sorry George. I don't have …………. money with me, but I can bring you some tomorrow.",opts:["any","some","a few","many"],ans:0,exp:"جملة نفي + money uncountable = any."},
+  {q:"65. Dr. Carter was unable to read the letter ……….. he spilled water on it.",opts:["because","also","that","but"],ans:0,exp:"سبب = because."},
+  {q:"66. We should listen to other people. We can learn many things from ………",opts:["it","their","them","his"],ans:2,exp:"people = جمع = them."},
+  {q:"67. In which sentence is all CAPITALIZATION correct?",opts:["King Khalid Mosque is in Riyadh.","king Khalid mosque is in Riyadh.","King Khalid Mosque is in RIYADH.","King Khalid mosque is in riyadh."],ans:0,exp:"أسماء العلم والمباني المشهورة تبدأ بحرف كبير."},
+  {q:"68. Ali is fixing his brother's bicycle, and he…….... some help. Can you help him?",opts:["is needing","needed","needs","need"],ans:2,exp:"need فعل حالة (state verb) لا يستخدم في المستمر = needs."},
+  {q:"69. If we………..up early, we will miss the flight.",opts:["get","don't get","did not get","had not get"],ans:1,exp:"First Conditional: If + present negative = don't get."},
+  {q:"70. Does everyone……….. that the final exam will be on Thursday?",opts:["knew","know","known","knowing"],ans:1,exp:"Does + base verb = know."},
+  {q:"71. That old man sitting on the green bench…….......a popular TV show when you were a little child.",opts:["use to host","uses to host","used to host","used to hosting"],ans:2,exp:"used to + base verb = عادة في الماضي."},
+  {q:"72. Hey,……………..ate my sandwich?",opts:["whom","who","which","whose"],ans:1,exp:"فاعل + أكل = who (فاعل)."},
+  {q:"73. I have been living in Dammam …………….. three years now.",opts:["for","yet","since","about"],ans:0,exp:"three years = فترة زمنية = for."},
+  {q:"74. Would you be able to wait……………. tomorrow for the delivery?",opts:["to","until","since","through"],ans:1,exp:"until tomorrow = حتى الغد."},
+  {q:"75. We need ……………. butter to make this cake.",opts:["any","much","many","some"],ans:3,exp:"butter = uncountable + جملة مثبتة = some."},
+  {q:"76. A: Did you enjoy ………………gg B: Yes, we did.",opts:["yours","yourself","ourselves","yourselves"],ans:3,exp:"you (plural) = yourselves."},
+  {q:"77. A well-known athlete …………….. in the park right now.",opts:["exercises","exercised","is exercising","has exercised"],ans:2,exp:"right now = الآن = Present Continuous = is exercising."},
+  {q:"78. Which one of the underlined words or phrases is INCORRECT?<br>The decision to go <u>nor</u> stay was difficult to reach.",opts:["to go","nor","was","to reach"],ans:1,exp:"nor يستخدم مع neither. الصحيح: or (to go or stay)."},
+  {q:"79. Children should always clean their rooms by ________.",opts:["themselves","theirselves","himself","herself"],ans:0,exp:"children = جمع = themselves."},
+  {q:"80. In which sentence is all PUNCTUATION correct?",opts:["After they traveled the world, they returned home to their families; and went back to their old routines.","After they traveled the world, they returned home, to their families, and went back, to their old routines.","After they traveled the world: they returned home, to their families and went back, to their old routines.","After they traveled the world, they returned home to their families and went back to their old routines."],ans:3,exp:"جملة بسيطة لا تحتاج فاصلة منتصفية أو نقطتين."},
+  {q:"81. There are several steps a student should follow before starting to answer an exam……….. , he or she should read the question carefully.",opts:["First","Also","Then","Next"],ans:0,exp:"أول خطوة = First."},
+  {q:"82. Which of the following sentences has the CORRECT WORD ORDER?",opts:["And tried to fall asleep, they could hear the pattering of the rain on the roof at night while they lay in their beds.","On the roof at night while they lay in their beds, they could hear and tried to fall asleep, the pattering of the rain.","They could hear the pattering of the rain on the roof at night while they lay in their beds and tried to fall asleep.","At night, they could hear while they lay in their beds, the pattering of the rain on the roof, and tried to fall asleep."],ans:2,exp:"Subject + Verb + Object + Adverbial + while clause."},
+  {q:"83. Choose the CORRECT ORDER to make the following sentences into a paragraph.<br>(1) Near them is a man fishing.<br>(2) There is a shady place near the river.<br>(3) He is holding a wooden pole.<br>(4) Two children are sitting there under a tree.",opts:["(4), (2), (1), (3)","(4), (3), (2), (1)","(2), (1), (3), (4)","(2), (4), (1), (3)"],ans:3,exp:"المكان أولاً (2) ثم الأشخاص (4) ثم الرجل (1) ثم وصفه (3)."},
+  {q:"84. Fruits and vegetables provide lots of vitamins and minerals in our diet……….., they contain a lot of fiber.",opts:["In addition","In contrast","For example","As a result"],ans:0,exp:"إضافة معلومة جديدة = In addition."},
+  {q:"85. When you call the office, you should give your message to anyone ………… answers the phone.",opts:["who he","whose","who","he"],ans:2,exp:"anyone = شخص = who (فاعل)."},
+  {q:"86. The manager …………… we met was really interesting.",opts:["Whose","Whom","When","Where"],ans:1,exp:"the manager = مفعول به = Whom."},
+  {q:"87. Shh! There is a noise outside. ………………. that?",opts:["Are you hearing","Do you hear","Are you hear","You hearing"],ans:1,exp:"hear فعل حالة (state verb) = Present Simple = Do you hear."},
+  {q:"88. Reaching the summit of the mountain was ……… challenge of Ali's life.",opts:["big","bigger","the bigger","the biggest"],ans:3,exp:"التفضيل بين كل التحديات = Superlative = the biggest."},
+  {q:"89. My doctor told me that I should ………. more vegetables.",opts:["eating","to eat","eat","ate"],ans:2,exp:"should + base verb = should eat."},
+  {q:"90. Yesterday, the teacher…………. Listen for her twin sister Kate.",opts:["mistakes","mistook","mistaking","mistaken"],ans:1,exp:"yesterday = ماضي = mistook (Past Simple of mistake)."},
+  {q:"91. Choose the CORRECT ORDER to make the following sentences into paragraph:<br>(1) As a result, the ostrich cannot fly.<br>(2) The largest bird in the world is the ostrich.<br>(3) This is a lot of weight to lift in the air.<br>(4) It can weigh as much as 135 kilograms.",opts:["(4), (2), (1), (3)","(2), (4), (3), (1)","(2), (1), (3), (4)","(4), (3), (2), (1)"],ans:1,exp:"التعريف (2) ثم الوزن (4) ثم التعليق (3) ثم النتيجة (1)."},
+  {q:"92. Which one of the underlined words or phrases is INCORRECT?<br>My sister loves shopping. She doesn't buy <u>many</u>, but she likes <u>wandering</u> round the shopping malls, <u>looking for</u> bat gams. I keep telling her that it's a <u>waste of time</u>, but she doesn't listen to me!",opts:["many","wandering","looking for","waste of time"],ans:0,exp:"many مع شيء uncountable خطأ — الصحيح: much."},
+  {q:"93. Student: Sir, I have finished the quiz.<br>Teacher: What? We only started ten minutes ago. You______ possibly have finished.",opts:["shouldn't","wouldn't","couldn't","won't"],ans:2,exp:"couldn't possibly = مستحيل منطقياً = couldn't."},
+  {q:"94. Mike: What do you do on weekends?<br>Roger: Well, normally I'm busy, but I have _______ hours to go out with my friends.",opts:["little","a little","a few","much"],ans:2,exp:"hours = countable plural = a few."},
+  {q:"95. If Chris had wanted to go on the trip, he would __________to you.",opts:["have responded","be responding","responding","responded"],ans:0,exp:"Third Conditional = would have + Past Participle."},
+  {q:"96. Jack: where did Mike go? Eric: I don't know where ……………..",opts:["did go he","went he","he did go","he went"],ans:3,exp:"Indirect question = normal word order = he went."},
+  {q:"97. Which sentence has the CORRECT WORD ORDER?<br>(4) The book states that the extinction of many species is inevitable if we continue thoughtlessly destroying our environment at the present pace.",opts:["(1)","(2)","(3)","(4)"],ans:3,exp:"الترتيب المنطقي: Main clause + if clause + adverb."},
+  {q:"98. We………….an afternoon of sightseeing until it started raining heavily.",opts:["enjoy","were enjoy","were enjoying","have been enjoying"],ans:2,exp:"فعل مستمر في الماضي قُطع = Past Continuous = were enjoying."},
+  {q:"99. It is 3 pm, and I ________ for Peter for over 30 minutes.",opts:["wait","am waiting","had waited","have been waiting"],ans:3,exp:"for 30 minutes = فترة حتى الآن = Present Perfect Continuous = have been waiting."},
+  {q:"100. I lost my wallet at the mall. I walked around asking if anyone _____ it.",opts:["Seen","was seeing","is seeing","had seen"],ans:3,exp:"Past Perfect في جملة غير مباشرة = had seen."}
+]};
+
+function loadData() {
+  try {
+    var saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) return JSON.parse(saved);
+  } catch(e) {}
+  return JSON.parse(JSON.stringify(originalData));
+}
+
+function buildUI() {
+  var data = loadData();
+  document.getElementById("metaTitle").value  = data.title  || "";
+  document.getElementById("metaLesson").value = data.lesson || "";
+  document.getElementById("statQ").textContent   = data.questions.length;
+  document.getElementById("statKey").textContent = STORAGE_KEY;
+
+  var list = document.getElementById("qList");
+  list.innerHTML = "";
+
+  data.questions.forEach(function(q, i) {
+    var item = document.createElement("div");
+    item.className = "q-item";
+    item.id = "qi-" + i;
+
+    var labels = ["A","B","C","D"];
+    var optsHtml = "";
+    (q.opts || []).forEach(function(opt, oi) {
+      optsHtml += '<div class="opt-row"><span class="opt-lbl">' + labels[oi] + '</span><input type="text" id="opt-' + i + '-' + oi + '" value="' + esc(opt) + '" onchange="markModified(' + i + ')"></div>';
+    });
+
+    var correctOpts = "";
+    (q.opts || []).forEach(function(_, oi) {
+      correctOpts += '<option value="' + oi + '"' + (q.ans === oi ? " selected" : "") + '>' + labels[oi] + '</option>';
+    });
+
+    item.innerHTML =
+      '<div class="q-item-head">' +
+        '<span class="q-num-badge">Q' + (i+1) + '</span>' +
+        '<span id="mod-' + i + '" style="display:none" class="modified-dot" title="معدّل"></span>' +
+      '</div>' +
+      '<div class="q-item-body">' +
+        '<div class="field-full"><label>نص السؤال</label><textarea id="qt-' + i + '" rows="2" onchange="markModified(' + i + ')">' + esc(q.q) + '</textarea></div>' +
+        '<div class="opts-grid">' + optsHtml + '</div>' +
+        '<div class="correct-row"><label>الإجابة الصحيحة:</label><select class="correct-sel" id="ans-' + i + '" onchange="markModified(' + i + ')">' + correctOpts + '</select></div>' +
+        '<div class="field-full"><label>الشرح</label><textarea id="exp-' + i + '" rows="2" onchange="markModified(' + i + ')">' + esc(q.exp || "") + '</textarea></div>' +
+      '</div>';
+
+    list.appendChild(item);
+  });
+  updateModCount();
+}
+
+function esc(str) {
+  return (str || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");\n}\n\nvar modifiedSet = {};\nfunction markModified(i) {\n  modifiedSet[i] = true;\n  document.getElementById("mod-" + i).style.display = "inline-block";\n  updateModCount();\n}\nfunction updateModCount() {\n  document.getElementById("statMod").textContent = Object.keys(modifiedSet).length;\n}\n\nfunction collectData() {\n  var data = loadData();\n  data.title  = document.getElementById("metaTitle").value.trim();\n  data.lesson = document.getElementById("metaLesson").value.trim();\n  data.questions.forEach(function(q, i) {\n    q.q   = document.getElementById("qt-" + i).value.trim();\n    q.ans = parseInt(document.getElementById("ans-" + i).value);\n    q.exp = document.getElementById("exp-" + i).value.trim();\n    (q.opts || []).forEach(function(_, oi) {\n      q.opts[oi] = document.getElementById("opt-" + i + "-" + oi).value.trim();\n    });\n  });\n  return data;\n}\n\nfunction saveAll() {\n  var data = collectData();\n  try {\n    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));\n    showToast("&#128190; تم الحفظ في localStorage بنجاح!");\n    modifiedSet = {};\n    document.querySelectorAll(".modified-dot").forEach(function(d){ d.style.display = "none"; });\n    updateModCount();\n  } catch(e) {\n    showToast("&#10060; خطأ في الحفظ: " + e.message);\n  }\n}\n\nfunction resetAll() {\n  if (!confirm("هل تريد استعادة البيانات الأصلية؟ سيتم حذف جميع التعديلات.")) return;\n  try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}\n  modifiedSet = {};\n  buildUI();\n  showToast("&#10227; تم استعادة البيانات الأصلية");\n}\n\nfunction openPreview() {\n  saveAll();\n  window.open(QUIZ_FILE, "_blank");\n}\n\nfunction showToast(msg) {\n  var t = document.getElementById("toast");\n  t.innerHTML = msg;\n  t.classList.add("show");\n  setTimeout(function(){ t.classList.remove("show"); }, 2800);\n}\n\nbuildUI();\n</script>
+</body>
+</html>

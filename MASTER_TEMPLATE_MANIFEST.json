@@ -1,0 +1,14 @@
+{
+  "template_name": "WE CAN Reading Study Master Template",
+  "reference_model": "Reading Model 49",
+  "created_at": "2026-05-02T22:03:15",
+  "source_folder": "/mnt/data/wecan_result_model_name_position_fixed_work",
+  "core_files": [
+    "reading-model-49.html",
+    "reading-model-49-study.html",
+    "reading.html",
+    "student-achievement.html",
+    "previews/reading-model-49-preview.html"
+  ],
+  "status": "approved_master_template"
+}
