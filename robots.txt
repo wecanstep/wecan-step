@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://wecan4step.com/sitemap.xml
