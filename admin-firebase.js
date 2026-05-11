@@ -19,6 +19,15 @@ import {
   firebaseErrorMessage
 } from "./firebase-wecan.js";
 
+// ===== Expose Firebase refs for quiz management =====
+import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+window._db = db;
+window._fbDoc = doc;
+window._fbSetDoc = setDoc;
+window._fbGetDoc = getDoc;
+// ====================================================
+
+
 let requestCache = [];
 let studentsCache = [];
 let requestSearchTerm = "";
