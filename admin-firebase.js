@@ -6,6 +6,7 @@ import {
   onAuthStateChanged,
   collection,
   doc,
+  getDoc,
   getDocs,
   setDoc,
   updateDoc,
@@ -20,7 +21,6 @@ import {
 } from "./firebase-wecan.js";
 
 // ===== Expose Firebase refs for quiz management =====
-import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 window._db = db;
 window._fbDoc = doc;
 window._fbSetDoc = setDoc;
@@ -574,7 +574,6 @@ function renderStudentCards(list, targetId = "studentsList") {
     const safeId = encodeURIComponent(studentDocId(st));
     const type = typeLabel(st.subscriptionType);
     const lastLogin = st.lastLoginAt || st.lastLoginAtMs ? formatTs(st.lastLoginAt, st.lastLoginAtMs) : "لم يسجل بعد";
-    const group = st.group ? `<span>🗂️ ${escapeHtml(st.group)}</span>` : "";
     const note = st.notes ? `<div class="student-note">📝 ${escapeHtml(st.notes)}</div>` : "";
     const actions = isActive
       ? `${whatsappButtonHtml(st)}<button class="act-btn wa-btn" type="button" onclick="openRenewalWhatsapp('${safeId}')">📩 تذكير التجديد</button><button class="act-btn renew-btn" type="button" onclick="renewStudentSubscription('${safeId}',1)">🔁 تجديد شهر</button><button class="act-btn renew-btn" type="button" onclick="renewStudentSubscription('${safeId}',3)">🔁 تجديد 3 أشهر</button><button class="act-btn renew-btn" type="button" onclick="renewStudentSubscription('${safeId}','custom')">📅 تجديد مخصص</button><button class="act-btn note-btn" type="button" onclick="editStudentGroup('${safeId}')">🗂️ المجموعة</button><button class="act-btn note-btn" type="button" onclick="editStudentNotes('${safeId}')">📝 ملاحظات</button><button class="act-btn danger-btn" type="button" onclick="endStudentSubscription('${safeId}')">🔴 إنهاء الاشتراك</button>`
