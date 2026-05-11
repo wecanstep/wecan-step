@@ -748,20 +748,120 @@ function qParseFile(f){
 }
 
 function qExtractArrayFromHtml(html, names){
-  for(var i=0;i<names.length;i++){
-    var name = names[i].replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
-    var re = new RegExp("(?:var\\s+" + name + "|window\\._fallbackQuestions)\\s*=\\s*(\\[[\\s\\S]*?\\]);", "m");
-    var m = html.match(re);
-    if(m) return m[1];
+  function findBalancedArray(source, startIndex){
+    var start = source.indexOf("[", startIndex);
+    if(start < 0) return "";
+
+    var depth = 0;
+    var quote = "";
+    var escaped = false;
+    var inLineComment = false;
+    var inBlockComment = false;
+
+    for(var i = start; i < source.length; i++){
+      var ch = source[i];
+      var next = source[i + 1];
+
+      if(inLineComment){
+        if(ch === "\n") inLineComment = false;
+        continue;
+      }
+
+      if(inBlockComment){
+        if(ch === "*" && next === "/"){
+          inBlockComment = false;
+          i++;
+        }
+        continue;
+      }
+
+      if(quote){
+        if(escaped){
+          escaped = false;
+          continue;
+        }
+        if(ch === "\\"){
+          escaped = true;
+          continue;
+        }
+        if(ch === quote){
+          quote = "";
+        }
+        continue;
+      }
+
+      if(ch === "/" && next === "/"){
+        inLineComment = true;
+        i++;
+        continue;
+      }
+
+      if(ch === "/" && next === "*"){
+        inBlockComment = true;
+        i++;
+        continue;
+      }
+
+      if(ch === '"' || ch === "'" || ch === "`"){
+        quote = ch;
+        continue;
+      }
+
+      if(ch === "[") depth++;
+      if(ch === "]"){
+        depth--;
+        if(depth === 0){
+          return source.slice(start, i + 1);
+        }
+      }
+    }
+
+    return "";
   }
+
+  for(var i = 0; i < names.length; i++){
+    var name = names[i].replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+    var patterns = [
+      new RegExp("var\\s+" + name + "\\s*=", "m"),
+      new RegExp("let\\s+" + name + "\\s*=", "m"),
+      new RegExp("const\\s+" + name + "\\s*=", "m")
+    ];
+
+    if(name === "questions"){
+      patterns.push(/window\._fallbackQuestions\s*=/m);
+    }
+
+    for(var p = 0; p < patterns.length; p++){
+      var m = patterns[p].exec(html);
+      if(m){
+        var arr = findBalancedArray(html, m.index + m[0].length);
+        if(arr) return arr;
+      }
+    }
+  }
+
   return "";
+}
+
+function qParseArrayLiteral(arrText){
+  var code = String(arrText || "").trim();
+  if(!code) throw new Error("لم أجد بيانات قابلة للقراءة");
+  try{
+    return JSON.parse(code);
+  }catch(jsonErr){
+    try{
+      return Function('"use strict"; return (' + code + ');')();
+    }catch(jsErr){
+      throw new Error("تعذر قراءة بيانات النموذج. تأكد أن var questions أو var passages موجودة بصيغة JavaScript صحيحة.");
+    }
+  }
 }
 
 function qImportGrammarHTML(html,num,fname){
   try{
     var arr = qExtractArrayFromHtml(html, ["questions"]);
     if(!arr) throw new Error("لم أجد بيانات الأسئلة");
-    var qs = JSON.parse(arr);
+    var qs = qParseArrayLiteral(arr);
     if(!num) num = parseInt(prompt("رقم النموذج:") || 0,10);
     var key = "grammar-" + num;
     qModels[key] = {type:"grammar",modelNum:num,fname:fname || "grammar-model-" + num + ".html",questions:qs};
@@ -776,7 +876,7 @@ function qImportReadingHTML(html,num,fname){
   try{
     var arr = qExtractArrayFromHtml(html, ["passages"]);
     if(!arr) throw new Error("لم أجد var passages");
-    var ps = JSON.parse(arr);
+    var ps = qParseArrayLiteral(arr);
     if(!num) num = parseInt(prompt("رقم النموذج:") || 0,10);
     var key = "reading-" + num;
     qModels[key] = {type:"reading",modelNum:num,fname:fname || "reading-model-" + num + ".html",passages:ps};
@@ -796,7 +896,7 @@ function qImportPaste(){
   if(!num){ qShowRes("qPasteResult","⚠️ أدخل رقم النموذج","err"); return; }
   try{
     var data = code.replace(/^var\s+\w+\s*=\s*/,"").replace(/;\s*$/,"");
-    var parsed = JSON.parse(data);
+    var parsed = qParseArrayLiteral(data);
     var key = type + "-" + num;
     if(type === "grammar") qModels[key] = {type:"grammar",modelNum:num,fname:"grammar-model-" + num + ".html",questions:parsed};
     else qModels[key] = {type:"reading",modelNum:num,fname:"reading-model-" + num + ".html",passages:parsed};
