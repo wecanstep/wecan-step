@@ -819,28 +819,74 @@ function qExtractArrayFromHtml(html, names){
     return "";
   }
 
+  function allMatches(regex, source){
+    var results = [];
+    var m;
+    regex.lastIndex = 0;
+    while((m = regex.exec(source)) !== null){
+      results.push(m);
+      if(m.index === regex.lastIndex) regex.lastIndex++;
+    }
+    return results;
+  }
+
+  var candidates = [];
+
   for(var i = 0; i < names.length; i++){
-    var name = names[i].replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+    var rawName = names[i];
+    var name = rawName.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+
     var patterns = [
-      new RegExp("var\\s+" + name + "\\s*=", "m"),
-      new RegExp("let\\s+" + name + "\\s*=", "m"),
-      new RegExp("const\\s+" + name + "\\s*=", "m")
+      new RegExp("(?:var|let|const)\\s+" + name + "\\s*=", "gm"),
+      new RegExp("window\\." + name + "\\s*=", "gm"),
+      new RegExp("this\\." + name + "\\s*=", "gm")
     ];
 
-    if(name === "questions"){
-      patterns.push(/window\._fallbackQuestions\s*=/m);
+    if(rawName === "questions"){
+      patterns.push(/window\._fallbackQuestions\s*=/gm);
+      patterns.push(/(?:var|let|const)\s+(?:quizQuestions|grammarQuestions|modelQuestions|allQuestions|questionsData)\s*=/gm);
+      patterns.push(/(?:questions|quizQuestions|grammarQuestions)\s*:\s*/gm);
+    }
+
+    if(rawName === "passages"){
+      patterns.push(/(?:var|let|const)\s+(?:readingPassages|modelPassages|passagesData)\s*=/gm);
+      patterns.push(/(?:passages|readingPassages)\s*:\s*/gm);
     }
 
     for(var p = 0; p < patterns.length; p++){
-      var m = patterns[p].exec(html);
-      if(m){
-        var arr = findBalancedArray(html, m.index + m[0].length);
-        if(arr) return arr;
+      var matches = allMatches(patterns[p], html);
+      for(var j = 0; j < matches.length; j++){
+        var arr = findBalancedArray(html, matches[j].index + matches[j][0].length);
+        if(arr){
+          candidates.push(arr);
+        }
       }
     }
   }
 
-  return "";
+  if(!candidates.length) return "";
+
+  // Some templates initialize `var questions = []` first, then define the real list later.
+  // Choose the largest valid array, and ignore empty arrays when a richer one exists.
+  var best = "";
+  var bestScore = -1;
+
+  for(var c = 0; c < candidates.length; c++){
+    var text = candidates[c];
+    var score = text.length;
+    try{
+      var parsed = qParseArrayLiteral(text);
+      if(Array.isArray(parsed)){
+        score += parsed.length * 100000;
+      }
+    }catch(e){}
+    if(score > bestScore){
+      bestScore = score;
+      best = text;
+    }
+  }
+
+  return best;
 }
 
 function qParseArrayLiteral(arrText){
@@ -867,6 +913,7 @@ function qImportGrammarHTML(html,num,fname){
     qModels[key] = {type:"grammar",modelNum:num,fname:fname || "grammar-model-" + num + ".html",questions:qs};
     qSaveModels();
     addToLog("add","استيراد نموذج",key + " — " + qs.length + " سؤال");
+    if(!qs.length) throw new Error("تم العثور على مصفوفة questions لكنها فارغة. ارفع ملف النموذج الكامل أو جرّب نسخة النموذج التي تحتوي الأسئلة داخل الملف.");
     qShowRes("qImpResult","✅ تم استيراد Grammar Model " + num + " — " + qs.length + " سؤال","ok");
     setTimeout(function(){ switchTab("grammar"); qShowGrammar(key); },300);
   }catch(e){ qShowRes("qImpResult","❌ " + e.message,"err"); }
@@ -881,6 +928,7 @@ function qImportReadingHTML(html,num,fname){
     var key = "reading-" + num;
     qModels[key] = {type:"reading",modelNum:num,fname:fname || "reading-model-" + num + ".html",passages:ps};
     qSaveModels();
+    if(!ps.length) throw new Error("تم العثور على مصفوفة passages لكنها فارغة. ارفع ملف النموذج الكامل الذي يحتوي القطع والأسئلة.");
     var tq = ps.reduce(function(a,p){return a+(p.questions||[]).length;},0);
     addToLog("add","استيراد نموذج",key + " — " + ps.length + " فقرة — " + tq + " سؤال");
     qShowRes("qImpResult","✅ تم استيراد Reading Model " + num + " — " + ps.length + " فقرة، " + tq + " سؤال","ok");
