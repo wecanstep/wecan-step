@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>لوحة الإدارة — WE CAN STEP</title>
+
+<script>
+try { localStorage.removeItem("isAdmin"); } catch(e) {}
+document.documentElement.classList.add("admin-auth-loading");
+</script>
+
+<style>
+html.admin-auth-loading body{visibility:hidden}
+
+:root{
+  --navy:#173244;--navy2:#0b2035;--blue:#2563eb;--gold:#fbbf24;--gold2:#f59e0b;
+  --bg:#eef2f7;--text:#1e293b;--muted:#64748b;--border:#dbe3ee;
+  --correct:#16a34a;--wrong:#dc2626;--orange:#ea580c
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+a{text-decoration:none;color:inherit}
+.container{max-width:1100px;margin:auto;padding:0 20px}
+
+.header{background:rgba(11,32,53,.97);color:#fff;position:sticky;top:0;z-index:50;border-bottom:1px solid rgba(255,255,255,.08);backdrop-filter:blur(12px)}
+.nav{height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.logo{display:flex;align-items:center;flex-shrink:0}
+.logo-img-wrap{display:flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:14px;background:#fff;color:var(--navy);font-weight:900;font-size:18px;box-shadow:0 0 0 1px rgba(251,191,36,.30),0 4px 14px rgba(0,0,0,.35);overflow:hidden;flex-shrink:0}
+.logo-divider{width:1px;height:34px;background:linear-gradient(to bottom,transparent,rgba(251,191,36,.5),transparent);margin:0 14px;flex-shrink:0}
+.logo-text{display:flex;flex-direction:column;line-height:1;gap:4px}
+.logo-text strong{font-size:17px;font-weight:900;letter-spacing:2px;color:#fff;text-transform:uppercase}
+.logo-text strong::after{content:" .";color:var(--gold)}
+.logo-text span{font-size:11px;color:rgba(203,213,225,.75)}
+.admin-badge{background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.30);padding:7px 14px;border-radius:999px;font-size:13px;font-weight:800;color:#fca5a5}
+
+.tabs-nav{background:var(--navy2);border-bottom:1px solid rgba(255,255,255,.08)}
+.tabs-inner{display:flex;gap:2px;padding:0 20px;max-width:1100px;margin:auto;overflow-x:auto}
+.tab-btn{display:flex;align-items:center;gap:7px;padding:14px 18px;font-size:13px;font-weight:800;color:rgba(255,255,255,.5);border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;transition:color .2s,border-color .2s;white-space:nowrap;font-family:inherit}
+.tab-btn:hover{color:rgba(255,255,255,.85)}
+.tab-btn.active{color:#fff;border-bottom-color:var(--gold)}
+.tab-badge{background:rgba(251,191,36,.15);color:var(--gold);font-size:10px;font-weight:900;padding:2px 7px;border-radius:999px;min-width:18px;text-align:center}
+.tab-badge.red{background:rgba(220,38,38,.15);color:#fca5a5}
+
+.main{flex:1;padding:36px 0 52px}
+.page-title{margin-bottom:28px}
+.page-title h1{font-size:26px;font-weight:900;color:var(--navy);margin-bottom:6px}
+.page-title p{color:var(--muted);font-size:14px}
+
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+.stat-card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px 22px;box-shadow:0 6px 18px rgba(15,23,42,.06);display:flex;align-items:center;gap:14px}
+.stat-icon{width:48px;height:48px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.si-pending{background:rgba(234,88,12,.10)}.si-approved{background:rgba(22,163,74,.10)}.si-rejected{background:rgba(220,38,38,.08)}
+.stat-info strong{display:block;font-size:28px;font-weight:900;line-height:1}
+.stat-info span{font-size:12px;color:var(--muted);font-weight:600}
+.pending-num{color:var(--orange)}.approved-num{color:var(--correct)}.rejected-num{color:var(--wrong)}
+
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.section-head h2{font-size:20px;font-weight:900;color:var(--navy)}
+.refresh-btn{display:flex;align-items:center;gap:7px;padding:9px 16px;border-radius:11px;background:var(--bg);border:1.5px solid var(--border);font-size:13px;font-weight:700;color:var(--navy);cursor:pointer;transition:border-color .15s}
+.refresh-btn:hover{border-color:var(--navy)}
+
+.empty-state{background:#fff;border:1px solid var(--border);border-radius:18px;padding:48px;text-align:center;box-shadow:0 6px 18px rgba(15,23,42,.05)}
+.empty-icon{font-size:40px;margin-bottom:12px}
+.empty-state p{font-size:16px;font-weight:700;color:var(--muted)}
+
+.req-card{background:#fff;border:1px solid var(--border);border-radius:18px;box-shadow:0 6px 18px rgba(15,23,42,.06);overflow:hidden;margin-bottom:14px}
+.req-card-head{padding:16px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.req-avatar{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--navy),#1e4060);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.req-info{flex:1;min-width:0}
+.req-name{font-size:15px;font-weight:900;color:var(--navy);margin-bottom:3px}
+.req-meta{display:flex;gap:12px;flex-wrap:wrap}
+.req-meta span{font-size:12px;color:var(--muted);font-weight:600;direction:ltr}
+.req-status{padding:5px 12px;border-radius:999px;font-size:12px;font-weight:800;flex-shrink:0}
+.status-pending{background:rgba(234,88,12,.10);color:var(--orange)}
+.status-approved{background:rgba(22,163,74,.10);color:var(--correct)}
+.status-rejected{background:rgba(220,38,38,.08);color:var(--wrong)}
+.req-time{font-size:11px;color:var(--muted);margin-right:auto;flex-shrink:0}
+.req-actions{padding:12px 20px 16px;border-top:1px solid #f1f5f9;display:flex;gap:10px;flex-wrap:wrap}
+
+.act-btn{display:flex;align-items:center;gap:7px;padding:10px 18px;border-radius:11px;font-size:13px;font-weight:900;cursor:pointer;border:none;transition:box-shadow .18s;font-family:inherit}
+.approve-btn{background:linear-gradient(135deg,var(--correct),#15803d);color:#fff;box-shadow:0 5px 14px rgba(22,163,74,.22)}
+.approve-btn:hover{box-shadow:0 8px 20px rgba(22,163,74,.32)}
+.reject-btn{background:#fff;color:var(--wrong);border:2px solid rgba(220,38,38,.25);box-shadow:0 4px 10px rgba(15,23,42,.05)}
+.reject-btn:hover{border-color:var(--wrong);background:#fff5f5}
+.act-btn:disabled{opacity:.45;cursor:not-allowed;transform:none !important}
+
+.toast-top{position:fixed;top:90px;left:50%;transform:translateX(-50%);z-index:999;display:none;align-items:center;gap:10px;padding:13px 22px;border-radius:13px;font-size:14px;font-weight:700;box-shadow:0 12px 30px rgba(15,23,42,.18);min-width:280px;justify-content:center}
+.toast-top.show{display:flex}
+.tt-ok{background:var(--correct);color:#fff}
+.tt-err{background:var(--wrong);color:#fff}
+.mini-footer{text-align:center;padding:18px;color:var(--muted);font-size:13px;border-top:1px solid var(--border)}
+
+.tab-page{display:none}
+.tab-page.active{display:block}
+
+/* ===== QUIZ MANAGEMENT ===== */
+.quiz-card{background:#fff;border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 6px 18px rgba(15,23,42,.06);margin-bottom:18px}
+.quiz-card-head{background:linear-gradient(135deg,var(--navy),#1e4060);padding:14px 18px;display:flex;align-items:center;gap:10px}
+.quiz-card-head h3{color:#fff;font-size:14px;font-weight:900;flex:1}
+.qc-count{background:rgba(251,191,36,.2);color:var(--gold);padding:3px 10px;border-radius:999px;font-size:12px;font-weight:900}
+.quiz-search-bar{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;gap:8px}
+.quiz-search-input{flex:1;padding:9px 12px;border:1.5px solid var(--border);border-radius:9px;font-size:13px;outline:none;background:#f8fafc}
+.quiz-search-input:focus{border-color:var(--navy);background:#fff}
+.quiz-q-list{max-height:calc(100vh - 360px);overflow-y:auto}
+.quiz-q-row{padding:13px 18px;border-bottom:1px solid rgba(219,227,238,.5);display:flex;align-items:flex-start;gap:10px;cursor:pointer;transition:background .15s}
+.quiz-q-row:last-child{border-bottom:none}
+.quiz-q-row:hover{background:#f8fafc}
+.qnum{background:var(--gold);color:var(--navy2);font-size:11px;font-weight:900;padding:3px 8px;border-radius:7px;flex-shrink:0;margin-top:2px}
+.qnum.green{background:var(--correct);color:#fff}
+.qprev{flex:1;font-size:13px;font-weight:600;color:var(--text);line-height:1.5;direction:ltr;text-align:left}
+.qprev small{display:block;color:var(--muted);font-size:11px;margin-top:2px;direction:rtl;text-align:right}
+.qrow-acts{display:flex;gap:5px;flex-shrink:0}
+.izone{border:2px dashed var(--border);border-radius:14px;padding:30px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:16px}
+.izone:hover{border-color:var(--navy);background:#f8fafc}
+.izone p{color:var(--muted);font-size:14px;font-weight:600;margin-top:8px}
+.qcard-box{background:#fff;border:1px solid var(--border);border-radius:18px;padding:24px;box-shadow:0 6px 18px rgba(15,23,42,.06);margin-bottom:16px}
+.qcard-box h3{font-size:16px;font-weight:900;color:var(--navy);margin-bottom:6px}
+.qcard-box p{color:var(--muted);font-size:13px;margin-bottom:16px;line-height:1.6}
+.qfg{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.qflbl{font-size:13px;font-weight:800;color:var(--navy)}
+.qfinput,.qftarea,.qfsel{padding:10px 13px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;transition:border-color .2s;direction:ltr;text-align:left;background:#fff;color:var(--text);width:100%}
+.qfinput:focus,.qftarea:focus,.qfsel:focus{border-color:var(--navy)}
+.qftarea{resize:vertical;min-height:80px;line-height:1.6}
+.qogrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.qorow{display:flex;align-items:center;gap:8px}
+.qolbl{width:28px;height:28px;border-radius:7px;background:var(--navy);color:var(--gold);font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.qoinput{flex:1;padding:9px 11px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;outline:none;direction:ltr;background:#fff}
+.qoinput:focus{border-color:var(--navy)}
+.qoinput.correct{border-color:var(--correct);background:rgba(22,163,74,.04)}
+.qmodal-bg{position:fixed;inset:0;background:rgba(11,32,53,.6);z-index:300;display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px)}
+.qmodal-bg.on{display:flex}
+.qmodal{background:#fff;border-radius:20px;width:min(740px,100%);max-height:92vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 70px rgba(0,0,0,.28)}
+.qmhead{background:linear-gradient(135deg,var(--navy),#1e4060);padding:16px 20px;display:flex;align-items:center;gap:10px}
+.qmhead h3{color:#fff;font-size:15px;font-weight:900;flex:1}
+.qmclose{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.1);border:none;color:#fff;cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center}
+.qmclose:hover{background:rgba(255,255,255,.2)}
+.qmbody{padding:20px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:14px}
+.qmfoot{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
+.qbtn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;border:none;transition:opacity .2s;white-space:nowrap;font-family:inherit}
+.qbtn:hover{opacity:.88}
+.qbtn:disabled{opacity:.45;cursor:not-allowed}
+.qbtn-navy{background:linear-gradient(135deg,var(--navy),#1e4060);color:#fff;box-shadow:0 4px 12px rgba(23,50,68,.2)}
+.qbtn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy2);box-shadow:0 4px 12px rgba(251,191,36,.2)}
+.qbtn-green{background:linear-gradient(135deg,var(--correct),#15803d);color:#fff;box-shadow:0 4px 12px rgba(22,163,74,.2)}
+.qbtn-red{background:#fff;color:var(--wrong);border:2px solid rgba(220,38,38,.2)}
+.qbtn-ghost{background:#fff;color:var(--navy);border:1.5px solid var(--border)}
+.qres{padding:11px 14px;border-radius:9px;font-size:13px;font-weight:700;margin-top:10px;display:none}
+.qres-ok{background:rgba(22,163,74,.08);color:#15803d;border:1px solid rgba(22,163,74,.2);display:block}
+.qres-err{background:rgba(220,38,38,.08);color:var(--wrong);border:1px solid rgba(220,38,38,.2);display:block}
+.model-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-top:16px}
+.model-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px;cursor:pointer;transition:box-shadow .2s;display:flex;align-items:center;gap:10px}
+.model-card:hover{box-shadow:0 6px 20px rgba(15,23,42,.1);border-color:var(--navy)}
+.mc-icon{font-size:22px}
+.mc-name{font-size:13px;font-weight:900;color:var(--navy)}
+.mc-count{font-size:11px;color:var(--muted)}
+.publish-bar{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;box-shadow:0 4px 12px rgba(15,23,42,.05);flex-wrap:wrap}
+.publish-bar-info strong{display:block;font-size:15px;font-weight:900;color:var(--navy)}
+.publish-bar-info p{font-size:13px;color:var(--muted);margin-top:2px}
+.publish-bar-acts{display:flex;gap:8px;flex-wrap:wrap}
+.passage-block{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:14px;box-shadow:0 4px 12px rgba(15,23,42,.05)}
+.passage-hd{background:linear-gradient(135deg,var(--correct),#15803d);padding:12px 18px;display:flex;align-items:center;gap:10px}
+.passage-hd h4{color:#fff;font-size:14px;font-weight:900;flex:1}
+.passage-bd{padding:14px 18px}
+
+.stats-dashboard{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:28px}
+.sd-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:0 4px 14px rgba(15,23,42,.06);display:flex;align-items:center;gap:14px}
+.sd-icon{width:48px;height:48px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.sd-navy{background:rgba(23,50,68,.08)}.sd-gold{background:rgba(251,191,36,.12)}.sd-green{background:rgba(22,163,74,.1)}.sd-blue{background:rgba(37,99,235,.08)}.sd-red{background:rgba(220,38,38,.08)}.sd-orange{background:rgba(234,88,12,.1)}
+.sd-val{font-size:26px;font-weight:900;color:var(--navy);line-height:1}
+.sd-lbl{font-size:12px;color:var(--muted);font-weight:600;margin-top:3px}
+.log-section{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 4px 14px rgba(15,23,42,.06)}
+.log-head{background:linear-gradient(135deg,var(--navy),#1e4060);padding:14px 18px;display:flex;align-items:center;gap:10px}
+.log-head h3{color:#fff;font-size:14px;font-weight:900;flex:1}
+.log-clear{background:rgba(220,38,38,.2);border:none;color:#fca5a5;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer}
+.log-list{max-height:420px;overflow-y:auto}
+.log-item{padding:13px 18px;border-bottom:1px solid rgba(219,227,238,.5);display:flex;align-items:flex-start;gap:12px}
+.log-item:last-child{border-bottom:none}
+.log-type{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.lt-edit{background:rgba(251,191,36,.12)}.lt-add{background:rgba(22,163,74,.1)}.lt-del{background:rgba(220,38,38,.08)}.lt-pub{background:rgba(37,99,235,.08)}
+.log-info{flex:1}
+.log-action{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:3px}
+.log-meta{font-size:11px;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap}
+.log-time{font-size:11px;color:var(--muted);flex-shrink:0;white-space:nowrap}
+.log-empty{padding:40px;text-align:center;color:var(--muted);font-size:14px}
+.fb-models-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-top:14px}
+.fb-model-item{background:#f8fafc;border:1px solid var(--border);border-radius:11px;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.fb-model-item .fmi-icon{font-size:18px}
+.fmi-name{font-size:12px;font-weight:900;color:var(--navy)}
+.fmi-count{font-size:11px;color:var(--muted)}
+.fmi-date{font-size:10px;color:var(--muted);margin-top:2px}
+
+@media(max-width:700px){
+  .stats-row{grid-template-columns:1fr}
+  .req-card-head{flex-wrap:wrap}
+  .req-actions{flex-wrap:wrap}
+}
+@media(max-width:600px){
+  .nav{height:auto;padding:12px 0;min-height:64px}
+  .logo-img-wrap{width:42px;height:42px;border-radius:12px;font-size:15px}
+  .logo-divider{height:28px;margin:0 10px}.logo-text strong{font-size:15px}
+  .logo-text span{display:none}
+  .tabs-inner{padding:0 12px}
+  .tab-btn{padding:12px 12px;font-size:12px}
+  .qogrid{grid-template-columns:1fr}
+}
+
+
+/* ===== STATS PAGE ===== */
+.stats-dashboard{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:28px}
+.sd-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:0 4px 14px rgba(15,23,42,.06);display:flex;align-items:center;gap:14px}
+.sd-icon{width:48px;height:48px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.sd-navy{background:rgba(23,50,68,.08)}.sd-gold{background:rgba(251,191,36,.12)}.sd-green{background:rgba(22,163,74,.1)}.sd-blue{background:rgba(37,99,235,.08)}.sd-red{background:rgba(220,38,38,.08)}.sd-orange{background:rgba(234,88,12,.1)}
+.sd-val{font-size:26px;font-weight:900;color:var(--navy);line-height:1}
+.sd-lbl{font-size:12px;color:var(--muted);font-weight:600;margin-top:3px}
+
+/* LOG */
+.log-section{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 4px 14px rgba(15,23,42,.06)}
+.log-head{background:linear-gradient(135deg,var(--navy),#1e4060);padding:14px 18px;display:flex;align-items:center;gap:10px}
+.log-head h3{color:#fff;font-size:14px;font-weight:900;flex:1}
+.log-clear{background:rgba(220,38,38,.2);border:none;color:#fca5a5;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer}
+.log-list{max-height:420px;overflow-y:auto}
+.log-item{padding:13px 18px;border-bottom:1px solid rgba(219,227,238,.5);display:flex;align-items:flex-start;gap:12px}
+.log-item:last-child{border-bottom:none}
+.log-type{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.lt-edit{background:rgba(251,191,36,.12)}.lt-add{background:rgba(22,163,74,.1)}.lt-del{background:rgba(220,38,38,.08)}.lt-pub{background:rgba(37,99,235,.08)}
+.log-info{flex:1}
+.log-action{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:3px}
+.log-meta{font-size:11px;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap}
+.log-time{font-size:11px;color:var(--muted);flex-shrink:0;white-space:nowrap}
+.log-empty{padding:40px;text-align:center;color:var(--muted);font-size:14px}
+
+/* FIREBASE STATS */
+.fb-models-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-top:14px}
+.fb-model-item{background:#f8fafc;border:1px solid var(--border);border-radius:11px;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.fb-model-item .fmi-icon{font-size:18px}
+.fmi-name{font-size:12px;font-weight:900;color:var(--navy)}
+.fmi-count{font-size:11px;color:var(--muted)}
+.fmi-date{font-size:10px;color:var(--muted);margin-top:2px}
+
+/* ===== TABS ===== */
+.tabs-nav{background:var(--navy2);border-bottom:1px solid rgba(255,255,255,.08)}
+.tabs-inner{display:flex;gap:2px;padding:0 20px;max-width:1100px;margin:auto;overflow-x:auto}
+.tab-btn{display:flex;align-items:center;gap:7px;padding:14px 18px;font-size:13px;font-weight:800;color:rgba(255,255,255,.5);border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;transition:color .2s,border-color .2s;white-space:nowrap;font-family:inherit}
+.tab-btn:hover{color:rgba(255,255,255,.85)}
+.tab-btn.active{color:#fff;border-bottom-color:var(--gold)}
+.tab-badge{background:rgba(251,191,36,.15);color:var(--gold);font-size:10px;font-weight:900;padding:2px 7px;border-radius:999px;min-width:18px;text-align:center}
+.tab-badge.red{background:rgba(220,38,38,.15);color:#fca5a5}
+
+/* ===== PAGES ===== */
+.tab-page{display:none}
+.tab-page.active{display:block}
+
+/* ===== QUIZ MANAGEMENT ===== */
+.quiz-card{background:#fff;border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 6px 18px rgba(15,23,42,.06);margin-bottom:18px}
+.quiz-card-head{background:linear-gradient(135deg,var(--navy),#1e4060);padding:14px 18px;display:flex;align-items:center;gap:10px}
+.quiz-card-head h3{color:#fff;font-size:14px;font-weight:900;flex:1}
+.qc-count{background:rgba(251,191,36,.2);color:var(--gold);padding:3px 10px;border-radius:999px;font-size:12px;font-weight:900}
+.quiz-search-bar{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;gap:8px}
+.quiz-search-input{flex:1;padding:9px 12px;border:1.5px solid var(--border);border-radius:9px;font-size:13px;outline:none;background:#f8fafc}
+.quiz-search-input:focus{border-color:var(--navy);background:#fff}
+.quiz-q-list{max-height:calc(100vh - 360px);overflow-y:auto}
+.quiz-q-row{padding:13px 18px;border-bottom:1px solid rgba(219,227,238,.5);display:flex;align-items:flex-start;gap:10px;cursor:pointer;transition:background .15s}
+.quiz-q-row:last-child{border-bottom:none}
+.quiz-q-row:hover{background:#f8fafc}
+.qnum{background:var(--gold);color:var(--navy2);font-size:11px;font-weight:900;padding:3px 8px;border-radius:7px;flex-shrink:0;margin-top:2px}
+.qnum.green{background:var(--correct);color:#fff}
+.qprev{flex:1;font-size:13px;font-weight:600;color:var(--text);line-height:1.5;direction:ltr;text-align:left}
+.qprev small{display:block;color:var(--muted);font-size:11px;margin-top:2px;direction:rtl;text-align:right}
+.qrow-acts{display:flex;gap:5px;flex-shrink:0}
+
+/* Import zone */
+.izone{border:2px dashed var(--border);border-radius:14px;padding:30px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:16px}
+.izone:hover{border-color:var(--navy);background:#f8fafc}
+.izone p{color:var(--muted);font-size:14px;font-weight:600;margin-top:8px}
+.qcard-box{background:#fff;border:1px solid var(--border);border-radius:18px;padding:24px;box-shadow:0 6px 18px rgba(15,23,42,.06);margin-bottom:16px}
+.qcard-box h3{font-size:16px;font-weight:900;color:var(--navy);margin-bottom:6px}
+.qcard-box p{color:var(--muted);font-size:13px;margin-bottom:16px;line-height:1.6}
+
+/* Quiz form */
+.qfg{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.qflbl{font-size:13px;font-weight:800;color:var(--navy)}
+.qfinput,.qftarea,.qfsel{padding:10px 13px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;transition:border-color .2s;direction:ltr;text-align:left;background:#fff;color:var(--text);width:100%}
+.qfinput:focus,.qftarea:focus,.qfsel:focus{border-color:var(--navy)}
+.qftarea{resize:vertical;min-height:80px;line-height:1.6}
+.qogrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.qorow{display:flex;align-items:center;gap:8px}
+.qolbl{width:28px;height:28px;border-radius:7px;background:var(--navy);color:var(--gold);font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.qoinput{flex:1;padding:9px 11px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;outline:none;direction:ltr;background:#fff}
+.qoinput:focus{border-color:var(--navy)}
+.qoinput.correct{border-color:var(--correct);background:rgba(22,163,74,.04)}
+
+/* Quiz modal */
+.qmodal-bg{position:fixed;inset:0;background:rgba(11,32,53,.6);z-index:300;display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px)}
+.qmodal-bg.on{display:flex}
+.qmodal{background:#fff;border-radius:20px;width:min(740px,100%);max-height:92vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 70px rgba(0,0,0,.28)}
+.qmhead{background:linear-gradient(135deg,var(--navy),#1e4060);padding:16px 20px;display:flex;align-items:center;gap:10px}
+.qmhead h3{color:#fff;font-size:15px;font-weight:900;flex:1}
+.qmclose{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.1);border:none;color:#fff;cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center}
+.qmclose:hover{background:rgba(255,255,255,.2)}
+.qmbody{padding:20px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:14px}
+.qmfoot{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
+
+/* Quiz action buttons */
+.qbtn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;border:none;transition:opacity .2s;white-space:nowrap;font-family:inherit}
+.qbtn:hover{opacity:.88}
+.qbtn:disabled{opacity:.45;cursor:not-allowed}
+.qbtn-navy{background:linear-gradient(135deg,var(--navy),#1e4060);color:#fff;box-shadow:0 4px 12px rgba(23,50,68,.2)}
+.qbtn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy2);box-shadow:0 4px 12px rgba(251,191,36,.2)}
+.qbtn-green{background:linear-gradient(135deg,var(--correct),#15803d);color:#fff;box-shadow:0 4px 12px rgba(22,163,74,.2)}
+.qbtn-red{background:#fff;color:var(--wrong);border:2px solid rgba(220,38,38,.2)}
+.qbtn-ghost{background:#fff;color:var(--navy);border:1.5px solid var(--border)}
+.qres{padding:11px 14px;border-radius:9px;font-size:13px;font-weight:700;margin-top:10px;display:none}
+.qres-ok{background:rgba(22,163,74,.08);color:#15803d;border:1px solid rgba(22,163,74,.2);display:block}
+.qres-err{background:rgba(220,38,38,.08);color:var(--wrong);border:1px solid rgba(220,38,38,.2);display:block}
+
+/* Model cards grid */
+.model-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-top:16px}
+.model-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px;cursor:pointer;transition:box-shadow .2s;display:flex;align-items:center;gap:10px}
+.model-card:hover{box-shadow:0 6px 20px rgba(15,23,42,.1);border-color:var(--navy)}
+.mc-icon{font-size:22px}
+.mc-name{font-size:13px;font-weight:900;color:var(--navy)}
+.mc-count{font-size:11px;color:var(--muted)}
+
+.publish-bar{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;box-shadow:0 4px 12px rgba(15,23,42,.05);flex-wrap:wrap}
+.publish-bar-info strong{display:block;font-size:15px;font-weight:900;color:var(--navy)}
+.publish-bar-info p{font-size:13px;color:var(--muted);margin-top:2px}
+.publish-bar-acts{display:flex;gap:8px;flex-wrap:wrap}
+
+.passage-block{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:14px;box-shadow:0 4px 12px rgba(15,23,42,.05)}
+.passage-hd{background:linear-gradient(135deg,var(--correct),#15803d);padding:12px 18px;display:flex;align-items:center;gap:10px}
+.passage-hd h4{color:#fff;font-size:14px;font-weight:900;flex:1}
+.passage-bd{padding:14px 18px}
+
+@media(max-width:600px){
+  .tabs-inner{padding:0 12px}
+  .tab-btn{padding:12px 12px;font-size:12px}
+  .qogrid{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+<header class="header">
+  <div class="container nav">
+    <a class="logo" href="index.html">
+      <div class="logo-img-wrap">WE</div>
+      <div class="logo-divider"></div>
+      <div class="logo-text"><strong>WE CAN STEP</strong><span>منصة وي كان للستيب</span></div>
+    </a>
+    <div class="admin-badge">⚙️ لوحة الإدارة</div>
+  </div>
+</header>
+
+<nav class="tabs-nav">
+  <div class="tabs-inner">
+    <button class="tab-btn active" id="tabBtn-students" onclick="switchTab('students')">
+      👥 الطلاب <span class="tab-badge red" id="pendingTabBadge">0</span>
+    </button>
+    <button class="tab-btn" id="tabBtn-grammar" onclick="switchTab('grammar')">
+      📝 Grammar <span class="tab-badge" id="grammarTabBadge">0</span>
+    </button>
+    <button class="tab-btn" id="tabBtn-reading" onclick="switchTab('reading')">
+      📖 Reading <span class="tab-badge" id="readingTabBadge">0</span>
+    </button>
+    <button class="tab-btn" id="tabBtn-listening" onclick="switchTab('listening')">🎧 Listening</button>
+    <button class="tab-btn" id="tabBtn-import" onclick="switchTab('import')">📂 استيراد</button>
+    <button class="tab-btn" id="tabBtn-stats" onclick="switchTab('stats')">📊 الإحصائيات</button>
+  </div>
+</nav>
+
+<div class="toast-top" id="toastTop"></div>
+
+<main class="main">
+<div class="container">
+
+<div id="studentTabContent">
+  <div class="page-title">
+    <h1>لوحة الإدارة</h1>
+    <p>إدارة طلبات تفعيل الاشتراك للطلاب السابقين</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon si-pending">⏳</div>
+      <div class="stat-info"><strong class="pending-num" id="pendingCount">0</strong><span>طلبات قيد الانتظار</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon si-approved">✅</div>
+      <div class="stat-info"><strong class="approved-num" id="approvedCount">0</strong><span>طلبات مقبولة</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon si-rejected">❌</div>
+      <div class="stat-info"><strong class="rejected-num" id="rejectedCount">0</strong><span>طلبات مرفوضة</span></div>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <h2>📋 طلبات الاشتراك بالدورة</h2>
+    <button class="refresh-btn" onclick="renderRequests()">🔄 تحديث</button>
+  </div>
+
+  <div id="requestsList"></div>
+</div>
+
+<div class="tab-page" id="page-grammar">
+  <div class="page-title">
+    <h1>📝 نماذج Grammar</h1>
+    <p>تعديل الأسئلة ونشرها مباشرة على الموقع</p>
+  </div>
+  <div id="grammarContent">
+    <div class="empty-state">
+      <div class="empty-icon">📂</div>
+      <p>استورد نموذج Grammar من قسم الاستيراد</p><br/>
+      <button class="act-btn approve-btn" onclick="switchTab('import')">📂 استيراد الآن</button>
+    </div>
+  </div>
+</div>
+
+<div class="tab-page" id="page-reading">
+  <div class="page-title">
+    <h1>📖 نماذج Reading</h1>
+    <p>تعديل الفقرات والأسئلة ونشرها مباشرة</p>
+  </div>
+  <div id="readingContent">
+    <div class="empty-state">
+      <div class="empty-icon">📂</div>
+      <p>استورد نموذج Reading من قسم الاستيراد</p><br/>
+      <button class="act-btn approve-btn" onclick="switchTab('import')">📂 استيراد الآن</button>
+    </div>
+  </div>
+</div>
+
+<div class="tab-page" id="page-listening">
+  <div class="page-title">
+    <h1>🎧 نماذج Listening</h1>
+    <p>إدارة نماذج الاستماع</p>
+  </div>
+  <div class="empty-state"><div class="empty-icon">🎧</div><p>قريباً — نماذج Listening</p></div>
+</div>
+
+<div class="tab-page" id="page-import">
+  <div class="page-title">
+    <h1>📂 استيراد نموذج</h1>
+    <p>ارفع ملف HTML واستخرج الأسئلة تلقائياً</p>
+  </div>
+  <div class="qcard-box">
+    <div class="izone" onclick="document.getElementById('qFileInput').click()" ondragover="event.preventDefault()" ondrop="qHandleDrop(event)">
+      <div style="font-size:36px">📁</div>
+      <p>اسحب ملف HTML هنا أو اضغط للاختيار</p>
+      <p style="font-size:12px;margin-top:4px">grammar-model-XX.html | reading-model-XX.html</p>
+      <input type="file" id="qFileInput" accept=".html" style="display:none" onchange="qHandleFile(event)"/>
+    </div>
+    <div id="qImpResult" class="qres"></div>
+  </div>
+  <div class="qcard-box">
+    <h3>تلصيق كود يدوي</h3>
+    <p>الصق محتوى var questions أو var passages مباشرة</p>
+    <div style="display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap">
+      <select id="qPasteType" class="qfsel" style="flex:1;min-width:160px;direction:rtl;text-align:right">
+        <option value="grammar">Grammar — var questions</option>
+        <option value="reading">Reading — var passages</option>
+      </select>
+      <input type="number" id="qPasteNum" placeholder="رقم النموذج" class="qfinput" style="width:130px" min="1" max="99"/>
+    </div>
+    <textarea id="qPasteCode" class="qftarea" style="min-height:130px;font-family:monospace;font-size:12px;direction:ltr" placeholder="الصق الكود هنا..."></textarea>
+    <div style="margin-top:12px"><button class="qbtn qbtn-navy" onclick="qImportPaste()">📥 استيراد</button></div>
+    <div id="qPasteResult" class="qres"></div>
+  </div>
+</div>
+
+<div class="tab-page" id="page-stats">
+  <div class="page-title">
+    <h1>📊 الإحصائيات وسجل التعديلات</h1>
+    <p>نظرة شاملة على الموقع والنماذج والطلاب</p>
+  </div>
+
+  <div class="stats-dashboard" id="statsDashboard">
+    <div class="sd-card"><div class="sd-icon sd-gold">📝</div><div><div class="sd-val" id="sdGrammar">-</div><div class="sd-lbl">نماذج Grammar</div></div></div>
+    <div class="sd-card"><div class="sd-icon sd-green">📖</div><div><div class="sd-val" id="sdReading">-</div><div class="sd-lbl">نماذج Reading</div></div></div>
+    <div class="sd-card"><div class="sd-icon sd-blue">❓</div><div><div class="sd-val" id="sdQuestions">-</div><div class="sd-lbl">إجمالي الأسئلة</div></div></div>
+    <div class="sd-card"><div class="sd-icon sd-navy">👥</div><div><div class="sd-val" id="sdStudents">-</div><div class="sd-lbl">طلاب مشتركون</div></div></div>
+    <div class="sd-card"><div class="sd-icon sd-orange">⏰</div><div><div class="sd-val" id="sdExpiring">-</div><div class="sd-lbl">تنتهي خلال 7 أيام</div></div></div>
+    <div class="sd-card"><div class="sd-icon sd-red">⏳</div><div><div class="sd-val" id="sdPending">-</div><div class="sd-lbl">طلبات انتظار</div></div></div>
+  </div>
+
+  <div class="qcard-box" style="margin-bottom:20px">
+    <h3 style="margin-bottom:6px">🔥 النماذج على Firebase</h3>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:12px">النماذج المرفوعة حالياً على Firebase</p>
+    <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+      <button class="qbtn qbtn-navy" onclick="loadFirebaseStats()">🔄 تحديث</button>
+    </div>
+    <div id="fbModelsList"><div style="color:var(--muted);font-size:13px">اضغط تحديث لعرض النماذج</div></div>
+  </div>
+
+  <div class="log-section">
+    <div class="log-head">
+      <h3>📋 سجل التعديلات</h3>
+      <button class="log-clear" onclick="clearEditLog()">🗑 مسح السجل</button>
+    </div>
+    <div class="log-list" id="editLogList">
+      <div class="log-empty">لا توجد تعديلات مسجّلة بعد</div>
+    </div>
+  </div>
+</div>
+
+</div>
+</main>
+
+<footer class="mini-footer">جميع الحقوق محفوظة © WE CAN STEP 2026</footer>
+
+<script>
+function formatDate(ts) {
+  if (!ts) return "";
+  var d = new Date(ts);
+  return d.getFullYear() + "/" + String(d.getMonth()+1).padStart(2,"0") + "/" + String(d.getDate()).padStart(2,"0") + " " + String(d.getHours()).padStart(2,"0") + ":" + String(d.getMinutes()).padStart(2,"0");
+}
+
+function showToast(msg, type) {
+  var el = document.getElementById("toastTop");
+  if (!el) return alert(msg);
+  el.textContent = msg;
+  el.className = "toast-top show tt-" + (type || "ok");
+  setTimeout(function() { el.classList.remove("show"); }, 3000);
+}
+window.showToast = showToast;
+window.showAdminToast = showToast;
+
+function renderRequests() {
+  if (typeof window.renderRequestsFirebase === "function") {
+    window.renderRequestsFirebase();
+    return;
+  }
+  document.getElementById("pendingCount").textContent = "0";
+  document.getElementById("approvedCount").textContent = "0";
+  document.getElementById("rejectedCount").textContent = "0";
+  var wrap = document.getElementById("requestsList");
+  if (wrap) wrap.innerHTML = '<div class="empty-state"><div class="empty-icon">⏳</div><p>جاري التحميل من Firebase...</p></div>';
+}
+window.renderRequests = renderRequests;
+
+function approveReq(idx) {
+  if (typeof window.approveReqFirebase === "function") window.approveReqFirebase(idx);
+}
+
+function rejectReq(idx) {
+  if (typeof window.rejectReqFirebase === "function") window.rejectReqFirebase(idx);
+}
+</script>
+
+<script>
+var qModels = {};
+var qEditKey = null;
+var qEditIdx = null;
+var qCurrentTab = "students";
+var editLog = [];
+
+function qEsc(s){
+  return String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+}
+function jsArg(value){ return JSON.stringify(String(value)); }
+
+function qLoadModels(){
+  try{ qModels = JSON.parse(localStorage.getItem("wcs_models") || "{}"); }catch(e){ qModels = {}; }
+  qUpdateBadges();
+}
+function qSaveModels(){
+  localStorage.setItem("wcs_models", JSON.stringify(qModels));
+  qUpdateBadges();
+}
+function qUpdateBadges(){
+  var gKeys = Object.keys(qModels).filter(function(k){return qModels[k].type === "grammar";});
+  var rKeys = Object.keys(qModels).filter(function(k){return qModels[k].type === "reading";});
+  var el;
+  el = document.getElementById("grammarTabBadge"); if(el) el.textContent = gKeys.length;
+  el = document.getElementById("readingTabBadge"); if(el) el.textContent = rKeys.length;
+}
+
+function switchTab(tab){
+  qCurrentTab = tab;
+  document.querySelectorAll(".tab-btn").forEach(function(b){ b.classList.remove("active"); });
+  var btn = document.getElementById("tabBtn-" + tab);
+  if(btn) btn.classList.add("active");
+
+  var studentContent = document.getElementById("studentTabContent");
+  document.querySelectorAll(".tab-page").forEach(function(p){ p.classList.remove("active"); });
+
+  if(tab === "students"){
+    if(studentContent) studentContent.style.display = "";
+  } else {
+    if(studentContent) studentContent.style.display = "none";
+    var pg = document.getElementById("page-" + tab);
+    if(pg) pg.classList.add("active");
+    if(tab === "grammar") qBuildGrammarPage();
+    if(tab === "reading") qBuildReadingPage();
+    if(tab === "stats"){
+      renderEditLog();
+      updateStudentStats();
+      updateStatsFromLocalModels();
+    }
+  }
+}
+window.switchTab = switchTab;
+
+function qBuildGrammarPage(){
+  var gKeys = Object.keys(qModels).filter(function(k){return qModels[k].type === "grammar";}).sort();
+  var el = document.getElementById("grammarContent");
+  if(!el) return;
+  if(!gKeys.length){
+    el.innerHTML = `<div class="empty-state"><div class="empty-icon">📂</div><p>استورد نموذج Grammar من قسم الاستيراد</p><br/><button class="act-btn approve-btn" onclick="switchTab('import')">📂 استيراد الآن</button></div>`;
+    return;
+  }
+  var html = `<div class="model-grid">`;
+  gKeys.forEach(function(k){
+    var m = qModels[k];
+    html += `<div class="model-card" onclick="qShowGrammar(${jsArg(k)})"><div class="mc-icon">📝</div><div><div class="mc-name">Model ${qEsc(m.modelNum)}</div><div class="mc-count">${(m.questions||[]).length} سؤال</div></div></div>`;
+  });
+  html += `</div>`;
+  el.innerHTML = html;
+}
+
+function qShowGrammar(key){
+  var m = qModels[key];
+  if(!m) return;
+  var el = document.getElementById("grammarContent");
+  el.innerHTML =
+    `<div class="publish-bar">
+      <div class="publish-bar-info"><strong>📝 Grammar Model ${qEsc(m.modelNum)}</strong><p>${(m.questions||[]).length} سؤال</p></div>
+      <div class="publish-bar-acts">
+        <button class="qbtn qbtn-ghost" onclick="qBuildGrammarPage()">← رجوع</button>
+        <button class="qbtn qbtn-green" onclick="qAddGQ(${jsArg(key)})">➕ إضافة</button>
+        <button class="qbtn qbtn-gold" id="qPubBtn_${qEsc(key)}" onclick="qPublish(${jsArg(key)})">🚀 نشر على الموقع</button>
+        <button class="qbtn qbtn-red" onclick="qDelModel(${jsArg(key)})">🗑</button>
+      </div>
+    </div>
+    <div class="quiz-card">
+      <div class="quiz-card-head"><h3>الأسئلة</h3><span class="qc-count">${(m.questions||[]).length}</span></div>
+      <div class="quiz-search-bar"><input class="quiz-search-input" placeholder="🔍 بحث..." oninput="qFilterG(${jsArg(key)},this.value)"/></div>
+      <div class="quiz-q-list" id="qgl_${qEsc(key)}">${(m.questions||[]).map(function(q,i){return qGRow(key,q,i);}).join("")}</div>
+    </div>`;
+}
+window.qShowGrammar = qShowGrammar;
+
+function qGRow(key,q,i){
+  var txt = String(q.q || "").replace(/<[^>]+>/g,"").substring(0,85);
+  var ansIndex = Number.isInteger(q.ans) ? q.ans : 0;
+  var cor = ["A","B","C","D"][ansIndex] || "?";
+  return `<div class="quiz-q-row" onclick="qOpenGEditor(${jsArg(key)},${i})" id="qgr_${qEsc(key)}_${i}">
+    <div class="qnum">${i+1}</div>
+    <div class="qprev">${qEsc(txt)}<small>✅ ${cor}: ${qEsc(((q.opts||[])[ansIndex]||"").substring(0,35))}</small></div>
+    <div class="qrow-acts" onclick="event.stopPropagation()">
+      <button class="act-btn approve-btn" style="padding:6px 10px;font-size:11px" onclick="qOpenGEditor(${jsArg(key)},${i})">✏️</button>
+      <button class="reject-btn act-btn" style="padding:6px 10px;font-size:11px" onclick="qDelGQ(${jsArg(key)},${i})">🗑</button>
+    </div>
+  </div>`;
+}
+
+function qFilterG(key,val){
+  var el = document.getElementById("qgl_" + key);
+  var m = qModels[key];
+  if(!el || !m) return;
+  if(!val.trim()){
+    el.innerHTML = (m.questions||[]).map(function(q,i){return qGRow(key,q,i);}).join("");
+    return;
+  }
+  var needle = val.toLowerCase();
+  var res = (m.questions||[]).map(function(q,i){return {q:q,i:i};}).filter(function(x){
+    return String(x.q.q||"").toLowerCase().includes(needle) || (x.q.opts||[]).some(function(o){return String(o).toLowerCase().includes(needle);});
+  });
+  el.innerHTML = res.length ? res.map(function(x){return qGRow(key,x.q,x.i);}).join("") : '<div style="padding:20px;text-align:center;color:var(--muted)">لا توجد نتائج</div>';
+}
+window.qFilterG = qFilterG;
+
+function qDelGQ(key,i){
+  if(!confirm("حذف السؤال؟")) return;
+  qModels[key].questions.splice(i,1);
+  qSaveModels();
+  addToLog("del","حذف سؤال",key + " — سؤال " + (i+1));
+  qShowGrammar(key);
+  showAdminToast("🗑 تم الحذف","ok");
+}
+function qAddGQ(key){ qOpenGEditor(key,-1); }
+function qDelModel(key){
+  if(!confirm("حذف النموذج من اللوحة؟")) return;
+  delete qModels[key];
+  qSaveModels();
+  addToLog("del","حذف نموذج",key);
+  qBuildGrammarPage();
+  showAdminToast("🗑 تم الحذف","ok");
+}
+window.qDelGQ = qDelGQ;
+window.qAddGQ = qAddGQ;
+window.qDelModel = qDelModel;
+
+function qBuildReadingPage(){
+  var rKeys = Object.keys(qModels).filter(function(k){return qModels[k].type === "reading";}).sort();
+  var el = document.getElementById("readingContent");
+  if(!el) return;
+  if(!rKeys.length){
+    el.innerHTML = `<div class="empty-state"><div class="empty-icon">📂</div><p>استورد نموذج Reading من قسم الاستيراد</p><br/><button class="act-btn approve-btn" onclick="switchTab('import')">📂 استيراد الآن</button></div>`;
+    return;
+  }
+  var html = `<div class="model-grid">`;
+  rKeys.forEach(function(k){
+    var m = qModels[k];
+    var tq = (m.passages||[]).reduce(function(a,p){return a+(p.questions||[]).length;},0);
+    html += `<div class="model-card" onclick="qShowReading(${jsArg(k)})"><div class="mc-icon">📖</div><div><div class="mc-name">Model ${qEsc(m.modelNum)}</div><div class="mc-count">${(m.passages||[]).length} فقرة | ${tq} سؤال</div></div></div>`;
+  });
+  html += `</div>`;
+  el.innerHTML = html;
+}
+
+function qShowReading(key){
+  var m = qModels[key];
+  if(!m) return;
+  var tq = (m.passages||[]).reduce(function(a,p){return a+(p.questions||[]).length;},0);
+  var el = document.getElementById("readingContent");
+  var html =
+    `<div class="publish-bar">
+      <div class="publish-bar-info"><strong>📖 Reading Model ${qEsc(m.modelNum)}</strong><p>${(m.passages||[]).length} فقرة — ${tq} سؤال</p></div>
+      <div class="publish-bar-acts">
+        <button class="qbtn qbtn-ghost" onclick="qBuildReadingPage()">← رجوع</button>
+        <button class="qbtn qbtn-gold" id="qPubBtn_${qEsc(key)}" onclick="qPublish(${jsArg(key)})">🚀 نشر على الموقع</button>
+        <button class="qbtn qbtn-red" onclick="qDelModel(${jsArg(key)})">🗑</button>
+      </div>
+    </div>`;
+  (m.passages||[]).forEach(function(p,pi){
+    html += `<div class="passage-block"><div class="passage-hd"><h4>${qEsc(p.title || "Passage " + (pi+1))}</h4><span style="color:rgba(255,255,255,.7);font-size:12px">${(p.questions||[]).length} سؤال</span></div>
+      <div class="passage-bd">
+      ${(p.questions||[]).map(function(q,qi){
+        return `<div class="quiz-q-row" style="border:1px solid var(--border);border-radius:10px;margin-bottom:6px" onclick="qOpenREditor(${jsArg(key)},${pi},${qi})">
+          <div class="qnum green">${qEsc(q.original || qi+1)}</div>
+          <div class="qprev">${qEsc(String(q.question||"").substring(0,80))}<small>✅ ${"ABCD"[q.correct] || "?"}</small></div>
+          <div class="qrow-acts" onclick="event.stopPropagation()">
+            <button class="act-btn approve-btn" style="padding:6px 10px;font-size:11px" onclick="qOpenREditor(${jsArg(key)},${pi},${qi})">✏️</button>
+            <button class="reject-btn act-btn" style="padding:6px 10px;font-size:11px" onclick="qDelRQ(${jsArg(key)},${pi},${qi})">🗑</button>
+          </div>
+        </div>`;
+      }).join("")}
+      <button class="qbtn qbtn-green" style="margin-top:8px;font-size:12px" onclick="qOpenREditor(${jsArg(key)},${pi},-1)">➕ سؤال</button>
+      </div></div>`;
+  });
+  el.innerHTML = html;
+}
+window.qBuildReadingPage = qBuildReadingPage;
+window.qShowReading = qShowReading;
+
+function qDelRQ(key,pi,qi){
+  if(!confirm("حذف السؤال؟")) return;
+  qModels[key].passages[pi].questions.splice(qi,1);
+  qSaveModels();
+  addToLog("del","حذف سؤال",key + " — Passage " + (pi+1) + " — سؤال " + (qi+1));
+  qShowReading(key);
+  showAdminToast("🗑 تم الحذف","ok");
+}
+window.qDelRQ = qDelRQ;
+
+function qOpenGEditor(key,idx){
+  qEditKey = key; qEditIdx = idx;
+  var m = qModels[key];
+  var isNew = idx === -1;
+  var it = isNew ? {q:"",opts:["","","",""],ans:0,exp:""} : m.questions[idx];
+  document.getElementById("qModalTitle").textContent = isNew ? "➕ سؤال جديد — Grammar " + m.modelNum : "✏️ تعديل سؤال " + (idx+1);
+  document.getElementById("qModalBody").innerHTML =
+    `<div class="qfg"><label class="qflbl">نص السؤال (HTML مدعوم)</label><textarea class="qftarea" id="qfq" style="min-height:85px">${qEsc(it.q||"")}</textarea></div>
+    <div class="qfg"><label class="qflbl">الخيارات</label><div class="qogrid">
+    ${["A","B","C","D"].map(function(l,i){return `<div class="qorow"><div class="qolbl">${l}</div><input class="qoinput${it.ans===i?" correct":""}" id="qfo${i}" value="${qEsc((it.opts&&it.opts[i])||"")}" oninput="qHlC()" placeholder="${l}"/></div>`;}).join("")}
+    </div></div>
+    <div class="qfg"><label class="qflbl">الإجابة الصحيحة</label><select class="qfsel" id="qfans" onchange="qHlC()">
+    ${["A","B","C","D"].map(function(l,i){return `<option value="${i}"${it.ans===i?" selected":""}>${l}</option>`;}).join("")}
+    </select></div>
+    <div class="qfg"><label class="qflbl">الشرح (HTML مدعوم)</label><textarea class="qftarea" id="qfexp" style="min-height:100px">${qEsc(it.exp||"")}</textarea></div>`;
+  qOpenModal();
+}
+window.qOpenGEditor = qOpenGEditor;
+
+function qHlC(){
+  var a = parseInt((document.getElementById("qfans") && document.getElementById("qfans").value) || 0, 10);
+  for(var i=0;i<4;i++){
+    var el = document.getElementById("qfo"+i);
+    if(el) el.classList.toggle("correct", i === a);
+  }
+}
+window.qHlC = qHlC;
+
+function qOpenREditor(key,pi,qi){
+  qEditKey = key; qEditIdx = {p:pi,q:qi};
+  var m = qModels[key];
+  var p = m.passages[pi];
+  var isNew = qi === -1;
+  var it = isNew ? {question:"",options:["","","",""],correct:0,explanation:"",skill:""} : p.questions[qi];
+  document.getElementById("qModalTitle").textContent = isNew ? "➕ سؤال جديد" : "✏️ تعديل سؤال " + (it.original || qi+1);
+  document.getElementById("qModalBody").innerHTML =
+    `<div class="qfg"><label class="qflbl">نص السؤال</label><textarea class="qftarea" id="qfq">${qEsc(it.question||"")}</textarea></div>
+    <div class="qfg"><label class="qflbl">المهارة (اختياري)</label><input class="qfinput" id="qfskill" value="${qEsc(it.skill||"")}" placeholder="Detail Question"/></div>
+    <div class="qfg"><label class="qflbl">الخيارات</label><div class="qogrid">
+    ${["A","B","C","D"].map(function(l,i){return `<div class="qorow"><div class="qolbl">${l}</div><input class="qoinput${it.correct===i?" correct":""}" id="qfo${i}" value="${qEsc((it.options&&it.options[i])||"")}" oninput="qHlC()" placeholder="${l}"/></div>`;}).join("")}
+    </div></div>
+    <div class="qfg"><label class="qflbl">الإجابة الصحيحة</label><select class="qfsel" id="qfans" onchange="qHlC()">
+    ${["A","B","C","D"].map(function(l,i){return `<option value="${i}"${it.correct===i?" selected":""}>${l}</option>`;}).join("")}
+    </select></div>
+    <div class="qfg"><label class="qflbl">الشرح</label><textarea class="qftarea" id="qfexp" style="min-height:100px">${qEsc(it.explanation||"")}</textarea></div>`;
+  qOpenModal();
+}
+window.qOpenREditor = qOpenREditor;
+
+function saveQModal(){
+  var m = qModels[qEditKey]; if(!m) return;
+  if(m.type === "grammar"){
+    var q = (document.getElementById("qfq") && document.getElementById("qfq").value) || "";
+    var opts = [0,1,2,3].map(function(i){return (document.getElementById("qfo"+i) && document.getElementById("qfo"+i).value) || "";});
+    var ans = parseInt((document.getElementById("qfans") && document.getElementById("qfans").value) || 0, 10);
+    var exp = (document.getElementById("qfexp") && document.getElementById("qfexp").value) || "";
+    var isNew = qEditIdx === -1;
+    if(isNew) m.questions.push({q:q,opts:opts,ans:ans,exp:exp});
+    else m.questions[qEditIdx] = {q:q,opts:opts,ans:ans,exp:exp};
+    qSaveModels(); closeQModal(); qShowGrammar(qEditKey);
+    addToLog(isNew ? "add" : "edit", isNew ? "إضافة سؤال جديد" : "تعديل سؤال", qEditKey + " — " + q.substring(0,60));
+  } else {
+    var pi = qEditIdx.p, qi = qEditIdx.q;
+    var pass = m.passages[pi];
+    var question = (document.getElementById("qfq") && document.getElementById("qfq").value) || "";
+    var options = [0,1,2,3].map(function(i){return (document.getElementById("qfo"+i) && document.getElementById("qfo"+i).value) || "";});
+    var correct = parseInt((document.getElementById("qfans") && document.getElementById("qfans").value) || 0, 10);
+    var explanation = (document.getElementById("qfexp") && document.getElementById("qfexp").value) || "";
+    var skill = (document.getElementById("qfskill") && document.getElementById("qfskill").value) || "";
+    var orig = qi === -1 ? (pass.questions.length + 1) : ((pass.questions[qi] && pass.questions[qi].original) || qi + 1);
+    var isNewR = qi === -1;
+    if(isNewR) pass.questions.push({original:orig,question:question,options:options,correct:correct,explanation:explanation,skill:skill});
+    else pass.questions[qi] = Object.assign({}, pass.questions[qi], {question:question,options:options,correct:correct,explanation:explanation,skill:skill});
+    qSaveModels(); closeQModal(); qShowReading(qEditKey);
+    addToLog(isNewR ? "add" : "edit", isNewR ? "إضافة سؤال جديد" : "تعديل سؤال", qEditKey + " — " + question.substring(0,60));
+  }
+  showAdminToast("✅ تم الحفظ","ok");
+}
+window.saveQModal = saveQModal;
+
+async function qPublish(key){
+  var m = qModels[key];
+  if(!m) return;
+  var btn = document.getElementById("qPubBtn_" + key) || document.activeElement;
+  var originalText = btn ? btn.textContent : "🚀 نشر على الموقع";
+  if(btn){ btn.disabled = true; btn.textContent = "⏳ جاري النشر..."; }
+  try{
+    if(!window._db || !window._fbDoc || !window._fbSetDoc) throw new Error("Firebase غير متصل — تأكد من تسجيل الدخول");
+    var data = m.type === "grammar"
+      ? {questions:m.questions || [],type:"grammar",modelNum:m.modelNum,updatedAt:new Date().toISOString()}
+      : {passages:m.passages || [],type:"reading",modelNum:m.modelNum,updatedAt:new Date().toISOString()};
+    await window._fbSetDoc(window._fbDoc(window._db,"quiz_models",key),data);
+    addToLog("pub","نشر على الموقع",key);
+    if(btn) btn.textContent = "✅ تم النشر!";
+    showAdminToast("🚀 تم نشر Model " + m.modelNum + " على الموقع!","ok");
+    setTimeout(function(){ if(btn){ btn.textContent = originalText; btn.disabled = false; } },2000);
+  }catch(e){
+    if(btn){ btn.textContent = "❌ فشل"; btn.disabled = false; }
+    showAdminToast("❌ " + e.message,"err");
+    setTimeout(function(){ if(btn) btn.textContent = originalText; },2000);
+  }
+}
+window.qPublish = qPublish;
+
+function qHandleDrop(e){ e.preventDefault(); var f = e.dataTransfer.files[0]; if(f) qParseFile(f); }
+function qHandleFile(e){ var f = e.target.files[0]; if(f) qParseFile(f); }
+window.qHandleDrop = qHandleDrop;
+window.qHandleFile = qHandleFile;
+
+function qParseFile(f){
+  var r = new FileReader();
+  r.onload = function(e){
+    var html = e.target.result;
+    var isR = /reading[-_]?model[-_]?(\d+)/i.test(f.name) || /var\s+passages\s*=/.test(html);
+    var isG = !isR && (/grammar[-_]?model[-_]?(\d+)/i.test(f.name) || /var\s+questions\s*=/.test(html) || /window\._fallbackQuestions\s*=/.test(html));
+    var nm = f.name.match(/(\d+)/);
+    var num = nm ? parseInt(nm[1],10) : 0;
+    if(isR) qImportReadingHTML(html,num,f.name);
+    else if(isG) qImportGrammarHTML(html,num,f.name);
+    else qShowRes("qImpResult","❌ لم يتم التعرف على نوع الملف","err");
+  };
+  r.readAsText(f,"UTF-8");
+}
+
+function qExtractArrayFromHtml(html, names){
+  function findBalancedArray(source, startIndex){
+    var start = source.indexOf("[", startIndex);
+    if(start < 0) return "";
+
+    var depth = 0;
+    var quote = "";
+    var escaped = false;
+    var inLineComment = false;
+    var inBlockComment = false;
+
+    for(var i = start; i < source.length; i++){
+      var ch = source[i];
+      var next = source[i + 1];
+
+      if(inLineComment){
+        if(ch === "\n") inLineComment = false;
+        continue;
+      }
+
+      if(inBlockComment){
+        if(ch === "*" && next === "/"){
+          inBlockComment = false;
+          i++;
+        }
+        continue;
+      }
+
+      if(quote){
+        if(escaped){
+          escaped = false;
+          continue;
+        }
+        if(ch === "\\"){
+          escaped = true;
+          continue;
+        }
+        if(ch === quote){
+          quote = "";
+        }
+        continue;
+      }
+
+      if(ch === "/" && next === "/"){
+        inLineComment = true;
+        i++;
+        continue;
+      }
+
+      if(ch === "/" && next === "*"){
+        inBlockComment = true;
+        i++;
+        continue;
+      }
+
+      if(ch === '"' || ch === "'" || ch === "`"){
+        quote = ch;
+        continue;
+      }
+
+      if(ch === "[") depth++;
+      if(ch === "]"){
+        depth--;
+        if(depth === 0){
+          return source.slice(start, i + 1);
+        }
+      }
+    }
+
+    return "";
+  }
+
+  function allMatches(regex, source){
+    var results = [];
+    var m;
+    regex.lastIndex = 0;
+    while((m = regex.exec(source)) !== null){
+      results.push(m);
+      if(m.index === regex.lastIndex) regex.lastIndex++;
+    }
+    return results;
+  }
+
+  var candidates = [];
+
+  for(var i = 0; i < names.length; i++){
+    var rawName = names[i];
+    var name = rawName.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+
+    var patterns = [
+      new RegExp("(?:var|let|const)\\s+" + name + "\\s*=", "gm"),
+      new RegExp("window\\." + name + "\\s*=", "gm"),
+      new RegExp("this\\." + name + "\\s*=", "gm")
+    ];
+
+    if(rawName === "questions"){
+      patterns.push(/window\._fallbackQuestions\s*=/gm);
+      patterns.push(/(?:var|let|const)\s+(?:quizQuestions|grammarQuestions|modelQuestions|allQuestions|questionsData)\s*=/gm);
+      patterns.push(/(?:questions|quizQuestions|grammarQuestions)\s*:\s*/gm);
+    }
+
+    if(rawName === "passages"){
+      patterns.push(/(?:var|let|const)\s+(?:readingPassages|modelPassages|passagesData)\s*=/gm);
+      patterns.push(/(?:passages|readingPassages)\s*:\s*/gm);
+    }
+
+    for(var p = 0; p < patterns.length; p++){
+      var matches = allMatches(patterns[p], html);
+      for(var j = 0; j < matches.length; j++){
+        var arr = findBalancedArray(html, matches[j].index + matches[j][0].length);
+        if(arr){
+          candidates.push(arr);
+        }
+      }
+    }
+  }
+
+  if(!candidates.length) return "";
+
+  // Some templates initialize `var questions = []` first, then define the real list later.
+  // Choose the largest valid array, and ignore empty arrays when a richer one exists.
+  var best = "";
+  var bestScore = -1;
+
+  for(var c = 0; c < candidates.length; c++){
+    var text = candidates[c];
+    var score = text.length;
+    try{
+      var parsed = qParseArrayLiteral(text);
+      if(Array.isArray(parsed)){
+        score += parsed.length * 100000;
+      }
+    }catch(e){}
+    if(score > bestScore){
+      bestScore = score;
+      best = text;
+    }
+  }
+
+  return best;
+}
+
+function qParseArrayLiteral(arrText){
+  var code = String(arrText || "").trim();
+  if(!code) throw new Error("لم أجد بيانات قابلة للقراءة");
+  try{
+    return JSON.parse(code);
+  }catch(jsonErr){
+    try{
+      return Function('"use strict"; return (' + code + ');')();
+    }catch(jsErr){
+      throw new Error("تعذر قراءة بيانات النموذج. تأكد أن var questions أو var passages موجودة بصيغة JavaScript صحيحة.");
+    }
+  }
+}
+
+function qImportGrammarHTML(html,num,fname){
+  try{
+    var arr = qExtractArrayFromHtml(html, ["questions"]);
+    if(!arr) throw new Error("لم أجد بيانات الأسئلة");
+    var qs = qParseArrayLiteral(arr);
+    if(!num) num = parseInt(prompt("رقم النموذج:") || 0,10);
+    var key = "grammar-" + num;
+    qModels[key] = {type:"grammar",modelNum:num,fname:fname || "grammar-model-" + num + ".html",questions:qs};
+    qSaveModels();
+    addToLog("add","استيراد نموذج",key + " — " + qs.length + " سؤال");
+    if(!qs.length) throw new Error("تم العثور على مصفوفة questions لكنها فارغة. ارفع ملف النموذج الكامل أو جرّب نسخة النموذج التي تحتوي الأسئلة داخل الملف.");
+    qShowRes("qImpResult","✅ تم استيراد Grammar Model " + num + " — " + qs.length + " سؤال","ok");
+    setTimeout(function(){ switchTab("grammar"); qShowGrammar(key); },300);
+  }catch(e){ qShowRes("qImpResult","❌ " + e.message,"err"); }
+}
+
+function qImportReadingHTML(html,num,fname){
+  try{
+    var arr = qExtractArrayFromHtml(html, ["passages"]);
+    if(!arr) throw new Error("لم أجد var passages");
+    var ps = qParseArrayLiteral(arr);
+    if(!num) num = parseInt(prompt("رقم النموذج:") || 0,10);
+    var key = "reading-" + num;
+    qModels[key] = {type:"reading",modelNum:num,fname:fname || "reading-model-" + num + ".html",passages:ps};
+    qSaveModels();
+    if(!ps.length) throw new Error("تم العثور على مصفوفة passages لكنها فارغة. ارفع ملف النموذج الكامل الذي يحتوي القطع والأسئلة.");
+    var tq = ps.reduce(function(a,p){return a+(p.questions||[]).length;},0);
+    addToLog("add","استيراد نموذج",key + " — " + ps.length + " فقرة — " + tq + " سؤال");
+    qShowRes("qImpResult","✅ تم استيراد Reading Model " + num + " — " + ps.length + " فقرة، " + tq + " سؤال","ok");
+    setTimeout(function(){ switchTab("reading"); qShowReading(key); },300);
+  }catch(e){ qShowRes("qImpResult","❌ " + e.message,"err"); }
+}
+
+function qImportPaste(){
+  var type = document.getElementById("qPasteType").value;
+  var num = parseInt(document.getElementById("qPasteNum").value,10) || 0;
+  var code = (document.getElementById("qPasteCode").value || "").trim();
+  if(!code){ qShowRes("qPasteResult","⚠️ الكود فارغ","err"); return; }
+  if(!num){ qShowRes("qPasteResult","⚠️ أدخل رقم النموذج","err"); return; }
+  try{
+    var data = code.replace(/^var\s+\w+\s*=\s*/,"").replace(/;\s*$/,"");
+    var parsed = qParseArrayLiteral(data);
+    var key = type + "-" + num;
+    if(type === "grammar") qModels[key] = {type:"grammar",modelNum:num,fname:"grammar-model-" + num + ".html",questions:parsed};
+    else qModels[key] = {type:"reading",modelNum:num,fname:"reading-model-" + num + ".html",passages:parsed};
+    qSaveModels();
+    addToLog("add","استيراد يدوي",key);
+    qShowRes("qPasteResult","✅ تم الاستيراد بنجاح","ok");
+  }catch(e){ qShowRes("qPasteResult","❌ " + e.message,"err"); }
+}
+window.qImportPaste = qImportPaste;
+
+function qShowRes(id,msg,type){
+  var el = document.getElementById(id); if(!el) return;
+  el.className = "qres " + (type === "ok" ? "qres-ok" : "qres-err");
+  el.textContent = msg;
+}
+
+function qOpenModal(){ document.getElementById("qModal").classList.add("on"); document.body.style.overflow = "hidden"; }
+function closeQModal(){ document.getElementById("qModal").classList.remove("on"); document.body.style.overflow = ""; qEditKey = null; qEditIdx = null; }
+window.closeQModal = closeQModal;
+document.addEventListener("keydown",function(e){ if(e.key === "Escape") closeQModal(); });
+
+window._db = window._db || null;
+window._fbDoc = window._fbDoc || null;
+window._fbSetDoc = window._fbSetDoc || null;
+
+function loadEditLog(){
+  try{ editLog = JSON.parse(localStorage.getItem("wcs_edit_log") || "[]"); }catch(e){ editLog = []; }
+}
+function saveEditLog(){
+  if(editLog.length > 100) editLog = editLog.slice(-100);
+  localStorage.setItem("wcs_edit_log", JSON.stringify(editLog));
+}
+function addToLog(type, action, detail){
+  editLog.push({type:type,action:action,detail:detail,time:new Date().toISOString()});
+  saveEditLog();
+  var statsPage = document.getElementById("page-stats");
+  if(statsPage && statsPage.classList.contains("active")) renderEditLog();
+}
+function renderEditLog(){
+  var el = document.getElementById("editLogList");
+  if(!el) return;
+  loadEditLog();
+  if(!editLog.length){
+    el.innerHTML = '<div class="log-empty">لا توجد تعديلات مسجّلة بعد</div>';
+    return;
+  }
+  var icons = {edit:"✏️",add:"➕",del:"🗑",pub:"🚀"};
+  var classes = {edit:"lt-edit",add:"lt-add",del:"lt-del",pub:"lt-pub"};
+  el.innerHTML = editLog.slice().reverse().map(function(item){
+    var d = new Date(item.time);
+    var timeStr = d.getFullYear()+"/"+String(d.getMonth()+1).padStart(2,"0")+"/"+String(d.getDate()).padStart(2,"0")+" "+String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+    return `<div class="log-item">
+      <div class="log-type ${classes[item.type] || "lt-edit"}">${icons[item.type] || "✏️"}</div>
+      <div class="log-info"><div class="log-action">${qEsc(item.action)}</div><div class="log-meta"><span>${qEsc(item.detail || "")}</span></div></div>
+      <div class="log-time">${timeStr}</div>
+    </div>`;
+  }).join("");
+}
+function clearEditLog(){
+  if(!confirm("مسح كل سجل التعديلات؟")) return;
+  editLog = [];
+  saveEditLog();
+  renderEditLog();
+  showAdminToast("🗑 تم مسح السجل","ok");
+}
+window.clearEditLog = clearEditLog;
+
+async function loadFirebaseStats(){
+  var el = document.getElementById("fbModelsList");
+  if(el) el.innerHTML = '<div style="color:var(--muted);font-size:13px">⏳ جاري التحميل...</div>';
+  try {
+    if(!window._db) throw new Error("Firebase غير متصل");
+    var mod = await import("https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js");
+    var snap = await mod.getDocs(mod.collection(window._db, "quiz_models"));
+    var models = [];
+    snap.forEach(function(d){ models.push(Object.assign({id:d.id}, d.data())); });
+
+    var gModels = models.filter(function(m){return m.type === "grammar";});
+    var rModels = models.filter(function(m){return m.type === "reading";});
+    var totalQ = models.reduce(function(a,m){
+      if(m.type === "grammar") return a + (m.questions||[]).length;
+      return a + (m.passages||[]).reduce(function(b,p){return b+(p.questions||[]).length;},0);
+    },0);
+
+    document.getElementById("sdGrammar").textContent = gModels.length;
+    document.getElementById("sdReading").textContent = rModels.length;
+    document.getElementById("sdQuestions").textContent = totalQ.toLocaleString();
+
+    if(el){
+      if(!models.length){
+        el.innerHTML = '<div style="color:var(--muted);font-size:13px">لا توجد نماذج منشورة بعد</div>';
+      } else {
+        var html = '<div class="fb-models-grid">';
+        models.sort(function(a,b){return a.id.localeCompare(b.id);}).forEach(function(m){
+          var qc = m.type === "grammar" ? (m.questions||[]).length : (m.passages||[]).reduce(function(a,p){return a+(p.questions||[]).length;},0);
+          var date = m.updatedAt ? String(m.updatedAt).substring(0,10) : "";
+          html += `<div class="fb-model-item"><div class="fmi-icon">${m.type==="grammar"?"📝":"📖"}</div><div><div class="fmi-name">${qEsc(m.id)}</div><div class="fmi-count">${qc} سؤال</div><div class="fmi-date">${qEsc(date)}</div></div></div>`;
+        });
+        html += '</div>';
+        el.innerHTML = html;
+      }
+    }
+    showAdminToast("✅ تم تحديث الإحصائيات","ok");
+  } catch(e) {
+    if(el) el.innerHTML = '<div style="color:var(--wrong);font-size:13px">❌ ' + qEsc(e.message) + '</div>';
+  }
+}
+window.loadFirebaseStats = loadFirebaseStats;
+
+function updateStudentStats(){
+  try {
+    var list = window.studentsCache || [];
+    var active = list.filter(function(s){return s.isSubscriber && (!s.subscriptionExpiresAtMs || s.subscriptionExpiresAtMs > Date.now());}).length;
+    var expiring = list.filter(function(s){
+      var exp = s.subscriptionExpiresAtMs;
+      return exp && exp > Date.now() && exp <= Date.now() + 7*24*60*60*1000;
+    }).length;
+    var sdS = document.getElementById("sdStudents");
+    var sdE = document.getElementById("sdExpiring");
+    if(sdS) sdS.textContent = active;
+    if(sdE) sdE.textContent = expiring;
+  } catch(e) {}
+}
+window.updateStudentStats = updateStudentStats;
+
+function updateStatsFromLocalModels(){
+  var p = document.getElementById("pendingCount");
+  var sdP = document.getElementById("sdPending");
+  if(p && sdP) sdP.textContent = p.textContent;
+
+  var gKeys = Object.keys(qModels).filter(function(k){return qModels[k].type === "grammar";});
+  var rKeys = Object.keys(qModels).filter(function(k){return qModels[k].type === "reading";});
+  var total = Object.values(qModels).reduce(function(a,m){
+    if(m.type === "grammar") return a + (m.questions||[]).length;
+    return a + (m.passages||[]).reduce(function(b,p){return b+(p.questions||[]).length;},0);
+  },0);
+
+  var sdG = document.getElementById("sdGrammar");
+  var sdR = document.getElementById("sdReading");
+  var sdQ = document.getElementById("sdQuestions");
+  if(sdG && (sdG.textContent === "-" || sdG.textContent.trim() === "")) sdG.textContent = gKeys.length;
+  if(sdR && (sdR.textContent === "-" || sdR.textContent.trim() === "")) sdR.textContent = rKeys.length;
+  if(sdQ && (sdQ.textContent === "-" || sdQ.textContent.trim() === "")) sdQ.textContent = total.toLocaleString();
+}
+
+qLoadModels();
+loadEditLog();
+</script>
+
+<script type="module" src="./admin-firebase.js"></script>
+
+<div class="qmodal-bg" id="qModal">
+  <div class="qmodal">
+    <div class="qmhead">
+      <h3 id="qModalTitle">تعديل السؤال</h3>
+      <button class="qmclose" onclick="closeQModal()">✕</button>
+    </div>
+    <div class="qmbody" id="qModalBody"></div>
+    <div class="qmfoot">
+      <button class="qbtn qbtn-ghost" onclick="closeQModal()">إلغاء</button>
+      <button class="qbtn qbtn-gold" onclick="saveQModal()">💾 حفظ</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
