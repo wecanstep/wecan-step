@@ -340,22 +340,25 @@ audio{width:100%;display:block;accent-color:var(--teal)}
 }
 
 /* WE CAN STEP - Listening Transcript Blocks */
-.transcript-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px;direction:ltr}
-.transcript-wrap .transcript-box:first-child{direction:ltr;text-align:left;order:1}
-.transcript-wrap .transcript-box:nth-child(2){direction:rtl;text-align:right;order:2}
-.transcript-box{background:#f8fafc;border:1.5px solid #dbeafe;border-radius:18px;padding:14px 15px;line-height:1.85}
-.transcript-box h4{font-size:14px;color:var(--navy);font-weight:950;margin-bottom:8px;display:flex;align-items:center;gap:7px}
-.transcript-lines{display:flex;flex-direction:column;gap:8px;direction:ltr;text-align:left}
-.transcript-line{background:#fff;border:1px solid #e2e8f0;border-radius:13px;padding:9px 11px;color:#1e293b;font-size:14px;font-weight:750;line-height:1.65}
-.transcript-line b{color:var(--teal);font-weight:950}
-.translation-lines{display:flex;flex-direction:column;gap:8px;direction:rtl;text-align:right}
-.translation-line{background:#fff;border:1px solid #e2e8f0;border-radius:13px;padding:9px 11px;color:#334155;font-size:14px;font-weight:750;line-height:1.75}
-.translation-line b{color:var(--teal);font-weight:950}
+.transcript-wrap{display:flex;flex-direction:column;gap:12px;direction:ltr}
+.transcript-heads{display:grid;grid-template-columns:1fr 1fr;gap:12px;direction:ltr}
+.transcript-head-box{background:#f8fafc;border:1.5px solid #dbeafe;border-radius:18px;padding:14px 15px;line-height:1.85}
+.transcript-head-box.en{direction:ltr;text-align:left}
+.transcript-head-box.ar{direction:rtl;text-align:right}
+.transcript-head-box h4{font-size:14px;color:var(--navy);font-weight:950;margin:0;display:flex;align-items:center;gap:7px}
+.transcript-pairs{display:flex;flex-direction:column;gap:10px}
+.transcript-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;direction:ltr}
+.transcript-line{background:#fff;border:1px solid #e2e8f0;border-radius:13px;padding:12px 14px;color:#1e293b;font-size:14px;font-weight:750;line-height:1.8;direction:ltr;text-align:left}
+.translation-line{background:#fff;border:1px solid #e2e8f0;border-radius:13px;padding:12px 14px;color:#334155;font-size:15px;font-weight:750;line-height:1.95;direction:rtl;text-align:right}
+.transcript-line b,.translation-line b{color:var(--teal);font-weight:950}
 @media(min-width:1024px){
-  .transcript-box h4{font-size:15.5px}
-  .transcript-line,.translation-line{font-size:15.5px;line-height:1.9}
+  .transcript-head-box h4{font-size:15.5px}
+  .transcript-line{font-size:15.5px;line-height:1.95}
+  .translation-line{font-size:17px;line-height:2.05}
 }
-@media(max-width:900px){.transcript-wrap{grid-template-columns:1fr}}
+@media(max-width:900px){
+  .transcript-heads,.transcript-pair{grid-template-columns:1fr}
+}
 
 /* WE CAN STEP - Evidence Highlights inside Listening Transcript */
 .evidence-mark{
@@ -2260,6 +2263,19 @@ function highlightEvidenceText(text, markers){
 function renderDialogueLines(lines, cls, markers){
   return (lines || []).map(row => `<div class="${cls} ${cls === 'transcript-line' ? 'en-text' : 'ar-text'}"><b>${esc(row.speaker)}:</b> ${cls === 'transcript-line' ? highlightEvidenceText(row.text, markers || []) : esc(row.text)}</div>`).join('');
 }
+function renderTranscriptPairs(transcript, translation, markers){
+  var maxLen = Math.max((transcript || []).length, (translation || []).length);
+  var html = '';
+  for(var i = 0; i < maxLen; i++){
+    var en = (transcript || [])[i];
+    var ar = (translation || [])[i];
+    html += `<div class="transcript-pair">` +
+      `<div class="transcript-line en-text">${en ? `<b>${esc(en.speaker)}:</b> ${highlightEvidenceText(en.text, markers || [])}` : ''}</div>` +
+      `<div class="translation-line ar-text">${ar ? `<b>${esc(ar.speaker)}:</b> ${esc(ar.text)}` : ''}</div>` +
+    `</div>`;
+  }
+  return html;
+}
 function renderTranscriptSection(q){
   return `<div class="exp-box warn"><h4>📜 دليل الاستماع المختصر</h4><p class="en-text">${esc(q.mini_transcript)}</p></div>`;
 }
@@ -2267,8 +2283,11 @@ function renderGroupTranscriptSection(g){
   if(g.transcript && g.translation){
     var markers = getGroupMarkers(g.qIndices);
     return `<div class="transcript-wrap" style="margin:16px 0 18px">
-      <div class="transcript-box"><h4>📜 Transcript – نص الصوت</h4><div class="transcript-lines">${renderDialogueLines(g.transcript,'transcript-line', markers)}</div></div>
-      <div class="transcript-box"><h4>🌐 الترجمة</h4><div class="translation-lines">${renderDialogueLines(g.translation,'translation-line', [])}</div></div>
+      <div class="transcript-heads">
+        <div class="transcript-head-box en"><h4>📜 Transcript – نص الصوت</h4></div>
+        <div class="transcript-head-box ar"><h4>🌐 الترجمة</h4></div>
+      </div>
+      <div class="transcript-pairs">${renderTranscriptPairs(g.transcript, g.translation, markers)}</div>
     </div>`;
   }
   return '';
@@ -2280,7 +2299,7 @@ function renderWrong(q){
 }
 function renderStudyBoxes(q, qi){
   return `<div class="study-boxes-card">
-    <div class="study-boxes-hint"><b>📚 شرح السؤال بطريقة منظمة</b><span>الصناديق التالية توضّح كل جزء من الإجابة بدون فهرس أو أزرار تنقل.</span></div>
+    <div class="study-boxes-hint"><b>📚 شرح السؤال بطريقة منظمة</b><span>الصناديق التالية توضّح كل جزء من الإجابة بشكل واضح ومريح للمذاكرة.</span></div>
     <div class="study-boxes-grid">
       <div class="study-section-box box-translate"><h4><span class="section-badge">1</span><span class="section-icon">🌐</span><span class="section-title">ترجمة السؤال</span></h4><p>${esc(q.question_ar)}</p></div>
       <div class="study-section-box box-meaning"><h4><span class="section-badge">2</span><span class="section-icon">🛑</span><span class="section-title">معنى السؤال</span></h4><p>${esc(q.meaning)}</p></div>
