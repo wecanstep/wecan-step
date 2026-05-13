@@ -314,6 +314,53 @@ a{text-decoration:none;color:inherit}
 @media(max-width:700px){.study-exp-grid,.study-wrong-grid{grid-template-columns:1fr}}
 
 </style>
+<style id="wcs-ltr-fix">
+
+/* WE CAN STEP - English Direction Fix for Listening Study/Result */
+.en-text,
+.transcript-lines,
+.transcript-line,
+.bubble-text{
+  direction:ltr !important;
+  text-align:left !important;
+  unicode-bidi:embed;
+}
+.mixed-text{
+  unicode-bidi:plaintext;
+}
+.ar-text{
+  direction:rtl !important;
+  text-align:right !important;
+  unicode-bidi:embed;
+}
+.exp-box.answer p.en-text,
+.exp-box.warn p.en-text,
+.exp-box.evidence .en-text,
+.study-exp-box.answer p.en-text,
+.study-exp-box.warn p.en-text,
+.study-exp-box.evidence .en-text{
+  direction:ltr !important;
+  text-align:left !important;
+  unicode-bidi:embed;
+  line-height:1.9;
+}
+.exp-box.evidence .ar-text,
+.study-exp-box.evidence .ar-text,
+.study-exp-box.answer .ar-text,
+.exp-box.answer .ar-text{
+  margin-top:8px;
+  line-height:1.9;
+}
+.evidence-mark{
+  direction:ltr;
+  unicode-bidi:embed;
+}
+.evidence-badge{
+  margin-right:6px;
+  margin-left:0;
+}
+
+</style>
 </head>
 <body>
 
@@ -1272,7 +1319,7 @@ var questions = [
     "skill": "Vocabulary in Context – معنى تعبير اصطلاحي",
     "explanation": "المعنى المقصود من التعبير هو: لا تخفِ الخبر عني / قل لي الآن.",
     "evidence": [
-      "Don’t hold out on me. Just tell me what the great news is."
+      "Don't hold out on me. Just tell me what the great news is."
     ],
     "relation": "الجملة التي بعدها فسّرت التعبير مباشرة: Just tell me، أي قل لي الآن.",
     "wrongOptions": [
@@ -2419,7 +2466,7 @@ function renderTranscriptBubbles(lines, isArabic, q) {
     var cls = speakerColors[line.speaker];
     html += '<div class="bubble ' + cls + '">' +
       '<span class="bubble-speaker">' + safeHtml(line.speaker) + '</span>' +
-      '<div class="bubble-text">' + (isArabic ? safeHtml(line.text) : highlightEvidenceText(line.text, markers)) + '</div>' +
+      '<div class="bubble-text ' + (isArabic ? 'ar-text' : 'en-text') + '">' + (isArabic ? safeHtml(line.text) : highlightEvidenceText(line.text, markers)) + '</div>' +
     '</div>';
   });
   html += '</div>';
@@ -2438,12 +2485,12 @@ function renderStudyStyleExplanation(q, labels) {
       '<div class="study-exp-box"><h4>1. ترجمة السؤال</h4><p>' + txt(q.question_ar) + '</p></div>' +
       '<div class="study-exp-box"><h4>2. 🛑 معنى السؤال</h4><p>' + txt(q.meaning) + '</p></div>' +
       '<div class="study-exp-box"><h4>3. 🎧 المهارة</h4><p>' + txt(q.skill) + '</p></div>' +
-      '<div class="study-exp-box answer"><h4>4. ✅ الإجابة الصحيحة</h4><p style="direction:ltr;text-align:left">' + txt(answer) + '<br><b>ترجمة الإجابة:</b> ' + txt(q.answer_ar) + '</p></div>' +
+      '<div class="study-exp-box answer"><h4>4. ✅ الإجابة الصحيحة</h4><p class="en-text">' + txt(answer) + '</p><p class="ar-text"><b>ترجمة الإجابة:</b> ' + txt(q.answer_ar) + '</p></div>' +
     '</div>' +
-    '<div class="study-exp-box warn"><h4>📜 دليل الاستماع المختصر</h4><p style="direction:ltr;text-align:left">' + txt(q.mini_transcript) + '</p></div>' +
+    '<div class="study-exp-box warn"><h4>📜 دليل الاستماع المختصر</h4><p class="en-text">' + txt(q.mini_transcript) + '</p></div>' +
     '<div class="study-exp-grid">' +
       '<div class="study-exp-box"><h4>5. ❓ لماذا هذه الإجابة؟</h4><p>' + txt(q.why || q.explanation) + '</p></div>' +
-      '<div class="study-exp-box evidence"><h4>6. 📍 الدليل من الصوت</h4><p style="direction:ltr;text-align:left">' + evidence + '<br><b>ترجمة/توضيح الدليل:</b> ' + txt(q.evidence_ar) + '</p></div>' +
+      '<div class="study-exp-box evidence"><h4>6. 📍 الدليل من الصوت</h4><p class="en-text">' + evidence + '</p><p class="ar-text"><b>ترجمة/توضيح الدليل:</b> ' + txt(q.evidence_ar) + '</p></div>' +
     '</div>' +
     '<div class="study-exp-box"><h4>7. 🔗 العلاقة بين الدليل والإجابة</h4><p>' + txt(q.link || q.relation) + '</p></div>' +
     '<div class="study-exp-box"><h4>8. ❌ لماذا الخيارات الأخرى خطأ؟</h4><div class="study-wrong-grid">' + wrongs + '</div></div>';

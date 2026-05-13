@@ -274,6 +274,53 @@ a{text-decoration:none;color:inherit}
 .transcript-ar .bubble-text { text-align:right; }
 .needs-transcript { background:#fff3cd; border:1px solid #ffd966; border-radius:12px; padding:14px; font-size:13px; color:#856404; font-weight:700; direction:rtl; text-align:right; }
 </style>
+<style id="wcs-ltr-fix">
+
+/* WE CAN STEP - English Direction Fix for Listening Study/Result */
+.en-text,
+.transcript-lines,
+.transcript-line,
+.bubble-text{
+  direction:ltr !important;
+  text-align:left !important;
+  unicode-bidi:embed;
+}
+.mixed-text{
+  unicode-bidi:plaintext;
+}
+.ar-text{
+  direction:rtl !important;
+  text-align:right !important;
+  unicode-bidi:embed;
+}
+.exp-box.answer p.en-text,
+.exp-box.warn p.en-text,
+.exp-box.evidence .en-text,
+.study-exp-box.answer p.en-text,
+.study-exp-box.warn p.en-text,
+.study-exp-box.evidence .en-text{
+  direction:ltr !important;
+  text-align:left !important;
+  unicode-bidi:embed;
+  line-height:1.9;
+}
+.exp-box.evidence .ar-text,
+.study-exp-box.evidence .ar-text,
+.study-exp-box.answer .ar-text,
+.exp-box.answer .ar-text{
+  margin-top:8px;
+  line-height:1.9;
+}
+.evidence-mark{
+  direction:ltr;
+  unicode-bidi:embed;
+}
+.evidence-badge{
+  margin-right:6px;
+  margin-left:0;
+}
+
+</style>
 </head>
 <body>
 

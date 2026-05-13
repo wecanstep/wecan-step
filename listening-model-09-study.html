@@ -1,6 +1,206 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+<style>
+/* ══ WE CAN STEP - Study Explanation Tabs ══ */
+.study-tabs-card{
+  margin-top:16px;
+  border:1.5px solid #dbe3ee;
+  border-radius:24px;
+  overflow:hidden;
+  background:#fff;
+  box-shadow:0 10px 28px rgba(15,23,42,.06);
+}
+.study-tabs-nav{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  padding:14px;
+  background:linear-gradient(135deg,#f8fafc,#eef6ff);
+  border-bottom:1px solid #e2e8f0;
+}
+.study-tab-btn{
+  border:1.5px solid #e2e8f0;
+  background:#fff;
+  color:#173244;
+  border-radius:16px;
+  padding:12px 10px;
+  font-family:inherit;
+  font-size:13.5px;
+  font-weight:950;
+  line-height:1.45;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  min-height:52px;
+  transition:transform .18s, box-shadow .18s, border-color .18s, background .18s, color .18s;
+}
+.study-tab-btn:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(15,23,42,.08)}
+.study-tab-btn.active{color:#fff;border-color:transparent;box-shadow:0 10px 22px rgba(15,23,42,.14)}
+.study-tab-btn.tab-translate.active{background:linear-gradient(135deg,#2563eb,#60a5fa)}
+.study-tab-btn.tab-meaning.active{background:linear-gradient(135deg,#dc2626,#fb7185)}
+.study-tab-btn.tab-skill.active{background:linear-gradient(135deg,#7c3aed,#a78bfa)}
+.study-tab-btn.tab-answer.active{background:linear-gradient(135deg,#16a34a,#34d399)}
+.study-tab-btn.tab-why.active{background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#173244}
+.study-tab-btn.tab-evidence.active{background:linear-gradient(135deg,#0ea5e9,#38bdf8)}
+.study-tab-btn.tab-link.active{background:linear-gradient(135deg,#0d9488,#2dd4bf)}
+.study-tab-btn.tab-wrong.active{background:linear-gradient(135deg,#991b1b,#ef4444)}
+.study-tabs-content{padding:16px;background:#fff}
+.study-tab-panel{display:none;animation:tabFade .22s ease}
+.study-tab-panel.active{display:block}
+@keyframes tabFade{from{opacity:.35;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.study-tab-panel .exp-box{margin:0;min-height:170px}
+.study-tab-panel .exp-box h4{font-size:16px;margin-bottom:10px}
+.study-tab-panel .exp-box p{font-size:15.5px;line-height:2}
+.study-tab-panel .en-text{direction:ltr;text-align:left;unicode-bidi:plaintext}
+.study-tab-panel .ar-text{direction:rtl;text-align:right}
+.study-tab-panel .wrong-grid{margin-top:10px}
+.tab-mini-evidence{margin-bottom:12px}
+.study-tabs-hint{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px 14px 0;
+  color:#64748b;
+  font-size:12.5px;
+  font-weight:800;
+}
+.study-tabs-hint b{color:#173244}
+@media(min-width:1024px){
+  .study-tab-btn{font-size:14.5px;min-height:58px;padding:14px 12px}
+  .study-tabs-nav{gap:12px;padding:16px}
+  .study-tabs-content{padding:18px}
+  .study-tab-panel .exp-box h4{font-size:17px}
+  .study-tab-panel .exp-box p{font-size:16.5px;line-height:2.05}
+}
+@media(max-width:900px){
+  .study-tabs-nav{grid-template-columns:repeat(2,1fr);gap:8px;padding:12px}
+  .study-tab-btn{font-size:12.5px;min-height:48px;border-radius:14px;padding:10px 8px}
+  .study-tabs-content{padding:12px}
+  .study-tab-panel .exp-box{min-height:auto}
+}
+
+
+
+/* WE CAN STEP - Study explanation boxes (no tab navigation) */
+.study-boxes-card{
+  background:#fff;
+  border:1.5px solid #dbe3ee;
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:0 12px 30px rgba(15,23,42,.07);
+}
+.study-boxes-hint{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+  padding:16px 18px;
+  background:linear-gradient(135deg,#0f766e,#0e7490);
+  color:#fff;
+  border-bottom:1px solid rgba(255,255,255,.12);
+}
+.study-boxes-hint b{font-size:16px;font-weight:950;line-height:1.5}
+.study-boxes-hint span{font-size:13px;font-weight:800;color:rgba(255,255,255,.85);line-height:1.6}
+.study-boxes-grid{
+  padding:18px;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+.study-section-box{
+  position:relative;
+  border:1.5px solid #e2e8f0;
+  border-radius:20px;
+  padding:16px 17px;
+  min-height:150px;
+  overflow:hidden;
+  box-shadow:0 8px 20px rgba(15,23,42,.045);
+}
+.study-section-box::before{
+  content:"";
+  position:absolute;inset:0 auto 0 0;
+  width:5px;background:var(--box-accent,#2563eb);
+}
+.study-section-box h4{
+  display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+  margin:0 0 10px;
+  font-size:16px;font-weight:950;color:var(--box-accent,#173244);
+  line-height:1.5;
+}
+.study-section-box .section-badge{
+  width:30px;height:30px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:950;color:#fff;flex-shrink:0;
+  background:linear-gradient(135deg,#173244,#0f766e);
+  box-shadow:0 8px 16px rgba(15,118,110,.18);
+}
+.study-section-box .section-icon{
+  width:30px;height:30px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;
+  background:#fff;border:1px solid rgba(15,118,110,.18);
+  box-shadow:0 4px 10px rgba(15,23,42,.06);font-size:15px;flex-shrink:0;
+}
+.study-section-box .section-title{font-weight:950}
+.study-section-box p{
+  margin:0;
+  font-size:15.5px;
+  font-weight:750;
+  line-height:2;
+  color:#243447;
+}
+.study-section-box .en-text{direction:ltr;text-align:left;unicode-bidi:plaintext;font-family:Arial,Helvetica,sans-serif}
+.study-section-box .ar-text{direction:rtl;text-align:right}
+.study-section-box.box-translate{--box-accent:#2563eb;background:linear-gradient(180deg,#eff6ff,#fff)}
+.study-section-box.box-meaning{--box-accent:#dc2626;background:linear-gradient(180deg,#fff5f5,#fff)}
+.study-section-box.box-skill{--box-accent:#7c3aed;background:linear-gradient(180deg,#f5f3ff,#fff)}
+.study-section-box.box-answer{--box-accent:#16a34a;background:linear-gradient(180deg,#f0fdf4,#fff);border-color:#bbf7d0}
+.study-section-box.box-why{--box-accent:#f59e0b;background:linear-gradient(180deg,#fffbeb,#fff)}
+.study-section-box.box-evidence{--box-accent:#0ea5e9;background:linear-gradient(180deg,#eff6ff,#fff);border-color:#bfdbfe}
+.study-section-box.box-link{--box-accent:#0d9488;background:linear-gradient(180deg,#ecfeff,#fff);grid-column:1/-1;min-height:auto}
+.study-section-box.box-wrong{--box-accent:#dc2626;background:linear-gradient(180deg,#fff5f5,#fff);grid-column:1/-1;min-height:auto}
+.study-section-box.box-answer .answer-main{
+  display:inline-flex;align-items:center;gap:8px;
+  background:#dcfce7;border:1px solid #86efac;color:#14532d;
+  padding:9px 13px;border-radius:14px;font-weight:950;margin-bottom:10px;
+}
+.study-section-box.box-evidence .evidence-line{
+  background:#fff;border:1px solid #bfdbfe;border-radius:14px;
+  padding:12px 13px;font-weight:950;color:#173244;line-height:1.8;
+}
+.study-section-box.box-wrong .wrong-grid{margin-top:8px}
+@media(min-width:1024px){
+  .study-boxes-hint{padding:18px 22px}
+  .study-boxes-hint b{font-size:18px}
+  .study-boxes-hint span{font-size:14.5px}
+  .study-boxes-grid{gap:16px;padding:20px}
+  .study-section-box{padding:20px 22px;min-height:170px}
+  .study-section-box h4{font-size:22px;gap:12px;margin-bottom:14px}
+  .study-section-box .section-title{font-size:22px;font-weight:950;letter-spacing:-.2px}
+  .study-section-box .section-badge{width:38px;height:38px;border-radius:13px;font-size:18px}
+  .study-section-box .section-icon{width:38px;height:38px;border-radius:13px;font-size:18px}
+  .study-section-box p{font-size:17.8px;line-height:2.15}
+  .study-section-box .ar-text, .study-section-box.box-translate p, .study-section-box.box-meaning p, .study-section-box.box-skill p, .study-section-box.box-why p, .study-section-box.box-link p{font-size:18.2px}
+  .study-section-box.box-answer .answer-main, .study-section-box.box-evidence .evidence-line{font-size:17.4px}
+  .wrong-card{font-size:16px;line-height:2}
+}
+@media(max-width:900px){.study-boxes-grid{grid-template-columns:1fr}.study-section-box.box-link,.study-section-box.box-wrong{grid-column:auto}}
+@media(max-width:600px){
+  .study-boxes-hint{padding:14px 15px}
+  .study-boxes-hint b{font-size:15px}
+  .study-boxes-grid{padding:13px;gap:11px}
+  .study-section-box{padding:14px 15px;border-radius:17px;min-height:auto}
+  .study-section-box h4{font-size:15px}
+  .study-section-box .section-badge,.study-section-box .section-icon{width:28px;height:28px;border-radius:9px;font-size:14px}
+  .study-section-box p{font-size:14px;line-height:1.9}
+}
+
+</style>
+
+
+<meta name="robots" content="noindex, nofollow">
 <style id="wcs-auth-hide">body{visibility:hidden!important}</style>
 <script type="module" src="./subscription-guard.js"></script>
 
@@ -81,9 +281,9 @@ a{text-decoration:none;color:inherit}
 audio{width:100%;display:block;accent-color:var(--teal)}
 .study-note{margin-top:12px;background:#fff7ed;border:1px solid #fed7aa;border-right:5px solid #f59e0b;border-radius:16px;padding:12px 14px;color:#7c2d12;font-size:13px;font-weight:800;line-height:1.8}
 .q-card{border:1.5px solid var(--border);border-radius:22px;background:#fff;box-shadow:0 8px 24px rgba(15,23,42,.05);overflow:hidden;margin:18px 0}
-.q-head{background:#f8fafc;border-bottom:1px solid var(--border);padding:18px 20px;display:flex;align-items:flex-start;gap:12px;direction:ltr}
-.q-badge{background:var(--gold);color:var(--navy2);font-weight:950;border-radius:11px;padding:6px 12px;font-size:13px;flex-shrink:0}
-.q-text{font-size:18px;color:var(--navy);font-weight:950;line-height:1.65;text-align:left;direction:ltr}
+.q-head{background:linear-gradient(135deg,var(--navy),#1e4060);border-bottom:1px solid rgba(255,255,255,.08);padding:18px 20px;display:flex;align-items:flex-start;gap:12px;direction:ltr}
+.q-badge{background:var(--gold);color:var(--navy2);font-weight:950;border-radius:11px;padding:6px 12px;font-size:13px;flex-shrink:0;box-shadow:0 6px 14px rgba(251,191,36,.24)}
+.q-text{font-size:18px;color:#fff;font-weight:950;line-height:1.65;text-align:left;direction:ltr}
 .options{padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:11px;direction:ltr}
 .opt{display:flex;gap:10px;align-items:flex-start;border:1.5px solid #e2e8f0;border-radius:15px;padding:12px;background:#fff;direction:ltr}
 .opt.correct{border-color:rgba(22,163,74,.45);background:#f0fdf4}
@@ -147,20 +347,25 @@ audio{width:100%;display:block;accent-color:var(--teal)}
 }
 
 /* WE CAN STEP - Listening Transcript Blocks */
-.transcript-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px;direction:rtl}
-.transcript-box{background:#f8fafc;border:1.5px solid #dbeafe;border-radius:18px;padding:14px 15px;line-height:1.85}
-.transcript-box h4{font-size:14px;color:var(--navy);font-weight:950;margin-bottom:8px;display:flex;align-items:center;gap:7px}
-.transcript-lines{display:flex;flex-direction:column;gap:8px;direction:ltr;text-align:left}
-.transcript-line{background:#fff;border:1px solid #e2e8f0;border-radius:13px;padding:9px 11px;color:#1e293b;font-size:14px;font-weight:750;line-height:1.65}
-.transcript-line b{color:var(--teal);font-weight:950}
-.translation-lines{display:flex;flex-direction:column;gap:8px;direction:rtl;text-align:right}
-.translation-line{background:#fff;border:1px solid #e2e8f0;border-radius:13px;padding:9px 11px;color:#334155;font-size:14px;font-weight:750;line-height:1.75}
-.translation-line b{color:var(--teal);font-weight:950}
+.transcript-wrap{display:flex;flex-direction:column;gap:12px;direction:ltr}
+.transcript-heads{display:grid;grid-template-columns:1fr 1fr;gap:12px;direction:ltr}
+.transcript-head-box{background:#f8fafc;border:1.5px solid #dbeafe;border-radius:18px;padding:14px 15px;line-height:1.85}
+.transcript-head-box.en{direction:ltr;text-align:left}
+.transcript-head-box.ar{direction:rtl;text-align:right}
+.transcript-head-box h4{font-size:14px;color:var(--navy);font-weight:950;margin:0;display:flex;align-items:center;gap:7px}
+.transcript-pairs{display:flex;flex-direction:column;gap:10px}
+.transcript-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;direction:ltr}
+.transcript-line{background:#fff;border:1px solid #e2e8f0;border-radius:13px;padding:12px 14px;color:#1e293b;font-size:14px;font-weight:750;line-height:1.8;direction:ltr;text-align:left}
+.translation-line{background:#fff;border:1px solid #e2e8f0;border-radius:13px;padding:12px 14px;color:#334155;font-size:15px;font-weight:750;line-height:1.95;direction:rtl;text-align:right}
+.transcript-line b,.translation-line b{color:var(--teal);font-weight:950}
 @media(min-width:1024px){
-  .transcript-box h4{font-size:15.5px}
-  .transcript-line,.translation-line{font-size:15.5px;line-height:1.9}
+  .transcript-head-box h4{font-size:15.5px}
+  .transcript-line{font-size:15.5px;line-height:1.95}
+  .translation-line{font-size:17px;line-height:2.05}
 }
-@media(max-width:900px){.transcript-wrap{grid-template-columns:1fr}}
+@media(max-width:900px){
+  .transcript-heads,.transcript-pair{grid-template-columns:1fr}
+}
 
 /* WE CAN STEP - Evidence Highlights inside Listening Transcript */
 .evidence-mark{
@@ -263,6 +468,53 @@ audio{width:100%;display:block;accent-color:var(--teal)}
     color:#475569;
     font-weight:750;
   }
+}
+
+</style>
+<style id="wcs-ltr-fix">
+
+/* WE CAN STEP - English Direction Fix for Listening Study/Result */
+.en-text,
+.transcript-lines,
+.transcript-line,
+.bubble-text{
+  direction:ltr !important;
+  text-align:left !important;
+  unicode-bidi:embed;
+}
+.mixed-text{
+  unicode-bidi:plaintext;
+}
+.ar-text{
+  direction:rtl !important;
+  text-align:right !important;
+  unicode-bidi:embed;
+}
+.exp-box.answer p.en-text,
+.exp-box.warn p.en-text,
+.exp-box.evidence .en-text,
+.study-exp-box.answer p.en-text,
+.study-exp-box.warn p.en-text,
+.study-exp-box.evidence .en-text{
+  direction:ltr !important;
+  text-align:left !important;
+  unicode-bidi:embed;
+  line-height:1.9;
+}
+.exp-box.evidence .ar-text,
+.study-exp-box.evidence .ar-text,
+.study-exp-box.answer .ar-text,
+.exp-box.answer .ar-text{
+  margin-top:8px;
+  line-height:1.9;
+}
+.evidence-mark{
+  direction:ltr;
+  unicode-bidi:embed;
+}
+.evidence-badge{
+  margin-right:6px;
+  margin-left:0;
 }
 
 </style>
@@ -1178,7 +1430,7 @@ const questions = [
     "skill": "Vocabulary in Context – معنى تعبير اصطلاحي",
     "explanation": "المعنى المقصود من التعبير هو: لا تخفِ الخبر عني / قل لي الآن.",
     "evidence": [
-      "Don’t hold out on me. Just tell me what the great news is."
+      "Don't hold out on me. Just tell me what the great news is."
     ],
     "relation": "الجملة التي بعدها فسّرت التعبير مباشرة: Just tell me، أي قل لي الآن.",
     "wrongOptions": [
@@ -2620,17 +2872,33 @@ function highlightEvidenceText(text, markers){
   return out;
 }
 function renderDialogueLines(lines, cls, markers){
-  return (lines || []).map(row => `<div class="${cls}"><b>${esc(row.speaker)}:</b> ${cls === 'transcript-line' ? highlightEvidenceText(row.text, markers || []) : esc(row.text)}</div>`).join('');
+  return (lines || []).map(row => `<div class="${cls} ${cls === 'transcript-line' ? 'en-text' : 'ar-text'}"><b>${esc(row.speaker)}:</b> ${cls === 'transcript-line' ? highlightEvidenceText(row.text, markers || []) : esc(row.text)}</div>`).join('');
+}
+function renderTranscriptPairs(transcript, translation, markers){
+  var maxLen = Math.max((transcript || []).length, (translation || []).length);
+  var html = '';
+  for(var i = 0; i < maxLen; i++){
+    var en = (transcript || [])[i];
+    var ar = (translation || [])[i];
+    html += `<div class="transcript-pair">` +
+      `<div class="transcript-line en-text">${en ? `<b>${esc(en.speaker)}:</b> ${highlightEvidenceText(en.text, markers || [])}` : ''}</div>` +
+      `<div class="translation-line ar-text">${ar ? `<b>${esc(ar.speaker)}:</b> ${esc(ar.text)}` : ''}</div>` +
+    `</div>`;
+  }
+  return html;
 }
 function renderTranscriptSection(q){
-  return `<div class="exp-box warn"><h4>📜 دليل الاستماع المختصر</h4><p>${esc(q.mini_transcript)}</p></div>`;
+  return `<div class="exp-box warn"><h4>📜 دليل الاستماع المختصر</h4><p class="en-text">${esc(q.mini_transcript)}</p></div>`;
 }
 function renderGroupTranscriptSection(g){
   if(g.transcript && g.translation){
     var markers = getGroupMarkers(g.qIndices);
     return `<div class="transcript-wrap" style="margin:16px 0 18px">
-      <div class="transcript-box"><h4>📜 Transcript – نص الصوت</h4><div class="transcript-lines">${renderDialogueLines(g.transcript,'transcript-line', markers)}</div></div>
-      <div class="transcript-box"><h4>🌐 الترجمة</h4><div class="translation-lines">${renderDialogueLines(g.translation,'translation-line', [])}</div></div>
+      <div class="transcript-heads">
+        <div class="transcript-head-box en"><h4>📜 Transcript – نص الصوت</h4></div>
+        <div class="transcript-head-box ar"><h4>🌐 الترجمة</h4></div>
+      </div>
+      <div class="transcript-pairs">${renderTranscriptPairs(g.transcript, g.translation, markers)}</div>
     </div>`;
   }
   return '';
@@ -2639,25 +2907,26 @@ function renderGroupTranscriptSection(g){
 function renderWrong(q){
   return q.wrong.map((w,idx)=>`<div class="wrong-card"><b>${letters.filter((_,i)=>i!==q.correct)[idx] || '•'})</b> ${esc(w)}</div>`).join('');
 }
+function renderStudyBoxes(q, qi){
+  return `<div class="study-boxes-card">
+    <div class="study-boxes-hint"><b>📚 شرح السؤال بطريقة منظمة</b><span>الصناديق التالية توضّح كل جزء من الإجابة بشكل واضح ومريح للمذاكرة.</span></div>
+    <div class="study-boxes-grid">
+      <div class="study-section-box box-translate"><h4><span class="section-badge">1</span><span class="section-icon">🌐</span><span class="section-title">ترجمة السؤال</span></h4><p>${esc(q.question_ar)}</p></div>
+      <div class="study-section-box box-meaning"><h4><span class="section-badge">2</span><span class="section-icon">🛑</span><span class="section-title">معنى السؤال</span></h4><p>${esc(q.meaning)}</p></div>
+      <div class="study-section-box box-skill"><h4><span class="section-badge">3</span><span class="section-icon">🎧</span><span class="section-title">المهارة</span></h4><p>${esc(q.skill)}</p></div>
+      <div class="study-section-box box-answer"><h4><span class="section-badge">4</span><span class="section-icon">✅</span><span class="section-title">الإجابة الصحيحة</span></h4><p class="en-text answer-main">${letters[q.correct]}) ${esc(q.options[q.correct])}</p><p class="ar-text"><b>ترجمة الإجابة:</b> ${esc(q.answer_ar)}</p></div>
+      <div class="study-section-box box-why"><h4><span class="section-badge">5</span><span class="section-icon">❓</span><span class="section-title">لماذا هذه الإجابة؟</span></h4><p>${esc(q.why)}</p></div>
+      <div class="study-section-box box-evidence"><h4><span class="section-badge">6</span><span class="section-icon">📍</span><span class="section-title">الدليل من الصوت</span></h4><p class="en-text evidence-line">${esc(q.evidence)}</p><p class="ar-text"><b>ترجمة/توضيح الدليل:</b> ${esc(q.evidence_ar)}</p></div>
+      <div class="study-section-box box-link"><h4><span class="section-badge">7</span><span class="section-icon">🔗</span><span class="section-title">العلاقة بين الدليل والإجابة</span></h4><p>${esc(q.link)}</p></div>
+      <div class="study-section-box box-wrong"><h4><span class="section-badge">8</span><span class="section-icon">❌</span><span class="section-title">لماذا الخيارات الأخرى خطأ؟</span></h4><div class="wrong-grid">${renderWrong(q)}</div></div>
+    </div>
+  </div>`;
+}
 function renderQuestion(q, qi){
   return `<article class="q-card" id="q${qi+1}">
     <div class="q-head"><div class="q-badge">Q${qi+1}</div><div class="q-text">${esc(q.question)}</div></div>
     <div class="options">${renderOptions(q)}</div>
-    <div class="explain">
-      <div class="explain-grid">
-        <div class="exp-box"><h4>1. ترجمة السؤال</h4><p>${esc(q.question_ar)}</p></div>
-        <div class="exp-box"><h4>2. 🛑 معنى السؤال</h4><p>${esc(q.meaning)}</p></div>
-        <div class="exp-box"><h4>3. 🎧 المهارة</h4><p>${esc(q.skill)}</p></div>
-        <div class="exp-box answer"><h4>4. ✅ الإجابة الصحيحة</h4><p>${letters[q.correct]}) ${esc(q.options[q.correct])}<br><b>ترجمة الإجابة:</b> ${esc(q.answer_ar)}</p></div>
-      </div>
-      ${renderTranscriptSection(q)}
-      <div class="explain-grid">
-        <div class="exp-box"><h4>5. ❓ لماذا هذه الإجابة؟</h4><p>${esc(q.why)}</p></div>
-        <div class="exp-box evidence"><h4>6. 📍 الدليل من الصوت</h4><p>${esc(q.evidence)}<br><b>ترجمة/توضيح الدليل:</b> ${esc(q.evidence_ar)}</p></div>
-      </div>
-      <div class="exp-box"><h4>7. 🔗 العلاقة بين الدليل والإجابة</h4><p>${esc(q.link)}</p></div>
-      <div class="exp-box"><h4>8. ❌ لماذا الخيارات الأخرى خطأ؟</h4><div class="wrong-grid">${renderWrong(q)}</div></div>
-    </div>
+    <div class="explain">${renderStudyBoxes(q, qi)}</div>
   </article>`;
 }
 function showGroup(i){

@@ -313,6 +313,53 @@ a{text-decoration:none;color:inherit}
 .study-wrong-card{background:#fff5f5;border:1.5px solid #fecaca;border-radius:14px;padding:11px 12px;line-height:1.75;color:#7f1d1d;font-size:13px;font-weight:750;direction:rtl;text-align:right}
 @media(max-width:700px){.study-exp-grid,.study-wrong-grid{grid-template-columns:1fr}}
 </style>
+<style id="wcs-ltr-fix">
+
+/* WE CAN STEP - English Direction Fix for Listening Study/Result */
+.en-text,
+.transcript-lines,
+.transcript-line,
+.bubble-text{
+  direction:ltr !important;
+  text-align:left !important;
+  unicode-bidi:embed;
+}
+.mixed-text{
+  unicode-bidi:plaintext;
+}
+.ar-text{
+  direction:rtl !important;
+  text-align:right !important;
+  unicode-bidi:embed;
+}
+.exp-box.answer p.en-text,
+.exp-box.warn p.en-text,
+.exp-box.evidence .en-text,
+.study-exp-box.answer p.en-text,
+.study-exp-box.warn p.en-text,
+.study-exp-box.evidence .en-text{
+  direction:ltr !important;
+  text-align:left !important;
+  unicode-bidi:embed;
+  line-height:1.9;
+}
+.exp-box.evidence .ar-text,
+.study-exp-box.evidence .ar-text,
+.study-exp-box.answer .ar-text,
+.exp-box.answer .ar-text{
+  margin-top:8px;
+  line-height:1.9;
+}
+.evidence-mark{
+  direction:ltr;
+  unicode-bidi:embed;
+}
+.evidence-badge{
+  margin-right:6px;
+  margin-left:0;
+}
+
+</style>
 </head>
 <body>
 
@@ -557,8 +604,7 @@ var questions = [
     "skill": "Detail Question – التقاط معلومة تفصيلية",
     "explanation": "السؤال يسأل عن نوع المشروع، والصوت ذكره مباشرة: history project.",
     "evidence": [
-      "I have that big history project due.",
-      "I need to find some interesting pictures and videos."
+      "I have that big history project due"
     ],
     "relation": "كلمة project في السؤال تقابلها عبارة history project في الصوت، لذلك الإجابة D.",
     "wrongOptions": [
@@ -569,7 +615,7 @@ var questions = [
     "question_ar": "ما نوع المشروع الذي يعمل عليه أسامة؟",
     "meaning": "السؤال يطلب نوع المشروع فقط، فركّز على الكلمة التي تصف المشروع: history / business / family / current events.",
     "answer_ar": "مشروع تاريخي",
-    "evidence_ar": "أسامة ذكر صراحة أن لديه history project، ثم قال إنه يحتاج صورًا وفيديوهات للعرض.",
+    "evidence_ar": "أسامة ذكر صراحة أن لديه history project؛ وهذا هو نوع المشروع المطلوب في السؤال.",
     "why": "السؤال يسأل عن نوع المشروع، والصوت ذكره مباشرة: history project.",
     "link": "كلمة project في السؤال تقابلها عبارة history project في الصوت، لذلك الإجابة D.",
     "wrong": [
@@ -577,7 +623,7 @@ var questions = [
       "Business project لا يناسب لأن السؤال لا يتجه إلى عمل أو تجارة.",
       "Family project خيار مشتت؛ وجود أسماء أشخاص لا يعني أن المشروع عائلي."
     ],
-    "mini_transcript": "I have that big history project due. / I need to find some interesting pictures and videos.",
+    "mini_transcript": "I have that big history project due",
     "transcript": [
       {
         "speaker": "Omar",
@@ -654,7 +700,7 @@ var questions = [
     "skill": "Detail / Group Identification – تحديد الفئة",
     "explanation": "السؤال عن أغلب المشاركين في النزهات، والمقطع قال إن معظم النزهات عائلية الطابع.",
     "evidence": [
-      "Most picnics are family-oriented."
+      "Most picnics are family-oriented"
     ],
     "relation": "Most picnics are family-oriented = أغلب المشاركين Families.",
     "wrongOptions": [
@@ -673,7 +719,7 @@ var questions = [
       "Students خيار محتمل في رحلة مدرسية، لكنه ليس الإجابة المعتمدة.",
       "Friends قد يحضرون نزهة، لكن السؤال عن معظم المشاركين."
     ],
-    "mini_transcript": "Most picnics are family-oriented.",
+    "mini_transcript": "Most picnics are family-oriented",
     "transcript": [
       {
         "speaker": "Narrator",
@@ -718,7 +764,7 @@ var questions = [
     "skill": "Speaker Role – تحديد دور المتحدث",
     "explanation": "الشخص يتصل لحجز رحلة إلى جدة، والموظف يسأله عن نوع الرحلة ووقت السفر؛ هذا دور وكيل السفر.",
     "evidence": [
-      "I'd like to make a reservation for a flight to Jeddah.",
+      "make a reservation for a flight to Jeddah",
       "Will this be one-way or round trip?"
     ],
     "relation": "reservation + flight + one-way/round trip = travel agent.",
@@ -1687,7 +1733,7 @@ var questions = [
     "skill": "Main Point / Opinion – أهم شيء حسب المتحدث",
     "explanation": "السؤال يسأل عن أهم شيء لتعلم اللغة، والمتحدث ذكره مباشرة: الاهتمام بتعلم الإنجليزية.",
     "evidence": [
-      "The most important thing is to have an interest in learning English."
+      "the most important thing is to have an interest in learning English"
     ],
     "relation": "most important thing = having an interest in learning English.",
     "wrongOptions": [
@@ -1706,7 +1752,7 @@ var questions = [
       "السفر للخارج ليس الشرط الأساسي للتعلم.",
       "العيش مع عائلة تتحدث الإنجليزية فقط ليس الجواب المعتمد."
     ],
-    "mini_transcript": "The most important thing is to have an interest in learning English.",
+    "mini_transcript": "the most important thing is to have an interest in learning English",
     "transcript": [
       {
         "speaker": "Interviewer",
@@ -1855,7 +1901,7 @@ var questions = [
     "skill": "Announcement Context / Location – تحديد المطار",
     "explanation": "السؤال يسأل أين يُحتمل سماع الإعلان. بداية الإعلان تحدد أن الرحلة من الدوحة، لذلك المطار هو الدوحة.",
     "evidence": [
-      "Qatar Airways flight nine forty-two from Doha to Riyadh with a stop in Bahrain."
+      "from Doha to Riyadh with a stop in Bahrain"
     ],
     "relation": "from Doha = airport in Doha.",
     "wrongOptions": [
@@ -1874,7 +1920,7 @@ var questions = [
       "Riyadh خيار مشتت لكنه ليس المكان الصحيح.",
       "Frankfurt قد يكون وجهة أو مدينة مذكورة، لكنه ليس مكان سماع الإعلان حسب السؤال."
     ],
-    "mini_transcript": "Qatar Airways flight nine forty-two from Doha to Riyadh with a stop in Bahrain.",
+    "mini_transcript": "from Doha to Riyadh with a stop in Bahrain",
     "transcript": [
       {
         "speaker": "Announcer",
@@ -2633,7 +2679,7 @@ var questions = [
     "skill": "Place/Context – تحديد المكان",
     "explanation": "المحادثة فيها مكتب وأوراق ونماذج وطلب وظيفة، وهذا يدل على Business office.",
     "evidence": [
-      "There was an accident in the office last week, and some papers were destroyed."
+      "some papers were destroyed"
     ],
     "relation": "office + application forms + interviews = Business office.",
     "wrongOptions": [
@@ -2652,7 +2698,7 @@ var questions = [
       "Conference room قاعة اجتماعات، وليست المكان الأقرب لمحادثة متقدم وظيفة مع سكرتير.",
       "Cafeteria لا تناسب سياق العمل والتقديم."
     ],
-    "mini_transcript": "There was an accident in the office last week, and some papers were destroyed.",
+    "mini_transcript": "some papers were destroyed",
     "transcript": [
       {
         "speaker": "Sami",
@@ -3076,7 +3122,7 @@ function renderTranscriptBubbles(lines, isArabic, q) {
     var cls = speakerColors[line.speaker];
     html += '<div class="bubble ' + cls + '">' +
       '<span class="bubble-speaker">' + safeHtml(line.speaker) + '</span>' +
-      '<div class="bubble-text">' + (isArabic ? safeHtml(line.text) : highlightEvidenceText(line.text, markers)) + '</div>' +
+      '<div class="bubble-text ' + (isArabic ? 'ar-text' : 'en-text') + '">' + (isArabic ? safeHtml(line.text) : highlightEvidenceText(line.text, markers)) + '</div>' +
     '</div>';
   });
   html += '</div>';
@@ -3095,12 +3141,12 @@ function renderStudyStyleExplanation(q, labels) {
       '<div class="study-exp-box"><h4>1. ترجمة السؤال</h4><p>' + txt(q.question_ar) + '</p></div>' +
       '<div class="study-exp-box"><h4>2. 🛑 معنى السؤال</h4><p>' + txt(q.meaning) + '</p></div>' +
       '<div class="study-exp-box"><h4>3. 🎧 المهارة</h4><p>' + txt(q.skill) + '</p></div>' +
-      '<div class="study-exp-box answer"><h4>4. ✅ الإجابة الصحيحة</h4><p style="direction:ltr;text-align:left">' + txt(answer) + '<br><b>ترجمة الإجابة:</b> ' + txt(q.answer_ar) + '</p></div>' +
+      '<div class="study-exp-box answer"><h4>4. ✅ الإجابة الصحيحة</h4><p class="en-text">' + txt(answer) + '</p><p class="ar-text"><b>ترجمة الإجابة:</b> ' + txt(q.answer_ar) + '</p></div>' +
     '</div>' +
-    '<div class="study-exp-box warn"><h4>📜 دليل الاستماع المختصر</h4><p style="direction:ltr;text-align:left">' + txt(q.mini_transcript) + '</p></div>' +
+    '<div class="study-exp-box warn"><h4>📜 دليل الاستماع المختصر</h4><p class="en-text">' + txt(q.mini_transcript) + '</p></div>' +
     '<div class="study-exp-grid">' +
       '<div class="study-exp-box"><h4>5. ❓ لماذا هذه الإجابة؟</h4><p>' + txt(q.why || q.explanation) + '</p></div>' +
-      '<div class="study-exp-box evidence"><h4>6. 📍 الدليل من الصوت</h4><p style="direction:ltr;text-align:left">' + evidence + '<br><b>ترجمة/توضيح الدليل:</b> ' + txt(q.evidence_ar) + '</p></div>' +
+      '<div class="study-exp-box evidence"><h4>6. 📍 الدليل من الصوت</h4><p class="en-text">' + evidence + '</p><p class="ar-text"><b>ترجمة/توضيح الدليل:</b> ' + txt(q.evidence_ar) + '</p></div>' +
     '</div>' +
     '<div class="study-exp-box"><h4>7. 🔗 العلاقة بين الدليل والإجابة</h4><p>' + txt(q.link || q.relation) + '</p></div>' +
     '<div class="study-exp-box"><h4>8. ❌ لماذا الخيارات الأخرى خطأ؟</h4><div class="study-wrong-grid">' + wrongs + '</div></div>';
