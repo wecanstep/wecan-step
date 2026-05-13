@@ -11,6 +11,64 @@
 <meta name="robots" content="noindex, nofollow">
 
 <style>
+/* ══ WE CAN STEP - Study Explanation Tabs ══ */
+.study-tabs-card{margin-top:16px;border:1.5px solid #dbe3ee;border-radius:24px;overflow:hidden;background:#fff;box-shadow:0 10px 28px rgba(15,23,42,.06)}
+.study-tabs-nav{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:14px;background:linear-gradient(135deg,#f8fafc,#eef6ff);border-bottom:1px solid #e2e8f0}
+.study-tab-btn{border:1.5px solid #e2e8f0;background:#fff;color:#173244;border-radius:16px;padding:12px 10px;font-family:inherit;font-size:13.5px;font-weight:950;line-height:1.45;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;min-height:52px;transition:transform .18s,box-shadow .18s,border-color .18s,background .18s,color .18s}
+.study-tab-btn.active{color:#fff;border-color:transparent;box-shadow:0 10px 22px rgba(15,23,42,.14)}
+.study-tab-btn.tab-translate.active{background:linear-gradient(135deg,#2563eb,#60a5fa)}
+.study-tab-btn.tab-meaning.active{background:linear-gradient(135deg,#dc2626,#fb7185)}
+.study-tab-btn.tab-skill.active{background:linear-gradient(135deg,#7c3aed,#a78bfa)}
+.study-tab-btn.tab-answer.active{background:linear-gradient(135deg,#16a34a,#34d399)}
+.study-tab-btn.tab-why.active{background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#173244}
+.study-tab-btn.tab-evidence.active{background:linear-gradient(135deg,#0ea5e9,#38bdf8)}
+.study-tab-btn.tab-link.active{background:linear-gradient(135deg,#0d9488,#2dd4bf)}
+.study-tab-btn.tab-wrong.active{background:linear-gradient(135deg,#991b1b,#ef4444)}
+.study-tabs-content{padding:16px;background:#fff}
+.study-tab-panel{display:none;animation:tabFade .22s ease}
+.study-tab-panel.active{display:block}
+@keyframes tabFade{from{opacity:.35;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.study-tab-panel .exp-box{margin:0;min-height:170px}
+.study-tab-panel .exp-box h4{font-size:16px;margin-bottom:10px}
+.study-tab-panel .exp-box p{font-size:15.5px;line-height:2}
+.study-tab-panel .en-text{direction:ltr;text-align:left;unicode-bidi:plaintext}
+.study-tab-panel .ar-text{direction:rtl;text-align:right}
+.study-tabs-hint{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px 0;color:#64748b;font-size:12.5px;font-weight:800}
+.study-tabs-hint b{color:#173244}
+@media(min-width:1024px){.study-tab-btn{font-size:14.5px;min-height:58px;padding:14px 12px}.study-tabs-nav{gap:12px;padding:16px}.study-tabs-content{padding:18px}.study-tab-panel .exp-box h4{font-size:17px}.study-tab-panel .exp-box p{font-size:16.5px;line-height:2.05}}
+@media(max-width:900px){.study-tabs-nav{grid-template-columns:repeat(2,1fr);gap:8px;padding:12px}.study-tab-btn{font-size:12.5px;min-height:48px;border-radius:14px;padding:10px 8px}.study-tabs-content{padding:12px}.study-tab-panel .exp-box{min-height:auto}}
+/* ══ WE CAN STEP - Study Boxes ══ */
+.study-boxes-card{background:#fff;border:1.5px solid #dbe3ee;border-radius:24px;overflow:hidden;box-shadow:0 12px 30px rgba(15,23,42,.07)}
+.study-boxes-hint{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:16px 18px;background:linear-gradient(135deg,#0f766e,#0e7490);color:#fff;border-bottom:1px solid rgba(255,255,255,.12)}
+.study-boxes-hint b{font-size:16px;font-weight:950;line-height:1.5}
+.study-boxes-hint span{font-size:13px;font-weight:800;color:rgba(255,255,255,.85);line-height:1.6}
+.study-boxes-grid{padding:18px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.study-section-box{position:relative;border:1.5px solid #e2e8f0;border-radius:20px;padding:16px 17px;min-height:150px;overflow:hidden;box-shadow:0 8px 20px rgba(15,23,42,.045)}
+.study-section-box::before{content:"";position:absolute;inset:0 auto 0 0;width:5px;background:var(--box-accent,#2563eb)}
+.study-section-box h4{display:flex;align-items:center;gap:8px;margin:0 0 10px;font-size:16px;font-weight:950;color:var(--box-accent,#173244);line-height:1.5}
+.study-section-box .section-badge{width:30px;height:30px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;font-size:15px;font-weight:950;color:#fff;flex-shrink:0;background:linear-gradient(135deg,#173244,#0f766e);box-shadow:0 8px 16px rgba(15,118,110,.18)}
+.study-section-box .section-icon{width:30px;height:30px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;background:#fff;border:1px solid rgba(15,118,110,.18);box-shadow:0 4px 10px rgba(15,23,42,.06);font-size:15px;flex-shrink:0}
+.study-section-box .section-title{font-weight:950}
+.study-section-box p{margin:0;font-size:15.5px;font-weight:750;line-height:2;color:#243447}
+.study-section-box .en-text{direction:ltr;text-align:left;unicode-bidi:plaintext;font-family:Arial,Helvetica,sans-serif}
+.study-section-box .ar-text{direction:rtl;text-align:right}
+.study-section-box.box-translate{--box-accent:#2563eb;background:linear-gradient(180deg,#eff6ff,#fff)}
+.study-section-box.box-meaning{--box-accent:#dc2626;background:linear-gradient(180deg,#fff5f5,#fff)}
+.study-section-box.box-skill{--box-accent:#7c3aed;background:linear-gradient(180deg,#f5f3ff,#fff)}
+.study-section-box.box-answer{--box-accent:#16a34a;background:linear-gradient(180deg,#f0fdf4,#fff);border-color:#bbf7d0}
+.study-section-box.box-why{--box-accent:#f59e0b;background:linear-gradient(180deg,#fffbeb,#fff)}
+.study-section-box.box-evidence{--box-accent:#0ea5e9;background:linear-gradient(180deg,#eff6ff,#fff);border-color:#bfdbfe}
+.study-section-box.box-link{--box-accent:#0d9488;background:linear-gradient(180deg,#ecfeff,#fff);grid-column:1/-1;min-height:auto}
+.study-section-box.box-wrong{--box-accent:#dc2626;background:linear-gradient(180deg,#fff5f5,#fff);grid-column:1/-1;min-height:auto}
+.study-section-box.box-answer .answer-main{display:inline-flex;align-items:center;gap:8px;background:#dcfce7;border:1px solid #86efac;color:#14532d;padding:9px 13px;border-radius:14px;font-weight:950;margin-bottom:10px}
+.study-section-box.box-evidence .evidence-line{background:#fff;border:1px solid #bfdbfe;border-radius:14px;padding:12px 13px;font-weight:950;color:#173244;line-height:1.8}
+.study-section-box.box-wrong .wrong-grid{margin-top:8px}
+@media(min-width:1024px){.study-boxes-hint{padding:18px 22px}.study-boxes-hint b{font-size:18px}.study-boxes-hint span{font-size:14.5px}.study-boxes-grid{gap:16px;padding:20px}.study-section-box{padding:18px 20px;min-height:165px}.study-section-box h4{font-size:22px;gap:12px;margin-bottom:14px}.study-section-box .section-title{font-size:22px;font-weight:950;letter-spacing:-.2px}.study-section-box p{font-size:17.8px;line-height:2.15}.study-section-box .ar-text,.study-section-box.box-translate p,.study-section-box.box-meaning p,.study-section-box.box-skill p,.study-section-box.box-why p,.study-section-box.box-link p{font-size:18.2px}.study-section-box.box-answer .answer-main,.study-section-box.box-evidence .evidence-line{font-size:17.4px}}
+@media(max-width:900px){.study-boxes-grid{grid-template-columns:1fr}.study-section-box.box-link,.study-section-box.box-wrong{grid-column:auto}}
+@media(max-width:600px){.study-boxes-hint{padding:14px 15px}.study-boxes-hint b{font-size:15px}.study-boxes-grid{padding:13px;gap:11px}.study-section-box{padding:14px 15px;border-radius:17px;min-height:auto}.study-section-box h4{font-size:15px}.study-section-box p{font-size:14px;line-height:1.9}}
+</style>
+
+<style>
 :root{
   --navy:#173244;--navy2:#0b2035;--blue:#2563eb;
   --gold:#fbbf24;--gold2:#f59e0b;--bg:#eef2f7;
@@ -2472,28 +2530,52 @@ function renderTranscriptBubbles(lines, isArabic, q) {
   html += '</div>';
   return html;
 }
-function renderStudyStyleExplanation(q, labels) {
-  function txt(v){ return safeHtml(v || '—'); }
+function renderStudyStyleExplanation(q, labels, userAns) {
+  function txt(v){ return (v || '—').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   var answer = labels[q.correct] + ') ' + q.options[q.correct];
-  var wrongs = (q.wrong || q.wrongOptions || []).map(function(w, idx){
-    var realIdx = idx >= q.correct ? idx + 1 : idx;
-    return '<div class="study-wrong-card"><b>' + (labels[realIdx] || '•') + '</b> ' + txt(w) + '</div>';
-  }).join('');
-  var evidence = Array.isArray(q.evidence) && q.evidence.length ? q.evidence.map(function(e){ return '📍 ' + txt(e); }).join('<br>') : '⚠️ لا يوجد صوت لهذا السؤال.';
-  return '' +
-    '<div class="study-exp-grid">' +
-      '<div class="study-exp-box"><h4>1. ترجمة السؤال</h4><p>' + txt(q.question_ar) + '</p></div>' +
-      '<div class="study-exp-box"><h4>2. 🛑 معنى السؤال</h4><p>' + txt(q.meaning) + '</p></div>' +
-      '<div class="study-exp-box"><h4>3. 🎧 المهارة</h4><p>' + txt(q.skill) + '</p></div>' +
-      '<div class="study-exp-box answer"><h4>4. ✅ الإجابة الصحيحة</h4><p class="en-text">' + txt(answer) + '</p><p class="ar-text"><b>ترجمة الإجابة:</b> ' + txt(q.answer_ar) + '</p></div>' +
+  var evidenceText = Array.isArray(q.evidence) && q.evidence.length
+    ? q.evidence.map(function(e){ return '📍 ' + txt(e); }).join('<br>')
+    : '';
+  var evidenceAr = q.evidence_ar ? '<p style="margin:6px 0 0;color:#475569;font-size:13px;direction:rtl;text-align:right"><b>الترجمة:</b> ' + txt(q.evidence_ar) + '</p>' : '';
+
+  return '<div style="display:flex;flex-direction:column;gap:10px;margin-top:4px">' +
+
+    // إجابتك vs الصحيحة
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">' +
+      '<div style="background:#fff5f5;border:1.5px solid rgba(220,38,38,.2);border-radius:13px;padding:12px 14px">' +
+        '<div style="font-size:11px;font-weight:900;color:#dc2626;margin-bottom:5px">❌ إجابتك</div>' +
+        '<div style="font-size:13.5px;font-weight:800;color:#7f1d1d;direction:ltr">' + (userAns !== null && userAns !== undefined ? txt(labels[userAns] + ') ' + (q.options[userAns] || '')) : '(لم يُجب)') + '</div>' +
+      '</div>' +
+      '<div style="background:#f0fdf4;border:1.5px solid rgba(22,163,74,.2);border-radius:13px;padding:12px 14px">' +
+        '<div style="font-size:11px;font-weight:900;color:#16a34a;margin-bottom:5px">✅ الصحيحة</div>' +
+        '<div style="font-size:13.5px;font-weight:800;color:#14532d;direction:ltr">' + txt(answer) + '</div>' +
+      '</div>' +
     '</div>' +
-    '<div class="study-exp-box warn"><h4>📜 دليل الاستماع المختصر</h4><p class="en-text">' + txt(q.mini_transcript) + '</p></div>' +
-    '<div class="study-exp-grid">' +
-      '<div class="study-exp-box"><h4>5. ❓ لماذا هذه الإجابة؟</h4><p>' + txt(q.why || q.explanation) + '</p></div>' +
-      '<div class="study-exp-box evidence"><h4>6. 📍 الدليل من الصوت</h4><p class="en-text">' + evidence + '</p><p class="ar-text"><b>ترجمة/توضيح الدليل:</b> ' + txt(q.evidence_ar) + '</p></div>' +
-    '</div>' +
-    '<div class="study-exp-box"><h4>7. 🔗 العلاقة بين الدليل والإجابة</h4><p>' + txt(q.link || q.relation) + '</p></div>' +
-    '<div class="study-exp-box"><h4>8. ❌ لماذا الخيارات الأخرى خطأ؟</h4><div class="study-wrong-grid">' + wrongs + '</div></div>';
+
+    // الشرح المختصر
+    (q.why || q.explanation ? 
+      '<div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:13px;padding:12px 14px">' +
+        '<div style="font-size:11px;font-weight:900;color:#92400e;margin-bottom:5px">💡 الشرح المختصر</div>' +
+        '<p style="margin:0;font-size:13.5px;font-weight:750;color:#78350f;line-height:1.8;direction:rtl">' + txt(q.why || q.explanation) + '</p>' +
+      '</div>' : '') +
+
+    // الترجمة
+    (q.question_ar ?
+      '<div style="background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:13px;padding:12px 14px">' +
+        '<div style="font-size:11px;font-weight:900;color:#1d4ed8;margin-bottom:5px">🌐 ترجمة السؤال</div>' +
+        '<p style="margin:0;font-size:13.5px;font-weight:750;color:#1e3a8a;line-height:1.8;direction:rtl">' + txt(q.question_ar) + '</p>' +
+        (q.answer_ar ? '<p style="margin:8px 0 0;font-size:13px;font-weight:750;color:#1e40af;direction:rtl"><b>ترجمة الإجابة:</b> ' + txt(q.answer_ar) + '</p>' : '') +
+      '</div>' : '') +
+
+    // الدليل — جملة الدليل فقط
+    (evidenceText ?
+      '<div style="background:#f0f9ff;border:1.5px solid #bae6fd;border-radius:13px;padding:12px 14px">' +
+        '<div style="font-size:11px;font-weight:900;color:#0369a1;margin-bottom:5px">📍 الدليل من الصوت</div>' +
+        '<p style="margin:0;font-size:13px;font-weight:800;color:#0c4a6e;line-height:1.9;direction:ltr;font-style:italic">' + evidenceText + '</p>' +
+        evidenceAr +
+      '</div>' : '') +
+
+  '</div>';
 }
 
 function renderAudioPlayer(audioSrc, qIdx) {
@@ -2671,6 +2753,7 @@ function showResults() {
   document.getElementById('examBody').style.display   = 'none';
   document.getElementById('examStrip').style.display  = 'none';
   document.getElementById('resultsBody').style.display = 'block';
+  setTimeout(function(){ window.scrollTo({top:0,behavior:'smooth'}); }, 100);
 
   var correct = 0;
   userAnswers.forEach(function(ans, i) { if (ans === questions[i].correct) correct++; });
@@ -2733,23 +2816,12 @@ function showResults() {
 
       reviewHtml += '<div style="padding:18px;display:flex;flex-direction:column;gap:14px">';
 
-      // 1. Audio
-      reviewHtml += '<div><div style="font-size:11px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;display:flex;align-items:center;gap:6px"><span>🎧</span> الصوت</div>';
-      reviewHtml += q.audio ? '<div style="background:#f8fafc;border:1px solid var(--border);border-radius:12px;padding:14px"><audio controls src="'+q.audio+'" style="width:100%;outline:none"></audio></div></div>' : '<div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:14px;color:#9a3412;font-size:13px;font-weight:800;line-height:1.8;direction:rtl;text-align:right">⚠️ لم يتم تجميع الصوت لهذا السؤال.</div></div>';
-
-      // 2. Transcript
-      reviewHtml += '<div><div style="font-size:11px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;display:flex;align-items:center;gap:6px"><span>📜</span> Transcript — نص الصوت</div>';
-      reviewHtml += hasTranscript ? renderTranscriptBubbles(q.transcript, false, q) : '<div style="background:#f1f5f9;border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;color:var(--muted);font-size:13px;font-weight:700">⚠️ يحتاج تفريغ صوتي</div>';
-      reviewHtml += '</div>';
-
-      // 3. Translation
-      if (hasTranscript && q.translation) {
-        reviewHtml += '<div><div style="font-size:11px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;display:flex;align-items:center;gap:6px"><span>🌐</span> الترجمة</div>';
-        reviewHtml += renderTranscriptBubbles(q.translation, true, null);
-        reviewHtml += '</div>';
+      // صوت فقط إذا موجود
+      if (q.audio) {
+        reviewHtml += '<div><div style="font-size:11px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;display:flex;align-items:center;gap:6px"><span>🎧</span> الصوت</div>';
+        reviewHtml += '<div style="background:#f8fafc;border:1px solid var(--border);border-radius:12px;padding:14px"><audio controls src="'+q.audio+'" style="width:100%;outline:none"></audio></div></div>';
+        reviewHtml += '<div style="height:1px;background:var(--border)"></div>';
       }
-
-      reviewHtml += '<div style="height:1px;background:var(--border)"></div>';
 
       // 4. Question & Options
       reviewHtml += '<div><div style="font-size:11px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;display:flex;align-items:center;gap:6px"><span>❓</span> السؤال والخيارات</div>';
@@ -2773,7 +2845,7 @@ function showResults() {
       reviewHtml += '<div style="height:1px;background:var(--border)"></div>';
 
       // 5–10. Study Mode style explanation
-      reviewHtml += renderStudyStyleExplanation(q, labels);
+      reviewHtml += renderStudyStyleExplanation(q, labels, userAns);
 
       reviewHtml += '</div></div>';
     });

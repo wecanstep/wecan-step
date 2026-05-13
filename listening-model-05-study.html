@@ -257,9 +257,23 @@ a{text-decoration:none;color:inherit}
 .index-btn.active .index-icon{background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff}
 .index-text strong{display:block;color:var(--navy);font-size:13px;font-weight:950;line-height:1.35}
 .index-text span{display:block;color:var(--muted);font-size:11.5px;font-weight:700;margin-top:2px}
-.mobile-select{display:none;background:#fff;border:1px solid var(--border);border-radius:18px;padding:14px;box-shadow:0 8px 22px rgba(15,23,42,.06);margin-bottom:18px}
-.mobile-select label{display:block;color:var(--navy);font-size:13px;font-weight:950;margin-bottom:8px}
-.mobile-select select{width:100%;border:1.5px solid var(--border);border-radius:13px;padding:12px;font-family:inherit;font-size:14px;font-weight:800;color:var(--navy);background:#f8fafc}
+.mobile-index{display:none;background:#fff;border:1px solid var(--border);border-radius:22px;overflow:hidden;box-shadow:0 10px 26px rgba(15,23,42,.08);margin-bottom:18px}
+.mobile-index-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px;direction:rtl;cursor:pointer;user-select:none;background:linear-gradient(135deg,var(--navy),#1e4060);transition:.2s}
+.mobile-index-head:active{opacity:.85}
+.mobile-index-head strong{color:#fff;font-size:16px;font-weight:950;display:flex;align-items:center;gap:8px}
+.mobile-index-head .mi-toggle{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:14px;transition:transform .3s;flex-shrink:0}
+.mobile-index-head .mi-toggle.open{transform:rotate(180deg)}
+.mobile-index-strip{display:grid;grid-template-columns:1fr;gap:0;overflow:hidden;max-height:0;transition:max-height .35s ease;direction:rtl;padding:0}
+.mobile-index-strip.open{max-height:1000px;padding:10px;gap:8px}
+.mobile-index-card{width:100%;border:1.5px solid #e2e8f0;background:linear-gradient(180deg,#fff,#f8fafc);border-radius:16px;padding:12px 14px;display:flex;align-items:center;gap:12px;text-align:right;cursor:pointer;transition:.18s;font-family:inherit;direction:rtl}
+.mobile-index-card:active{transform:scale(.98)}
+.mobile-index-card.active{border-color:var(--teal);background:#ecfeff;box-shadow:0 0 0 3px rgba(15,118,110,.10)}
+.mobile-index-card .mi-icon{width:40px;height:40px;border-radius:13px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.mobile-index-card.active .mi-icon{background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff}
+.mobile-index-card .mi-text{min-width:0;flex:1}
+.mobile-index-card .mi-text strong{display:block;color:var(--navy);font-size:14px;font-weight:950;line-height:1.4;white-space:normal}
+.mobile-index-card .mi-text span{display:block;color:var(--muted);font-size:11.5px;font-weight:850;margin-top:2px;white-space:normal}
+.mobile-index-card .mi-arrow{color:var(--muted);font-size:14px;flex-shrink:0}
 .main{min-width:0}
 .group-card{background:#fff;border:1px solid var(--border);border-radius:26px;box-shadow:0 14px 34px rgba(15,23,42,.08);overflow:hidden;margin-bottom:20px}
 .group-head{background:linear-gradient(135deg,var(--navy),#1e4060);color:#fff;padding:22px 24px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
@@ -310,7 +324,7 @@ audio{width:100%;display:block;accent-color:var(--teal)}
 @media(max-width:900px){
   .layout{grid-template-columns:1fr;padding-top:20px}
   .sidebar{display:none}
-  .mobile-select{display:block}
+  .mobile-index{display:block}
   .plan-card{grid-template-columns:1fr 1fr}
   .options,.explain-grid,.wrong-grid{grid-template-columns:1fr}
 }
@@ -462,6 +476,119 @@ audio{width:100%;display:block;accent-color:var(--teal)}
   }
 }
 
+
+
+/* WE CAN STEP - Study explanation boxes (no tab navigation) */
+.study-boxes-card{
+  background:#fff;
+  border:1.5px solid #dbe3ee;
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:0 12px 30px rgba(15,23,42,.07);
+}
+.study-boxes-hint{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+  padding:16px 18px;
+  background:linear-gradient(135deg,#0f766e,#0e7490);
+  color:#fff;
+  border-bottom:1px solid rgba(255,255,255,.12);
+}
+.study-boxes-hint b{font-size:16px;font-weight:950;line-height:1.5}
+.study-boxes-hint span{font-size:13px;font-weight:800;color:rgba(255,255,255,.85);line-height:1.6}
+.study-boxes-grid{
+  padding:18px;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+.study-section-box{
+  position:relative;
+  border:1.5px solid #e2e8f0;
+  border-radius:20px;
+  padding:16px 17px;
+  min-height:150px;
+  overflow:hidden;
+  box-shadow:0 8px 20px rgba(15,23,42,.045);
+}
+.study-section-box::before{
+  content:"";
+  position:absolute;inset:0 auto 0 0;
+  width:5px;background:var(--box-accent,#2563eb);
+}
+.study-section-box h4{
+  display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+  margin:0 0 10px;
+  font-size:16px;font-weight:950;color:var(--box-accent,#173244);
+  line-height:1.5;
+}
+.study-section-box .section-badge{
+  width:30px;height:30px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:950;color:#fff;flex-shrink:0;
+  background:linear-gradient(135deg,#173244,#0f766e);
+  box-shadow:0 8px 16px rgba(15,118,110,.18);
+}
+.study-section-box .section-icon{
+  width:30px;height:30px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;
+  background:#fff;border:1px solid rgba(15,118,110,.18);
+  box-shadow:0 4px 10px rgba(15,23,42,.06);font-size:15px;flex-shrink:0;
+}
+.study-section-box .section-title{font-weight:950}
+.study-section-box p{
+  margin:0;
+  font-size:15.5px;
+  font-weight:750;
+  line-height:2;
+  color:#243447;
+}
+.study-section-box .en-text{direction:ltr;text-align:left;unicode-bidi:plaintext;font-family:Arial,Helvetica,sans-serif}
+.study-section-box .ar-text{direction:rtl;text-align:right}
+.study-section-box.box-translate{--box-accent:#2563eb;background:linear-gradient(180deg,#eff6ff,#fff)}
+.study-section-box.box-meaning{--box-accent:#dc2626;background:linear-gradient(180deg,#fff5f5,#fff)}
+.study-section-box.box-skill{--box-accent:#7c3aed;background:linear-gradient(180deg,#f5f3ff,#fff)}
+.study-section-box.box-answer{--box-accent:#16a34a;background:linear-gradient(180deg,#f0fdf4,#fff);border-color:#bbf7d0}
+.study-section-box.box-why{--box-accent:#f59e0b;background:linear-gradient(180deg,#fffbeb,#fff)}
+.study-section-box.box-evidence{--box-accent:#0ea5e9;background:linear-gradient(180deg,#eff6ff,#fff);border-color:#bfdbfe}
+.study-section-box.box-link{--box-accent:#0d9488;background:linear-gradient(180deg,#ecfeff,#fff);grid-column:1/-1;min-height:auto}
+.study-section-box.box-wrong{--box-accent:#dc2626;background:linear-gradient(180deg,#fff5f5,#fff);grid-column:1/-1;min-height:auto}
+.study-section-box.box-answer .answer-main{
+  display:inline-flex;align-items:center;gap:8px;
+  background:#dcfce7;border:1px solid #86efac;color:#14532d;
+  padding:9px 13px;border-radius:14px;font-weight:950;margin-bottom:10px;
+}
+.study-section-box.box-evidence .evidence-line{
+  background:#fff;border:1px solid #bfdbfe;border-radius:14px;
+  padding:12px 13px;font-weight:950;color:#173244;line-height:1.8;
+}
+.study-section-box.box-wrong .wrong-grid{margin-top:8px}
+@media(min-width:1024px){
+  .study-boxes-hint{padding:18px 22px}
+  .study-boxes-hint b{font-size:18px}
+  .study-boxes-hint span{font-size:14.5px}
+  .study-boxes-grid{gap:16px;padding:20px}
+  .study-section-box{padding:20px 22px;min-height:170px}
+  .study-section-box h4{font-size:22px;gap:12px;margin-bottom:14px}
+  .study-section-box .section-title{font-size:22px;font-weight:950;letter-spacing:-.2px}
+  .study-section-box .section-badge{width:38px;height:38px;border-radius:13px;font-size:18px}
+  .study-section-box .section-icon{width:38px;height:38px;border-radius:13px;font-size:18px}
+  .study-section-box p{font-size:17.8px;line-height:2.15}
+  .study-section-box .ar-text, .study-section-box.box-translate p, .study-section-box.box-meaning p, .study-section-box.box-skill p, .study-section-box.box-why p, .study-section-box.box-link p{font-size:18.2px}
+  .study-section-box.box-answer .answer-main, .study-section-box.box-evidence .evidence-line{font-size:17.4px}
+  .wrong-card{font-size:16px;line-height:2}
+}
+@media(max-width:900px){.study-boxes-grid{grid-template-columns:1fr}.study-section-box.box-link,.study-section-box.box-wrong{grid-column:auto}}
+@media(max-width:600px){
+  .study-boxes-hint{padding:14px 15px}
+  .study-boxes-hint b{font-size:15px}
+  .study-boxes-grid{padding:13px;gap:11px}
+  .study-section-box{padding:14px 15px;border-radius:17px;min-height:auto}
+  .study-section-box h4{font-size:15px}
+  .study-section-box .section-badge,.study-section-box .section-icon{width:28px;height:28px;border-radius:9px;font-size:14px}
+  .study-section-box p{font-size:14px;line-height:1.9}
+}
 </style>
 <style id="wcs-ltr-fix">
 
@@ -577,9 +704,12 @@ audio{width:100%;display:block;accent-color:var(--teal)}
     <div class="index-list" id="indexList"></div>
   </aside>
   <section class="main">
-    <div class="mobile-select">
-      <label for="groupSelect">اختر المقطع للمذاكرة 👇</label>
-      <select id="groupSelect" onchange="showGroup(Number(this.value))"></select>
+    <div class="mobile-index" id="mobileIndex">
+      <div class="mobile-index-head" onclick="toggleMobileIndex()">
+        <strong>🎧 فهرس المقاطع</strong>
+        <div class="mi-toggle" id="miToggleIcon">▼</div>
+      </div>
+      <div class="mobile-index-strip" id="mobileIndexList"></div>
     </div>
     <div id="studyRoot"></div>
   </section>
@@ -607,6 +737,19 @@ function togglePlan() {
     steps.classList.add('open');
     btn.classList.add('open');
     btn.querySelector('span').textContent = '📋 اضغط لإخفاء خطة المذاكرة';
+  }
+}
+
+function toggleMobileIndex() {
+  var strip = document.getElementById('mobileIndexList');
+  var icon = document.getElementById('miToggleIcon');
+  var isOpen = strip.classList.contains('open');
+  if (isOpen) {
+    strip.classList.remove('open');
+    icon.classList.remove('open');
+  } else {
+    strip.classList.add('open');
+    icon.classList.add('open');
   }
 }
 
@@ -2199,18 +2342,22 @@ const letters = ['A','B','C','D'];
 function esc(s){return String(s ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
 function buildIndex(){
   const list = document.getElementById('indexList');
-  const sel = document.getElementById('groupSelect');
-  list.innerHTML = ''; sel.innerHTML = '';
+  const mobileList = document.getElementById('mobileIndexList');
+  list.innerHTML = ''; if(mobileList) mobileList.innerHTML = '';
   groups.forEach((g,i)=>{
     const btn = document.createElement('button');
     btn.className = 'index-btn' + (i===currentGroup?' active':'');
     btn.onclick = () => showGroup(i);
     btn.innerHTML = `<span class="index-icon">${g.emoji}</span><span class="index-text"><strong>${esc(g.title)}</strong><span>${esc(g.subtitle)}</span></span>`;
     list.appendChild(btn);
-    const opt = document.createElement('option'); opt.value = i; opt.textContent = `${g.emoji} ${g.title} — ${g.subtitle}`;
-    sel.appendChild(opt);
+    if(mobileList){
+      const mbtn = document.createElement('button');
+      mbtn.className = 'mobile-index-card' + (i===currentGroup?' active':'');
+      mbtn.onclick = () => { showGroup(i); var strip=document.getElementById('mobileIndexList'); var icon=document.getElementById('miToggleIcon'); strip.classList.remove('open'); if(icon) icon.classList.remove('open'); };
+      mbtn.innerHTML = `<span class="mi-icon">${g.emoji}</span><span class="mi-text"><strong>${esc(g.title)}</strong><span>${esc(g.subtitle)}</span></span><span class="mi-arrow">›</span>`;
+      mobileList.appendChild(mbtn);
+    }
   });
-  sel.value = currentGroup;
 }
 function renderOptions(q){
   return q.options.map((opt,i)=>`<div class="opt ${i===q.correct?'correct':''}"><span class="letter">${letters[i]}</span><span class="opt-text">${esc(opt)}</span></div>`).join('');
@@ -2299,7 +2446,7 @@ function renderWrong(q){
 }
 function renderStudyBoxes(q, qi){
   return `<div class="study-boxes-card">
-    <div class="study-boxes-hint"><b>📚 شرح السؤال بطريقة منظمة</b><span>الصناديق التالية توضّح كل جزء من الإجابة بشكل واضح ومريح للمذاكرة.</span></div>
+    <div class="study-boxes-hint"><b>🔍 تحليل السؤال</b><span>اقرأ كل نقطة بعناية — هذا هو سر الفهم الصح ✨</span></div>
     <div class="study-boxes-grid">
       <div class="study-section-box box-translate"><h4><span class="section-badge">1</span><span class="section-icon">🌐</span><span class="section-title">ترجمة السؤال</span></h4><p>${esc(q.question_ar)}</p></div>
       <div class="study-section-box box-meaning"><h4><span class="section-badge">2</span><span class="section-icon">🛑</span><span class="section-title">معنى السؤال</span></h4><p>${esc(q.meaning)}</p></div>
