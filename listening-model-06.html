@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<style id="wcs-auth-hide">body{visibility:hidden!important}</style>
-<script type="module" src="./subscription-guard.js"></script>
 
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Listening Model 06 — WE CAN STEP</title>
-<script>document.documentElement.style.visibility='hidden';</script>
 <meta name="robots" content="noindex, nofollow">
 
 <style>
@@ -331,6 +328,88 @@ a{text-decoration:none;color:inherit}
 .transcript-ar .bubble { flex-direction:row-reverse; }
 .transcript-ar .bubble-text { text-align:right; }
 .needs-transcript { background:#fff3cd; border:1px solid #ffd966; border-radius:12px; padding:14px; font-size:13px; color:#856404; font-weight:700; direction:rtl; text-align:right; }
+
+/* ══ Desktop Results Enhancement ══ */
+@media(min-width:1024px){
+  /* Review card question text */
+  .review-item-body > div > div[style*="background:var(--navy)"] { font-size:16px !important; padding:16px 20px !important; }
+  /* Options */
+  .review-item-body span[style*="font-size:13px;font-weight:600"] { font-size:15px !important; }
+  /* Section labels */
+  .review-item-body > div > div[style*="font-size:11px"] { font-size:12.5px !important; margin-bottom:10px !important; }
+  /* Score card */
+  .score-msg{font-size:26px !important}
+  .score-sub{font-size:16px !important}
+  .score-ring-wrap svg{width:120px !important;height:120px !important}
+}
+
+@media(min-width:1024px){
+  .res-container{max-width:900px}
+  .review-item{border-radius:22px;margin-bottom:20px}
+  .review-item-head{padding:18px 26px}
+  .review-item-body{padding:22px 26px;gap:14px}
+}
+@media(min-width:1280px){
+  .res-container{max-width:1000px}
+}
+
+/* ══ Result Cards Desktop ══ */
+.rc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rc-your{background:#fff5f5;border:1.5px solid rgba(220,38,38,.2);border-radius:13px;padding:12px 14px}
+.rc-correct{background:#f0fdf4;border:1.5px solid rgba(22,163,74,.2);border-radius:13px;padding:12px 14px}
+.rc-label{font-size:11px;font-weight:900;margin-bottom:5px}
+.rc-your .rc-label{color:#dc2626}
+.rc-correct .rc-label{color:#16a34a}
+.rc-val{font-size:13.5px;font-weight:800;direction:ltr}
+.rc-your .rc-val{color:#7f1d1d}
+.rc-correct .rc-val{color:#14532d}
+.rc-why{background:#fffbeb;border:1.5px solid #fde68a;border-radius:13px;padding:12px 14px}
+.rc-why .rc-label{color:#92400e}
+.rc-why p{margin:0;font-size:13.5px;font-weight:750;color:#78350f;line-height:1.8;direction:rtl}
+.rc-trans{background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:13px;padding:12px 14px}
+.rc-trans .rc-label{color:#1d4ed8}
+.rc-trans p{margin:0;font-size:13.5px;font-weight:750;color:#1e3a8a;line-height:1.8;direction:rtl}
+.rc-trans .rc-ans-tr{margin:8px 0 0;font-size:13px;font-weight:750;color:#1e40af;direction:rtl}
+.rc-evid{background:#f0f9ff;border:1.5px solid #bae6fd;border-radius:13px;padding:12px 14px}
+.rc-evid .rc-label{color:#0369a1}
+.rc-evid p{margin:0;font-size:13px;font-weight:800;color:#0c4a6e;line-height:1.9;direction:ltr;font-style:italic}
+.rc-evid .rc-evid-ar{margin:6px 0 0;color:#475569;font-size:13px;direction:rtl;text-align:right}
+@media(min-width:1024px){
+  .res-container{max-width:960px}
+  .rc-grid{gap:16px}
+  .rc-your,.rc-correct{padding:18px 22px;border-radius:16px}
+  .rc-label{font-size:15px !important;font-weight:900;margin-bottom:8px}
+  .rc-val{font-size:18px !important}
+  .rc-why,.rc-trans,.rc-evid{padding:18px 22px;border-radius:16px}
+  .rc-why p{font-size:17px !important;line-height:2 !important;color:#78350f}
+  .rc-trans p{font-size:17px !important;line-height:2 !important;color:#1e3a8a}
+  .rc-trans .rc-ans-tr{font-size:15.5px !important}
+  .rc-evid p{font-size:16px !important}
+  .rc-evid .rc-evid-ar{font-size:15px !important}
+  .review-item{border-radius:22px}
+  .review-item-body{padding:24px 28px;gap:16px}
+}
+
+/* ══ Review Question & Options ══ */
+.rv-section-label{font-size:11px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.rv-question{background:var(--navy);color:#fff;border-radius:12px;padding:14px 16px;font-size:14px;font-weight:800;direction:ltr;margin-bottom:10px}
+.rv-options{display:flex;flex-direction:column;gap:8px}
+.rv-opt{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:11px;border:1.5px solid var(--border);background:#fff;direction:ltr}
+.rv-opt.opt-correct{border-color:rgba(22,163,74,.35);background:rgba(22,163,74,.07)}
+.rv-opt.opt-wrong{border-color:rgba(220,38,38,.3);background:rgba(220,38,38,.07)}
+.rv-opt-letter{width:28px;height:28px;border-radius:7px;background:var(--navy);color:var(--gold);font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rv-opt.opt-correct .rv-opt-letter{background:var(--correct);color:#fff}
+.rv-opt.opt-wrong .rv-opt-letter{background:var(--wrong);color:#fff}
+.rv-opt-text{font-size:13px;font-weight:600;flex:1}
+.rv-divider{height:1px;background:var(--border)}
+@media(min-width:1024px){
+  .rv-section-label{font-size:13px;margin-bottom:12px}
+  .rv-question{font-size:18px;padding:18px 22px;border-radius:16px;margin-bottom:14px;line-height:1.7}
+  .rv-options{gap:12px}
+  .rv-opt{padding:15px 20px;border-radius:14px}
+  .rv-opt-letter{width:36px;height:36px;border-radius:10px;font-size:15px}
+  .rv-opt-text{font-size:16px;font-weight:700}
+}
 </style>
 <style id="wcs-ltr-fix">
 
@@ -1590,38 +1669,31 @@ function showResults() {
       reviewHtml += '<div style="height:1px;background:var(--border)"></div>';
 
       // 4. Question & Options
-      reviewHtml += '<div><div style="font-size:11px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;display:flex;align-items:center;gap:6px"><span>❓</span> السؤال والخيارات</div>';
-      reviewHtml += '<div style="background:var(--navy);color:#fff;border-radius:12px;padding:14px 16px;font-size:14px;font-weight:800;direction:ltr;margin-bottom:10px">'+q.question+'</div>';
-      reviewHtml += '<div style="display:flex;flex-direction:column;gap:8px">';
+      reviewHtml += '<div><div class="rv-section-label"><span>❓</span> السؤال والخيارات</div>';
+      reviewHtml += '<div class="rv-question">'+q.question+'</div>';
+      reviewHtml += '<div class="rv-options">';
       q.options.forEach(function(opt, oi) {
         var isCorr = oi === q.correct;
         var isUser = oi === userAns;
-        var bg = isCorr ? 'rgba(22,163,74,.07)' : (isUser && !isCorrect ? 'rgba(220,38,38,.07)' : '#fff');
-        var border = isCorr ? 'rgba(22,163,74,.35)' : (isUser && !isCorrect ? 'rgba(220,38,38,.3)' : 'var(--border)');
-        var lBg = isCorr ? 'var(--correct)' : (isUser && !isCorrect ? 'var(--wrong)' : 'var(--navy)');
-        reviewHtml += '<div style="display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:11px;border:1.5px solid '+border+';background:'+bg+';direction:ltr">';
-        reviewHtml += '<span style="width:28px;height:28px;border-radius:7px;background:'+lBg+';color:'+(isCorr||isUser&&!isCorrect?'#fff':'var(--gold)')+';font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0">'+labels[oi]+'</span>';
-        reviewHtml += '<span style="font-size:13px;font-weight:600;flex:1">'+opt+'</span>';
+        var cls = isCorr ? ' opt-correct' : (isUser && !isCorrect ? ' opt-wrong' : '');
+        reviewHtml += '<div class="rv-opt'+cls+'">';
+        reviewHtml += '<span class="rv-opt-letter">'+labels[oi]+'</span>';
+        reviewHtml += '<span class="rv-opt-text">'+opt+'</span>';
         if(isCorr) reviewHtml += '<span>✅</span>';
         else if(isUser && !isCorrect) reviewHtml += '<span>❌</span>';
         reviewHtml += '</div>';
       });
       reviewHtml += '</div></div>';
-
-      reviewHtml += '<div style="height:1px;background:var(--border)"></div>';
+      reviewHtml += '<div class="rv-divider"></div>';
 
       // شرح مختصر
       if (q.explanation) {
-        reviewHtml += '<div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:13px;padding:12px 14px">';
-        reviewHtml += '<div style="font-size:11px;font-weight:900;color:#92400e;margin-bottom:5px">💡 الشرح المختصر</div>';
-        reviewHtml += '<p style="margin:0;font-size:13.5px;font-weight:750;color:#78350f;line-height:1.8;direction:rtl;text-align:right">'+q.explanation+'</p></div>';
+        reviewHtml += '<div class="rc-why"><div class="rc-label">💡 الشرح المختصر</div><p>'+q.explanation+'</p></div>';
       }
 
       // ترجمة السؤال
       if (q.question_ar) {
-        reviewHtml += '<div style="background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:13px;padding:12px 14px">';
-        reviewHtml += '<div style="font-size:11px;font-weight:900;color:#1d4ed8;margin-bottom:5px">🌐 ترجمة السؤال</div>';
-        reviewHtml += '<p style="margin:0;font-size:13.5px;font-weight:750;color:#1e3a8a;line-height:1.8;direction:rtl;text-align:right">'+q.question_ar+'</p></div>';
+        reviewHtml += '<div class="rc-trans"><div class="rc-label">🌐 ترجمة السؤال</div><p>'+q.question_ar+'</p></div>';
       }
 
       // الدليل

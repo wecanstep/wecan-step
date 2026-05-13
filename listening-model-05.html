@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<style id="wcs-auth-hide">body{visibility:hidden!important}</style>
-<script type="module" src="./subscription-guard.js"></script>
 
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Listening Model 05 — WE CAN STEP</title>
-<script>document.documentElement.style.visibility='hidden';</script>
 <meta name="robots" content="noindex, nofollow">
 
 <style>
@@ -372,6 +369,88 @@ a{text-decoration:none;color:inherit}
 .study-wrong-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .study-wrong-card{background:#fff5f5;border:1.5px solid #fecaca;border-radius:14px;padding:11px 12px;line-height:1.75;color:#7f1d1d;font-size:13px;font-weight:750;direction:rtl;text-align:right}
 @media(max-width:700px){.study-exp-grid,.study-wrong-grid{grid-template-columns:1fr}}
+
+/* ══ Desktop Results Enhancement ══ */
+@media(min-width:1024px){
+  /* Review card question text */
+  .review-item-body > div > div[style*="background:var(--navy)"] { font-size:16px !important; padding:16px 20px !important; }
+  /* Options */
+  .review-item-body span[style*="font-size:13px;font-weight:600"] { font-size:15px !important; }
+  /* Section labels */
+  .review-item-body > div > div[style*="font-size:11px"] { font-size:12.5px !important; margin-bottom:10px !important; }
+  /* Score card */
+  .score-msg{font-size:26px !important}
+  .score-sub{font-size:16px !important}
+  .score-ring-wrap svg{width:120px !important;height:120px !important}
+}
+
+@media(min-width:1024px){
+  .res-container{max-width:900px}
+  .review-item{border-radius:22px;margin-bottom:20px}
+  .review-item-head{padding:18px 26px}
+  .review-item-body{padding:22px 26px;gap:14px}
+}
+@media(min-width:1280px){
+  .res-container{max-width:1000px}
+}
+
+/* ══ Result Cards Desktop ══ */
+.rc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rc-your{background:#fff5f5;border:1.5px solid rgba(220,38,38,.2);border-radius:13px;padding:12px 14px}
+.rc-correct{background:#f0fdf4;border:1.5px solid rgba(22,163,74,.2);border-radius:13px;padding:12px 14px}
+.rc-label{font-size:11px;font-weight:900;margin-bottom:5px}
+.rc-your .rc-label{color:#dc2626}
+.rc-correct .rc-label{color:#16a34a}
+.rc-val{font-size:13.5px;font-weight:800;direction:ltr}
+.rc-your .rc-val{color:#7f1d1d}
+.rc-correct .rc-val{color:#14532d}
+.rc-why{background:#fffbeb;border:1.5px solid #fde68a;border-radius:13px;padding:12px 14px}
+.rc-why .rc-label{color:#92400e}
+.rc-why p{margin:0;font-size:13.5px;font-weight:750;color:#78350f;line-height:1.8;direction:rtl}
+.rc-trans{background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:13px;padding:12px 14px}
+.rc-trans .rc-label{color:#1d4ed8}
+.rc-trans p{margin:0;font-size:13.5px;font-weight:750;color:#1e3a8a;line-height:1.8;direction:rtl}
+.rc-trans .rc-ans-tr{margin:8px 0 0;font-size:13px;font-weight:750;color:#1e40af;direction:rtl}
+.rc-evid{background:#f0f9ff;border:1.5px solid #bae6fd;border-radius:13px;padding:12px 14px}
+.rc-evid .rc-label{color:#0369a1}
+.rc-evid p{margin:0;font-size:13px;font-weight:800;color:#0c4a6e;line-height:1.9;direction:ltr;font-style:italic}
+.rc-evid .rc-evid-ar{margin:6px 0 0;color:#475569;font-size:13px;direction:rtl;text-align:right}
+@media(min-width:1024px){
+  .res-container{max-width:960px}
+  .rc-grid{gap:16px}
+  .rc-your,.rc-correct{padding:18px 22px;border-radius:16px}
+  .rc-label{font-size:15px !important;font-weight:900;margin-bottom:8px}
+  .rc-val{font-size:18px !important}
+  .rc-why,.rc-trans,.rc-evid{padding:18px 22px;border-radius:16px}
+  .rc-why p{font-size:17px !important;line-height:2 !important;color:#78350f}
+  .rc-trans p{font-size:17px !important;line-height:2 !important;color:#1e3a8a}
+  .rc-trans .rc-ans-tr{font-size:15.5px !important}
+  .rc-evid p{font-size:16px !important}
+  .rc-evid .rc-evid-ar{font-size:15px !important}
+  .review-item{border-radius:22px}
+  .review-item-body{padding:24px 28px;gap:16px}
+}
+
+/* ══ Review Question & Options ══ */
+.rv-section-label{font-size:11px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.rv-question{background:var(--navy);color:#fff;border-radius:12px;padding:14px 16px;font-size:14px;font-weight:800;direction:ltr;margin-bottom:10px}
+.rv-options{display:flex;flex-direction:column;gap:8px}
+.rv-opt{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:11px;border:1.5px solid var(--border);background:#fff;direction:ltr}
+.rv-opt.opt-correct{border-color:rgba(22,163,74,.35);background:rgba(22,163,74,.07)}
+.rv-opt.opt-wrong{border-color:rgba(220,38,38,.3);background:rgba(220,38,38,.07)}
+.rv-opt-letter{width:28px;height:28px;border-radius:7px;background:var(--navy);color:var(--gold);font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rv-opt.opt-correct .rv-opt-letter{background:var(--correct);color:#fff}
+.rv-opt.opt-wrong .rv-opt-letter{background:var(--wrong);color:#fff}
+.rv-opt-text{font-size:13px;font-weight:600;flex:1}
+.rv-divider{height:1px;background:var(--border)}
+@media(min-width:1024px){
+  .rv-section-label{font-size:13px;margin-bottom:12px}
+  .rv-question{font-size:18px;padding:18px 22px;border-radius:16px;margin-bottom:14px;line-height:1.7}
+  .rv-options{gap:12px}
+  .rv-opt{padding:15px 20px;border-radius:14px}
+  .rv-opt-letter{width:36px;height:36px;border-radius:10px;font-size:15px}
+  .rv-opt-text{font-size:16px;font-weight:700}
+}
 </style>
 <style id="wcs-ltr-fix">
 
@@ -3191,47 +3270,31 @@ function renderTranscriptBubbles(lines, isArabic, q) {
 function renderStudyStyleExplanation(q, labels, userAns) {
   function txt(v){ return (v || '—').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   var answer = labels[q.correct] + ') ' + q.options[q.correct];
+  var yourAns = (userAns !== null && userAns !== undefined)
+    ? txt(labels[userAns] + ') ' + (q.options[userAns] || ''))
+    : '(لم يُجب)';
   var evidenceText = Array.isArray(q.evidence) && q.evidence.length
-    ? q.evidence.map(function(e){ return '📍 ' + txt(e); }).join('<br>')
-    : '';
-  var evidenceAr = q.evidence_ar ? '<p style="margin:6px 0 0;color:#475569;font-size:13px;direction:rtl;text-align:right"><b>الترجمة:</b> ' + txt(q.evidence_ar) + '</p>' : '';
+    ? q.evidence.map(function(e){ return '📍 ' + txt(e); }).join('<br>') : '';
+  var evidenceAr = q.evidence_ar
+    ? '<p class="rc-evid-ar"><b>الترجمة:</b> ' + txt(q.evidence_ar) + '</p>' : '';
 
   return '<div style="display:flex;flex-direction:column;gap:10px;margin-top:4px">' +
 
-    // إجابتك vs الصحيحة
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">' +
-      '<div style="background:#fff5f5;border:1.5px solid rgba(220,38,38,.2);border-radius:13px;padding:12px 14px">' +
-        '<div style="font-size:11px;font-weight:900;color:#dc2626;margin-bottom:5px">❌ إجابتك</div>' +
-        '<div style="font-size:13.5px;font-weight:800;color:#7f1d1d;direction:ltr">' + (userAns !== null && userAns !== undefined ? txt(labels[userAns] + ') ' + (q.options[userAns] || '')) : '(لم يُجب)') + '</div>' +
-      '</div>' +
-      '<div style="background:#f0fdf4;border:1.5px solid rgba(22,163,74,.2);border-radius:13px;padding:12px 14px">' +
-        '<div style="font-size:11px;font-weight:900;color:#16a34a;margin-bottom:5px">✅ الصحيحة</div>' +
-        '<div style="font-size:13.5px;font-weight:800;color:#14532d;direction:ltr">' + txt(answer) + '</div>' +
-      '</div>' +
+    '<div class="rc-grid">' +
+      '<div class="rc-your"><div class="rc-label">❌ إجابتك</div><div class="rc-val">' + yourAns + '</div></div>' +
+      '<div class="rc-correct"><div class="rc-label">✅ الصحيحة</div><div class="rc-val">' + txt(answer) + '</div></div>' +
     '</div>' +
 
-    // الشرح المختصر
-    (q.why || q.explanation ? 
-      '<div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:13px;padding:12px 14px">' +
-        '<div style="font-size:11px;font-weight:900;color:#92400e;margin-bottom:5px">💡 الشرح المختصر</div>' +
-        '<p style="margin:0;font-size:13.5px;font-weight:750;color:#78350f;line-height:1.8;direction:rtl">' + txt(q.why || q.explanation) + '</p>' +
-      '</div>' : '') +
+    (q.why || q.explanation ?
+      '<div class="rc-why"><div class="rc-label">💡 الشرح المختصر</div><p>' + txt(q.why || q.explanation) + '</p></div>' : '') +
 
-    // الترجمة
     (q.question_ar ?
-      '<div style="background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:13px;padding:12px 14px">' +
-        '<div style="font-size:11px;font-weight:900;color:#1d4ed8;margin-bottom:5px">🌐 ترجمة السؤال</div>' +
-        '<p style="margin:0;font-size:13.5px;font-weight:750;color:#1e3a8a;line-height:1.8;direction:rtl">' + txt(q.question_ar) + '</p>' +
-        (q.answer_ar ? '<p style="margin:8px 0 0;font-size:13px;font-weight:750;color:#1e40af;direction:rtl"><b>ترجمة الإجابة:</b> ' + txt(q.answer_ar) + '</p>' : '') +
+      '<div class="rc-trans"><div class="rc-label">🌐 ترجمة السؤال</div><p>' + txt(q.question_ar) + '</p>' +
+      (q.answer_ar ? '<p class="rc-ans-tr"><b>ترجمة الإجابة:</b> ' + txt(q.answer_ar) + '</p>' : '') +
       '</div>' : '') +
 
-    // الدليل — جملة الدليل فقط
     (evidenceText ?
-      '<div style="background:#f0f9ff;border:1.5px solid #bae6fd;border-radius:13px;padding:12px 14px">' +
-        '<div style="font-size:11px;font-weight:900;color:#0369a1;margin-bottom:5px">📍 الدليل من الصوت</div>' +
-        '<p style="margin:0;font-size:13px;font-weight:800;color:#0c4a6e;line-height:1.9;direction:ltr;font-style:italic">' + evidenceText + '</p>' +
-        evidenceAr +
-      '</div>' : '') +
+      '<div class="rc-evid"><div class="rc-label">📍 الدليل من الصوت</div><p>' + evidenceText + '</p>' + evidenceAr + '</div>' : '') +
 
   '</div>';
 }
@@ -3483,25 +3546,22 @@ function showResults() {
       }
 
       // 4. Question & Options
-      reviewHtml += '<div><div style="font-size:11px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;display:flex;align-items:center;gap:6px"><span>❓</span> السؤال والخيارات</div>';
-      reviewHtml += '<div style="background:var(--navy);color:#fff;border-radius:12px;padding:14px 16px;font-size:14px;font-weight:800;direction:ltr;margin-bottom:10px">'+safeHtml(q.question)+'</div>';
-      reviewHtml += '<div style="display:flex;flex-direction:column;gap:8px">';
+      reviewHtml += '<div><div class="rv-section-label"><span>❓</span> السؤال والخيارات</div>';
+      reviewHtml += '<div class="rv-question">'+safeHtml(q.question)+'</div>';
+      reviewHtml += '<div class="rv-options">';
       q.options.forEach(function(opt, oi) {
         var isCorr = oi === q.correct;
         var isUser = oi === userAns;
-        var bg = isCorr ? 'rgba(22,163,74,.07)' : (isUser && !isCorrect ? 'rgba(220,38,38,.07)' : '#fff');
-        var border = isCorr ? 'rgba(22,163,74,.35)' : (isUser && !isCorrect ? 'rgba(220,38,38,.3)' : 'var(--border)');
-        var lBg = isCorr ? 'var(--correct)' : (isUser && !isCorrect ? 'var(--wrong)' : 'var(--navy)');
-        reviewHtml += '<div style="display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:11px;border:1.5px solid '+border+';background:'+bg+';direction:ltr">';
-        reviewHtml += '<span style="width:28px;height:28px;border-radius:7px;background:'+lBg+';color:'+(isCorr||isUser&&!isCorrect?'#fff':'var(--gold)')+';font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0">'+labels[oi]+'</span>';
-        reviewHtml += '<span style="font-size:13px;font-weight:600;flex:1">'+safeHtml(opt)+'</span>';
+        var cls = isCorr ? ' opt-correct' : (isUser && !isCorrect ? ' opt-wrong' : '');
+        reviewHtml += '<div class="rv-opt'+cls+'">';
+        reviewHtml += '<span class="rv-opt-letter">'+labels[oi]+'</span>';
+        reviewHtml += '<span class="rv-opt-text">'+safeHtml(opt)+'</span>';
         if(isCorr) reviewHtml += '<span>✅</span>';
         else if(isUser && !isCorrect) reviewHtml += '<span>❌</span>';
         reviewHtml += '</div>';
       });
       reviewHtml += '</div></div>';
-
-      reviewHtml += '<div style="height:1px;background:var(--border)"></div>';
+      reviewHtml += '<div class="rv-divider"></div>';
 
       // 5–10. Study Mode style explanation
       reviewHtml += renderStudyStyleExplanation(q, labels, userAns);
